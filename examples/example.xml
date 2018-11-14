@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ListofNodes>
-  <!-- rates are packets per second -->
-  <Node name='node1' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-  <Node name='node2' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-  <Node name='node3' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-  <Node name='node4' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-  <Node name='node5' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-</ListofNodes>
-<WireTypes>
-  <!-- cost is per meter. bandwidth is in packets per second. errorRate is percent
-  chance a given packet transmitted will be lost -->
-  <wire type='type0' cost='0.0' bandwidth='0.0' errorRate='0.0'/>
-  <wire type='type1' cost='0.0' bandwidth='0.0' errorRate='0.0'/>
-</WireTypes>
-<ListofConnections>
-  <connetion wireType='type0' node1='0' node2='1'/>
-  <connetion wireType='type0' node1='1' node2='2'/>
-  <connetion wireType='type1' node1='0' node2='3'/>
-  <connetion wireType='type1' node1='3' node2='2'/>
-</ListofConnections>
+<NetworkDefinition>
+  <ListOfNodes>
+    <!-- rates are packets per second -->
+    <Node name='node1' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node2' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node3' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node4' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node5' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+  </ListOfNodes>
+  <WireTypes>
+    <!-- cost is per meter. bandwidth is in packets per second. errorRate is percent
+    chance a given packet transmitted will be lost -->
+    <Wire type='type0' cost='0.0' bandwidth='0.0' errorRate='0.0'/>
+    <Wire type='type1' cost='0.0' bandwidth='0.0' errorRate='0.0'/>
+  </WireTypes>
+  <ListOfConnections>
+    <Connetion wireType='type0' node1='0' node2='1'/>
+    <Connetion wireType='type0' node1='1' node2='2'/>
+    <Connetion wireType='type1' node1='0' node2='3'/>
+    <Connetion wireType='type1' node1='3' node2='2'/>
+  </ListOfConnections>
 
-<!-- Note for remaining sections: Throughput is derived concept from latency, packetLoss,
-and bandwidth. Thus if you prioritize throughput, you're implicately prioritizing those 3 metrics.
-We will clarify this and possibly change the final preferences in later revisions. -->
+  <!-- Note for remaining sections: Throughput is derived concept from latency, packetLoss,
+  and bandwidth. Thus if you prioritize throughput, you're implicately prioritizing those 3 metrics.
+  We will clarify this and possibly change the final preferences in later revisions. -->
 
-<!-- latency, packetLoss and throughput are weights and relative to eachother.
-Will be normalized by the tool. Budget is not a weight but rather a fixed max boundary-->
-<Preferences latency='1' packetLoss='1' throughput='1' budget='100'/>
+  <!-- latency, packetLoss and throughput are weights and relative to eachother.
+  Will be normalized by the tool. Budget is not a weight but rather a fixed max boundary-->
+  <Preferences latency='1' packetLoss='1' throughput='1' budget='100'/>
 
-<!-- Following section will be present if file is output from the CAD tool -->
-<!-- latency is in milliseconds, packetLoss is a percentage and throughput is
-packets per second. -->
-<Statistics latency='0.0' packetLoss='0.0' throughput='1.0' cost='50'/>
+  <!-- Following section will be present if file is output from the CAD tool -->
+  <!-- latency is in milliseconds, packetLoss is a percentage and throughput is
+  packets per second. -->
+  <Statistics latency='0.0' packetLoss='0.0' throughput='1.0' cost='50'/>
+</NetworkDefinition>

@@ -2,9 +2,9 @@
 
 #include <string>
 #include <vector>
-#include <cstdint>
 
 class WireType {
+public:
   std::string name;
   double cost; // per meter
   double error_rate; // packets per meter per second
@@ -14,19 +14,25 @@ class WireType {
 class Connection;
 
 class Node {
-  uint32_t id;
+  static int nextID;
+public:
+  int id;
   double xLoc, yLoc;
   std::vector<const Connection *> connections;
+  std::string name;
   double sendRate; // packets per second
   double receiveRate; // packets per second
   double routeRate; // packets per second
   int queueSize;
 
-  Node(double send, double receive, double route, int queue);
+  Node(std::string name, double send, double receive, double route, int queue);
+
+  friend std::ostream& operator<<(std::ostream& out, const Node& node);
 };
 
 class Connection {
-  uint32_t id;
+public:
+  int id;
   WireType& type;
   Node& a;
   Node& b;

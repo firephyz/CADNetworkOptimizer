@@ -131,9 +131,9 @@ void readInputFile(char * fileName)
   }
 }
 
-void constructInitialGraph()
+void completeNetworkGraph()
 {
-
+  // TODO
 }
 
 int main(int argc, char **argv)
@@ -144,6 +144,8 @@ int main(int argc, char **argv)
   }
 
   readInputFile(argv[1]);
+
+  completeNetworkGraph();
 
   for(const Node& node : nodes) {
     std::cout << node << std::endl;

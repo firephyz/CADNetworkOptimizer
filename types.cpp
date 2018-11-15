@@ -9,7 +9,7 @@
 
 int Node::nextID = 0;
 
-Node::Node(std::string name, double send, double receive, double route, int queue)
+Node::Node(std::string& name, double send, double receive, double route, int queue)
   : xLoc(0.0)
   , yLoc(0.0)
   , name(name)
@@ -22,9 +22,21 @@ Node::Node(std::string name, double send, double receive, double route, int queu
   nextID++;
 }
 
-std::ostream& operator<<(std::ostream& out, const Node& node) {
+std::ostream& operator<<(std::ostream& out, const Node& node)
+{
   out << "NODE {";
   out << node.name << ", id=" << node.id;
   out << "}";
   return out;
 }
+
+/*
+ * WireType functions
+ */
+
+WireType::WireType(std::string& type, double cost, double bandwidth, double errorRate)
+  : typeName(type)
+  , cost(cost)
+  , bandwidth(bandwidth)
+  , errorRate(errorRate)
+{}

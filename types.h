@@ -5,10 +5,12 @@
 
 class WireType {
 public:
-  std::string name;
+  std::string typeName;
   double cost; // per meter
-  double error_rate; // packets per meter per second
   double bandwidth; // packets per second
+  double errorRate; // packets per meter per second
+
+  WireType(std::string& type, double cost, double bandwidth, double errorRate);
 };
 
 class Connection;
@@ -25,7 +27,7 @@ public:
   double routeRate; // packets per second
   int queueSize;
 
-  Node(std::string name, double send, double receive, double route, int queue);
+  Node(std::string& name, double send, double receive, double route, int queue);
 
   friend std::ostream& operator<<(std::ostream& out, const Node& node);
 };

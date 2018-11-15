@@ -51,7 +51,22 @@ void parseListOfNodes(xmlNodePtr node)
 
 void parseWireTypes(xmlNodePtr node)
 {
+  xmlNodePtr child = xmlFirstElementChild(node);
+  while(child != NULL) {
+    if (xmlStrcmp(child->name, (const xmlChar *)"Wire") != 0) {
+      std::cerr << "Invalid tag inside WireTypes: \'" << child->name << "\'\n.";
+      continue;
+    }
 
+    std::string type = (const char *)xmlGetAttribute(child, "type")->children->content;
+    double cost = std::atof((const char *)xmlGetAttribute(child, "cost")->children->content);
+    double bandwidth = std::atof((const char *)xmlGetAttribute(child, "bandwidth")->children->content);
+    double errorRate = std::atof((const char *)xmlGetAttribute(child, "errorRate")->children->content);
+
+    wires.emplace_back(WireType(type, cost, bandwidth, errorRate));
+
+    child = xmlNextElementSibling(child);
+  }
 }
 
 void parseListOfConnections(xmlNodePtr node)
@@ -112,6 +127,13 @@ int main(int argc, char **argv)
 
   for(const Node& node : nodes) {
     std::cout << node << std::endl;
+  }
+
+  for(const WireType& wire : wires) {
+    std::cout << wire.typeName << std::endl;
+    std::cout << wire.cost << std::endl;
+    std::cout << wire.bandwidth << std::endl;
+    std::cout << wire.errorRate << std::endl;
   }
 
   constructInitialGraph();

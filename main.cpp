@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 
   completeNetworkGraph();
 
-  for(const Node& node : nodes) {
+/*   for(const Node& node : nodes) {
     std::cout << node << std::endl;
   }
 
@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 
   for(const Connection& connection : connections) {
     std::cout << connection << std::endl;
-  }
+  } */
 
   return 0;
 }

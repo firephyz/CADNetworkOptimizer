@@ -22,10 +22,60 @@ Node::Node(std::string& name, double send, double receive, double route, int que
   nextID++;
 }
 
-std::ostream& operator<<(std::ostream& out, const Node& node)
+Node& getNodeByName(std::string& name)
+{
+  for(Node& node : nodes) {
+    if(node.name == name) {
+      return node;
+    }
+  }
+
+  std::cerr << "Could not find requested node \'" << name << "\'\n";
+  exit(-1);
+}
+
+void
+Node::connect(Node& node, WireType& wire)
+{
+  connections.emplace_back(Connection(wire, *this, node));
+  Connection& connection = connections.back();
+  nodeConnections.push_back(&connection);
+  node.nodeConnections.push_back(&connection);
+}
+
+std::ostream&
+operator<<(std::ostream& out, const Node& node)
 {
   out << "NODE {";
   out << node.name << ", id=" << node.id;
+  out << "}" << std::endl;
+  for(Connection * con : node.nodeConnections) {
+    out << *con << std::endl;
+  }
+  return out;
+}
+
+/*
+ * Connection functions
+ */
+
+int Connection::nextID = 0;
+
+Connection::Connection(WireType& type, Node& a, Node& b)
+  : type(type)
+  , a(a)
+  , b(b)
+{
+  id = nextID;
+  nextID++;
+}
+
+std::ostream&
+operator<<(std::ostream& out, const Connection& connection)
+{
+  out << "CONNECTION {";
+  out << connection.a.name << " <=> " << connection.b.name;
+  out << ", " << connection.type;
   out << "}";
   return out;
 }
@@ -40,3 +90,22 @@ WireType::WireType(std::string& type, double cost, double bandwidth, double erro
   , bandwidth(bandwidth)
   , errorRate(errorRate)
 {}
+
+WireType& getWireTypeByName(std::string& name)
+{
+  for(WireType& wire : wires) {
+    if(wire.typeName == name) {
+      return wire;
+    }
+  }
+
+  std::cerr << "Could not find requested wire type \'" << name << "\'\n";
+  exit(-1);
+}
+
+std::ostream&
+operator<<(std::ostream& out, const WireType& wire)
+{
+  out << wire.typeName;
+  return out;
+}

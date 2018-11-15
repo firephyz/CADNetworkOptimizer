@@ -16,10 +16,10 @@
     <Wire type='type1' cost='5.0' bandwidth='70.0' errorRate='0.0'/>
   </WireTypes>
   <ListOfConnections>
-    <Connetion wireType='type0' node1='0' node2='1'/>
-    <Connetion wireType='type0' node1='1' node2='2'/>
-    <Connetion wireType='type1' node1='0' node2='3'/>
-    <Connetion wireType='type1' node1='3' node2='2'/>
+    <Connection wireType='type0' node1='node1' node2='node2'/>
+    <Connection wireType='type0' node1='node2' node2='node3'/>
+    <Connection wireType='type1' node1='node1' node2='node4'/>
+    <Connection wireType='type1' node1='node4' node2='node5'/>
   </ListOfConnections>
 
   <!-- Note for remaining sections: Throughput is derived concept from latency, packetLoss,

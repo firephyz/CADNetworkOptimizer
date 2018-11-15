@@ -71,7 +71,26 @@ void parseWireTypes(xmlNodePtr node)
 
 void parseListOfConnections(xmlNodePtr node)
 {
+  xmlNodePtr child = xmlFirstElementChild(node);
+  while(child != NULL) {
+    if (xmlStrcmp(child->name, (const xmlChar *)"Connection") != 0) {
+      std::cerr << "Invalid tag inside ListOfConnections: \'" << child->name << "\'\n.";
+      continue;
+    }
 
+    std::string type = (const char *)xmlGetAttribute(child, "wireType")->children->content;
+    std::string node1Name = (const char *)xmlGetAttribute(child, "node1")->children->content;
+    std::string node2Name = (const char *)xmlGetAttribute(child, "node2")->children->content;
+
+    Node& node1 = getNodeByName(node1Name);
+    Node& node2 = getNodeByName(node2Name);
+    WireType& wire = getWireTypeByName(type);
+
+    // Automatically updates external records like 'connections'
+    node1.connect(node2, wire);
+
+    child = xmlNextElementSibling(child);
+  }
 }
 
 void parsePreferences(xmlNodePtr node)

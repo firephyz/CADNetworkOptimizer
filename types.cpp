@@ -38,9 +38,9 @@ void
 Node::connect(Node& node, WireType& wire)
 {
   connections.emplace_back(Connection(wire, *this, node));
-  Connection& connection = connections.back();
-  nodeConnections.push_back(&connection);
-  node.nodeConnections.push_back(&connection);
+  int connectionIndex = connections.size() - 1;
+  connectionIndicies.push_back(connectionIndex);
+  node.connectionIndicies.push_back(connectionIndex);
 }
 
 bool clear_Flags()
@@ -71,8 +71,8 @@ operator<<(std::ostream& out, const Node& node)
   out << "NODE {";
   out << node.name << ", id=" << node.id;
   out << "}" << std::endl;
-  for(Connection * con : node.nodeConnections) {
-    out << *con << std::endl;
+  for(int index : node.connectionIndicies) {
+    out << connections[index] << std::endl;
   }
   return out;
 }

@@ -25,7 +25,7 @@ class Node {
 public:
   int id;
   double xLoc, yLoc;
-  std::vector<Connection *> nodeConnections;
+  std::vector<int> connectionIndicies;
   std::string name;
   bool flag; // Marks for traversal
   double sendRate; // packets per second

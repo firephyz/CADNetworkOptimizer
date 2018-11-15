@@ -59,4 +59,16 @@ bool clear_Flags()
     }
     return true;
 }
+bool add_node_to_hash(Node node)
+{
+    hashed_nodes[Node.name] = node*;
+    return true;
+}
+bool update_node_hash()
+{
+    for(std::vector<T>::iterator it = nodes.begin(); it != nodes.end(); ++it)
+    {
+        add_node_to_hash(it*);
+    }
+}
 #endif

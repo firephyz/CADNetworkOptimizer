@@ -8,6 +8,7 @@
 std::vector<Node> nodes;
 std::vector<Connection> connections;
 std::vector<WireType> wires;
+std::unordered_map<std::string, Node *> hashed_nodes;
 
 void printUsage()
 {
@@ -155,7 +156,9 @@ int main(int argc, char **argv)
     std::cout << wire.errorRate << std::endl;
   }
 
-  constructInitialGraph();
+  for(const Connection& connection : connections) {
+    std::cout << connection << std::endl;
+  }
 
   return 0;
 }

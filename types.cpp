@@ -43,6 +43,28 @@ Node::connect(Node& node, WireType& wire)
   node.nodeConnections.push_back(&connection);
 }
 
+bool clear_Flags()
+{
+    for(Node& node : nodes) {
+        node.clear_Flag();
+    }
+    return true;
+}
+
+bool add_node_to_hash(Node& node)
+{
+    hashed_nodes[node.name] = &node;
+    return true;
+}
+
+bool update_node_hash()
+{
+    for(Node& node : nodes) {
+        add_node_to_hash(node);
+    }
+    return true;
+}
+
 std::ostream&
 operator<<(std::ostream& out, const Node& node)
 {

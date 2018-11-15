@@ -27,7 +27,7 @@ public:
   double xLoc, yLoc;
   std::vector<Connection *> nodeConnections;
   std::string name;
-  bool flag;
+  bool flag; // Marks for traversal
   double sendRate; // packets per second
   double receiveRate; // packets per second
   double routeRate; // packets per second
@@ -37,11 +37,14 @@ public:
 
   void connect(Node& node, WireType& wire);
   void clear_Flag() { flag =false; }
-  
+
   friend std::ostream& operator<<(std::ostream& out, const Node& node);
 };
 
 Node& getNodeByName(std::string& name);
+bool clear_Flags();
+bool add_node_to_hash(Node& node);
+bool update_node_hash();
 
 class Connection {
 private:
@@ -60,25 +63,6 @@ public:
 extern std::vector<Node> nodes;
 extern std::vector<Connection> connections;
 extern std::vector<WireType> wires;
-extern unordered_map<string, Node*> hashed_nodes;
-bool clear_Flags()
-{
-    for(std::vector<T>::iterator it = nodes.begin(); it != nodes.end(); ++it)
-    {
-        it.clear_Flag();
-    }
-    return true;
-}
-bool add_node_to_hash(Node node)
-{
-    hashed_nodes[Node.name] = node*;
-    return true;
-}
-bool update_node_hash()
-{
-    for(std::vector<T>::iterator it = nodes.begin(); it != nodes.end(); ++it)
-    {
-        add_node_to_hash(it*);
-    }
-}
+extern std::unordered_map<std::string, Node *> hashed_nodes;
+
 #endif

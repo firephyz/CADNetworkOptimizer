@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 class WireType {
 public:
@@ -49,7 +50,7 @@ public:
 extern std::vector<Node> nodes;
 extern std::vector<Connection> connections;
 extern std::vector<WireType> wires;
-
+extern unordered_map<string, Node*> hashed_nodes;
 bool clear_Flags()
 {
     for(std::vector<T>::iterator it = nodes.begin(); it != nodes.end(); ++it)

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 class WireType {
 public:
@@ -26,6 +27,7 @@ public:
   double xLoc, yLoc;
   std::vector<Connection *> nodeConnections;
   std::string name;
+  bool flag;
   double sendRate; // packets per second
   double receiveRate; // packets per second
   double routeRate; // packets per second
@@ -34,7 +36,8 @@ public:
   Node(std::string& name, double send, double receive, double route, int queue);
 
   void connect(Node& node, WireType& wire);
-
+  void clear_Flag() { flag =false; }
+  
   friend std::ostream& operator<<(std::ostream& out, const Node& node);
 };
 
@@ -57,5 +60,25 @@ public:
 extern std::vector<Node> nodes;
 extern std::vector<Connection> connections;
 extern std::vector<WireType> wires;
-
+extern unordered_map<string, Node*> hashed_nodes;
+bool clear_Flags()
+{
+    for(std::vector<T>::iterator it = nodes.begin(); it != nodes.end(); ++it)
+    {
+        it.clear_Flag();
+    }
+    return true;
+}
+bool add_node_to_hash(Node node)
+{
+    hashed_nodes[Node.name] = node*;
+    return true;
+}
+bool update_node_hash()
+{
+    for(std::vector<T>::iterator it = nodes.begin(); it != nodes.end(); ++it)
+    {
+        add_node_to_hash(it*);
+    }
+}
 #endif

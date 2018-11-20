@@ -3,10 +3,13 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <cmath>
+#include <vector>
 
 /*
  * Node functions
  */
+std::vector<Node> dist_sort(Node home, std::vector<Node> list);
 
 int Node::nextID = 0;
 
@@ -74,6 +77,7 @@ bool Node::addToHash()
 
 bool update_node_hash()
 {
+    hashed_nodes.clear();
     for(Node& node : nodes) {
         node.addToHash();
     }
@@ -170,4 +174,59 @@ operator<<(std::ostream& out, const WireType& wire)
 {
   out << wire.typeName;
   return out;
+}
+
+//TRANSVERSAL FUNCTIONS
+
+double real_distance(Node a, Node b)
+{
+  return std::sqrt( (a.xLoc-b.xLoc)*(a.xLoc-b.xLoc) + (a.yLoc-b.yLoc)*(a.yLoc-b.yLoc));
+}
+double net_distance(Node a, Node b)// assumes network is complete
+{
+  a.flag=true;
+  std::vector<Node> list;
+  for(int con: a.connectionIndicies)
+  {
+    if(connections[con].a.id == a.id)
+    {
+      list.push_back(connections[con].b);
+    }
+    else
+    {
+      list.push_back(connections[con].a);
+    }
+  }
+  list = dist_sort(a,list);
+  Node::clearAllFlags();
+  return 0;
+}
+std::vector<Node> dist_sort(Node target, std::vector<Node> list)
+{
+  bool done = false;
+  int count;
+  double dist1;
+  double dist2;
+  Node temp = list[0];
+  while(!done)
+  {
+    done =true;
+    count = 0;
+    for(int i = 0; i < (int)list.size(); i++)
+    {
+      if(count > 0)
+      {
+        dist1 = real_distance(target,temp);
+        dist2 = real_distance(target,list[i]);
+        if(abs(dist2) < abs(dist1))
+        {
+          std::swap(list[i],list[i-1]);
+          done = false;
+        }
+      }
+      temp = list[i];
+      count++;
+    }
+  }
+  return list;
 }

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 
 /*
  * Node functions
@@ -43,7 +44,21 @@ Node::connect(Node& node, WireType& wire)
   node.connectionIndicies.push_back(connectionIndex);
 }
 
-bool clear_Flags()
+std::string
+Node::toXML()
+{
+  std::ostringstream result;
+  result << "<Node";
+  result << " name='" + name + '\'';
+  result << " sendRate='" << sendRate << "'";
+  result << " receiveRate='" << receiveRate << "'";
+  result << " routeRate='" << routeRate << "'";
+  result << " queueSize='" << queueSize << "'";
+  result << "/>";
+  return result.str();
+}
+
+bool Node::clearAllFlags()
 {
     for(Node& node : nodes) {
         node.clear_Flag();
@@ -51,16 +66,16 @@ bool clear_Flags()
     return true;
 }
 
-bool add_node_to_hash(Node& node)
+bool Node::addToHash()
 {
-    hashed_nodes[node.name] = &node;
+    hashed_nodes[name] = this;
     return true;
 }
 
 bool update_node_hash()
 {
     for(Node& node : nodes) {
-        add_node_to_hash(node);
+        node.addToHash();
     }
     return true;
 }
@@ -92,6 +107,18 @@ Connection::Connection(WireType& type, Node& a, Node& b)
   nextID++;
 }
 
+std::string
+Connection::toXML()
+{
+  std::ostringstream result;
+  result << "<Connection";
+  result << " wireType='" << type << "'";
+  result << " node1='" << a.name << "'";
+  result << " node='" << b.name << "'";
+  result << "/>";
+  return result.str();
+}
+
 std::ostream&
 operator<<(std::ostream& out, const Connection& connection)
 {
@@ -112,6 +139,19 @@ WireType::WireType(std::string& type, double cost, double bandwidth, double erro
   , bandwidth(bandwidth)
   , errorRate(errorRate)
 {}
+
+std::string
+WireType::toXML()
+{
+  std::ostringstream result;
+  result << "<Wire";
+  result << " type='" << typeName << "'";
+  result << " cost='" << cost << "'";
+  result << " bandwidth='" << bandwidth << "'";
+  result << " errorRate='" << errorRate << "'";
+  result << "/>";
+  return result.str();
+}
 
 WireType& getWireTypeByName(std::string& name)
 {

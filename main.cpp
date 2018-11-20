@@ -1,6 +1,7 @@
 #include "types.h"
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <libxml2/libxml/parser.h>
 
@@ -131,6 +132,46 @@ void readInputFile(char * fileName)
   }
 }
 
+std::string preferencesToXML() {
+  std::string result = "";
+  result += "<Preferences";
+  result += "/>";
+  return result;
+}
+
+std::string statsToXML() {
+  std::string result = "";
+  result += "<Statistics";
+  result += "/>";
+  return result;
+}
+
+void outputResults(char * fileName) {
+  std::ofstream file(fileName, std::ios_base::out);
+
+  file << "<NetworkDefinition>\n";
+  file << "\t<ListOfNodes>\n";
+  for(auto& node : nodes) {
+    file << "\t\t" << node.toXML() << std::endl;
+  }
+  file << "\t</ListOfNodes>\n";
+  file << "\t<WireTypess>\n";
+  for(auto& wire : wires) {
+    file << "\t\t" << wire.toXML() << std::endl;
+  }
+  file << "\t</WireTypes>\n";
+  file << "\t<ListOfConnections>\n";
+  for(auto& connection : connections) {
+    file << "\t\t" << connection.toXML() << std::endl;
+  }
+  file << "\t</ListOfConnections>\n";
+  file << "\t" << preferencesToXML() << std::endl;
+  file << "\t" << statsToXML() << std::endl;
+  file << "</NetworkDefinition>\n";
+
+  file.close();
+}
+
 void completeNetworkGraph()
 {
   // TODO
@@ -138,14 +179,15 @@ void completeNetworkGraph()
 
 int main(int argc, char **argv)
 {
-
-  if(argc != 2) {
+  if(argc != 3) {
     printUsage();
   }
 
   readInputFile(argv[1]);
 
   completeNetworkGraph();
+
+  outputResults(argv[2]);
 
   for(const Node& node : nodes) {
     std::cout << node << std::endl;

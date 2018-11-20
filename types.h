@@ -13,6 +13,8 @@ public:
 
   WireType(std::string& type, double cost, double bandwidth, double errorRate);
 
+  std::string toXML();
+
   friend std::ostream& operator<<(std::ostream& out, const WireType& wire);
 };
 
@@ -37,8 +39,13 @@ public:
 
   void connect(Node& node, WireType& wire);
   void clear_Flag() { flag =false; }
+  bool addToHash();
+  std::string toXML();
 
   friend std::ostream& operator<<(std::ostream& out, const Node& node);
+
+  // Statics
+  static bool clearAllFlags();
 };
 
 Node& getNodeByName(std::string& name);
@@ -56,6 +63,7 @@ public:
   Node& b;
 
   Connection(WireType& type, Node& a, Node& b);
+  std::string toXML();
 
   friend std::ostream& operator<<(std::ostream& out, const Connection& connection);
 };

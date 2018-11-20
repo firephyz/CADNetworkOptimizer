@@ -1,0 +1,21 @@
+<NetworkDefinition>
+	<ListOfNodes>
+		<Node name='node1' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node2' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node3' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node4' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node5' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+	</ListOfNodes>
+	<WireTypess>
+		<Wire type='type0' cost='1' bandwidth='10' errorRate='0'/>
+		<Wire type='type1' cost='5' bandwidth='70' errorRate='0'/>
+	</WireTypes>
+	<ListOfConnections>
+		<Connection wireType='type0' node1='node1' node='node2'/>
+		<Connection wireType='type0' node1='node2' node='node3'/>
+		<Connection wireType='type1' node1='node1' node='node4'/>
+		<Connection wireType='type1' node1='node4' node='node5'/>
+	</ListOfConnections>
+	<Preferences/>
+	<Statistics/>
+</NetworkDefinition>

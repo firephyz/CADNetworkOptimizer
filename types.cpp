@@ -10,7 +10,7 @@
  * Node functions
  */
 std::vector<Node> dist_sort(Node home, std::vector<Node> list);
-
+bool net_distance_deep(double &dist,Node current, Node target);
 int Node::nextID = 0;
 
 Node::Node(std::string& name,
@@ -193,7 +193,9 @@ double real_distance(Node a, Node b)
 double net_distance(Node a, Node b)// assumes network is complete
 {
   a.flag=true;
+  bool check;
   std::vector<Node> list;
+  double dist = 0;
   for(int con: a.connectionIndicies)
   {
     if(connections[con].a.id == a.id)
@@ -205,9 +207,57 @@ double net_distance(Node a, Node b)// assumes network is complete
       list.push_back(connections[con].a);
     }
   }
-  list = dist_sort(a,list);
-  Node::clearAllFlags();
+  list = dist_sort(b,list);
+  for(Node n: list)
+  {
+    if(!n.flag)
+    {
+      check = net_distance_deep(dist, n, b);
+      if(check)
+      {
+        Node::clearAllFlags();
+       return dist;
+      }
+    }
+  }
+
   return 0;
+}
+bool net_distance_deep(double & dist,Node current, Node target)
+{
+  if(current.id == target.id)
+  {
+    return true;
+  }
+  current.flag = true;
+  bool check;
+  std::vector<Node> list;
+  for(int con: current.connectionIndicies)
+  {
+    if(connections[con].a.id == current.id)
+    {
+      list.push_back(connections[con].b);
+    }
+    else
+    {
+      list.push_back(connections[con].a);
+    }
+  }
+  list = dist_sort(target,list);
+  for(Node n: list)
+  {
+    if (!n.flag)
+    {
+      check = net_distance_deep(dist, n, target);
+      if (check)
+      {
+        dist += real_distance(current,n);
+        return true;
+      }
+    }
+
+  }
+  return false;
 }
 std::vector<Node> dist_sort(Node target, std::vector<Node> list)
 {

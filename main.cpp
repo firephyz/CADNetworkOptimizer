@@ -146,6 +146,7 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
 
   completeNetworkGraph();
+ // nodes = dist_sort( nodes[0],nodes);
 
   for(const Node& node : nodes) {
     std::cout << node << std::endl;

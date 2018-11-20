@@ -35,7 +35,7 @@ public:
   double routeRate; // packets per second
   int queueSize;
 
-  Node(std::string& name, double send, double receive, double route, int queue);
+  Node(std::string& name, double xLoc, double yLoc, double send, double receive, double route, int queue);
 
   void connect(Node& node, WireType& wire);
   void clear_Flag() { flag =false; }

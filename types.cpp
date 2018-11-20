@@ -13,9 +13,15 @@ std::vector<Node> dist_sort(Node home, std::vector<Node> list);
 
 int Node::nextID = 0;
 
-Node::Node(std::string& name, double send, double receive, double route, int queue)
-  : xLoc(0.0)
-  , yLoc(0.0)
+Node::Node(std::string& name,
+           double xLoc,
+           double yLoc,
+           double send,
+           double receive,
+           double route,
+           int queue)
+  : xLoc(xLoc)
+  , yLoc(yLoc)
   , name(name)
   , sendRate(send)
   , receiveRate(receive)
@@ -53,6 +59,8 @@ Node::toXML()
   std::ostringstream result;
   result << "<Node";
   result << " name='" + name + '\'';
+  result << " x='" << xLoc << "'";
+  result << " y='" << yLoc << "'";
   result << " sendRate='" << sendRate << "'";
   result << " receiveRate='" << receiveRate << "'";
   result << " routeRate='" << routeRate << "'";

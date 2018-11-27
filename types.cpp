@@ -5,12 +5,12 @@
 #include <sstream>
 #include <cmath>
 #include <vector>
+#include <functional>
 
 /*
  * Node functions
  */
-std::vector<Node> dist_sort(Node home, std::vector<Node> list);
-bool net_distance_deep(double &dist,Node current, Node target);
+
 int Node::nextID = 0;
 
 Node::Node(std::string& name,
@@ -186,15 +186,15 @@ operator<<(std::ostream& out, const WireType& wire)
 
 //TRANSVERSAL FUNCTIONS
 
-double real_distance(Node a, Node b)
+double real_distance(Node& a, Node& b)
 {
   return std::sqrt( (a.xLoc-b.xLoc)*(a.xLoc-b.xLoc) + (a.yLoc-b.yLoc)*(a.yLoc-b.yLoc));
 }
-double net_distance(Node a, Node b)// assumes network is complete
+double net_distance(Node& a, Node& b)// assumes network is complete
 {
   a.flag=true;
   bool check;
-  std::vector<Node> list;
+  std::vector<std::reference_wrapper<Node>> list;
   double dist = 0;
   for(int con: a.connectionIndicies)
   {
@@ -223,7 +223,7 @@ double net_distance(Node a, Node b)// assumes network is complete
 
   return 0;
 }
-bool net_distance_deep(double & dist,Node current, Node target)
+bool net_distance_deep(double & dist,Node &current, Node &target)
 {
   if(current.id == target.id)
   {
@@ -231,7 +231,7 @@ bool net_distance_deep(double & dist,Node current, Node target)
   }
   current.flag = true;
   bool check;
-  std::vector<Node> list;
+  std::vector<std::reference_wrapper<Node>> list;
   for(int con: current.connectionIndicies)
   {
     if(connections[con].a.id == current.id)
@@ -259,7 +259,8 @@ bool net_distance_deep(double & dist,Node current, Node target)
   }
   return false;
 }
-std::vector<Node> dist_sort(Node target, std::vector<Node> list)
+//replacing the vectors of nodes with lists of node&
+std::vector<std::reference_wrapper<Node>> dist_sort(Node& target, std::vector<std::reference_wrapper<Node>>  list)
 {
   bool done = false;
   int count;

@@ -188,8 +188,8 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
 
   completeNetworkGraph();
- // nodes = dist_sort( nodes[0],nodes);
-
+  double dist = net_distance(nodes[1] ,nodes[4]);
+  std::cout << dist << std::endl;
   outputResults(argv[2]);
 
   for(const Node& node : nodes) {

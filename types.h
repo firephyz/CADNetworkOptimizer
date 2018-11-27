@@ -73,4 +73,7 @@ extern std::vector<Connection> connections;
 extern std::vector<WireType> wires;
 extern std::unordered_map<std::string, Node *> hashed_nodes;
 
+std::vector<std::reference_wrapper<Node>> dist_sort(Node& target, std::vector<std::reference_wrapper<Node>>  list);
+bool net_distance_deep(double &dist,Node & current, Node & target);
+double net_distance(Node & a, Node & b);
 #endif

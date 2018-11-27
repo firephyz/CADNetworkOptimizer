@@ -3,12 +3,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 #include <libxml2/libxml/parser.h>
 
 // Populated by input file
 std::vector<Node> nodes;
 std::vector<Connection> connections;
-std::vector<WireType> wires;
+std::vector<WireType> wires; // sorted by cost
 std::unordered_map<std::string, Node *> hashed_nodes;
 
 void printUsage()
@@ -71,6 +72,9 @@ void parseWireTypes(xmlNodePtr node)
 
     child = xmlNextElementSibling(child);
   }
+
+  // Sort wires by cost
+  std::sort(wires.begin(), wires.end());
 }
 
 void parseListOfConnections(xmlNodePtr node)
@@ -88,7 +92,7 @@ void parseListOfConnections(xmlNodePtr node)
 
     Node& node1 = getNodeByName(node1Name);
     Node& node2 = getNodeByName(node2Name);
-    WireType& wire = getWireTypeByName(type);
+    WireType& wire = getWireTypeByName(type.c_str());
 
     // Automatically updates external records like 'connections'
     node1.connect(node2, wire);
@@ -174,8 +178,8 @@ void outputResults(char * fileName) {
   file.close();
 }
 
-bool
-routePresent(Node& nodeA, Node& nodeB)
+int
+num_jumps(Node& nodeA, Node& nodeB)
 {
 
   return false;
@@ -203,7 +207,7 @@ findNetworkGroups()
       if(group.empty()) {
         group.push_back(node);
       }
-      else if(routePresent(*node, *group[0])) {
+      else if(num_jumps(*node, *group[0]) != -1) {
         group.push_back(node);
       }
       else {
@@ -216,10 +220,30 @@ findNetworkGroups()
   return std::move(groups);
 }
 
+// TODO Add more decision heuristics other than minimum average distance to other nodes.
+// Take into account node characteristics for example. A midnode that has a low routing
+// speed will make communication between initial groups very poor.
 Node *
 findGroupMidNode(std::vector<Node *> group)
 {
-  return NULL;
+  double lowestDistance = DBL_MAX;
+  Node * bestNode = NULL;
+
+  for(auto& node : group) {
+    double averageDistance = 0;
+    for(auto& target : group) {
+      if(node == target) continue;
+      int distance = num_jumps(*node, *target);
+      averageDistance += distance / (group.size() - 1);
+    }
+
+    if(averageDistance < lowestDistance) {
+      lowestDistance = averageDistance;
+      bestNode = node;
+    }
+  }
+
+  return bestNode;
 }
 
 void completeNetworkGraph()
@@ -228,6 +252,19 @@ void completeNetworkGraph()
   std::vector<Node *> midNodes;
   for(auto& group : groups) {
     midNodes.push_back(findGroupMidNode(group));
+  }
+
+  if(midNodes.size() == 1) return;
+
+  // TODO improve initial connection.
+  WireType& wire = wires[0];
+  for(uint i = 0; i < midNodes.size() - 1; ++i) {
+    if(i == midNodes.size() - 1) {
+      midNodes[i]->connect(*midNodes[0], wire);
+    }
+    else {
+      midNodes[i]->connect(*midNodes[i + 1], wire);
+    }
   }
 }
 

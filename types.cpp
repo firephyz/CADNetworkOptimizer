@@ -104,6 +104,12 @@ operator<<(std::ostream& out, const Node& node)
   return out;
 }
 
+bool
+operator<(const WireType& wire1, const WireType& wire2)
+{
+  return wire1.cost < wire2.cost;
+}
+
 /*
  * Connection functions
  */
@@ -165,7 +171,7 @@ WireType::toXML()
   return result.str();
 }
 
-WireType& getWireTypeByName(std::string& name)
+WireType& getWireTypeByName(const char * name)
 {
   for(WireType& wire : wires) {
     if(wire.typeName == name) {

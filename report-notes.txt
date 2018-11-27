@@ -1,2 +1,3 @@
 send-receive node biasing for simulation
-not simulating packet protocol, 
+not simulating packet protocol
+How do initial network completions affect the tool's and network's performance?

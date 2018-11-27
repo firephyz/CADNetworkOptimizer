@@ -16,9 +16,10 @@ public:
   std::string toXML();
 
   friend std::ostream& operator<<(std::ostream& out, const WireType& wire);
+  friend bool operator<(const WireType& wire1, const WireType& wire2);
 };
 
-WireType& getWireTypeByName(std::string& name);
+WireType& getWireTypeByName(const char * name);
 
 class Connection;
 

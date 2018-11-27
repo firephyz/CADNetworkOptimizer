@@ -182,12 +182,8 @@ void outputResults(char * fileName) {
   file.close();
 }
 
-<<<<<<< HEAD
 int
-num_jumps(Node& nodeA, Node& nodeB)
-=======
-int num_jumps(Node& a, Node& b)
->>>>>>> 056bbf9ec200536a918b5c34a32534553e409aa2
+num_jumps(Node& a, Node& b)
 {
   a.flag=true;
   bool check;

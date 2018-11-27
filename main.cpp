@@ -5,12 +5,16 @@
 #include <string>
 #include <algorithm>
 #include <libxml2/libxml/parser.h>
+#include <vector>
+#include <functional>
 
 // Populated by input file
 std::vector<Node> nodes;
 std::vector<Connection> connections;
 std::vector<WireType> wires; // sorted by cost
 std::unordered_map<std::string, Node *> hashed_nodes;
+int num_jumps(Node& a, Node& b);
+bool num_jumps_deep(int & dist,Node &current, Node &target);
 
 void printUsage()
 {
@@ -178,13 +182,83 @@ void outputResults(char * fileName) {
   file.close();
 }
 
+<<<<<<< HEAD
 int
 num_jumps(Node& nodeA, Node& nodeB)
+=======
+int num_jumps(Node& a, Node& b)
+>>>>>>> 056bbf9ec200536a918b5c34a32534553e409aa2
 {
+  a.flag=true;
+  bool check;
+  std::vector<std::reference_wrapper<Node>> list;
+  int dist = 0;
+  if(a.id == b.id)
+  {
+    return 0;
+  }
+  for(int con: a.connectionIndicies)
+  {
+    if(connections[con].a.id == a.id)
+    {
+      list.push_back(connections[con].b);
+    }
+    else
+    {
+      list.push_back(connections[con].a);
+    }
+  }
+  list = dist_sort(b,list);
+  for(Node n: list)
+  {
+    if(!n.flag)
+    {
+      check = num_jumps_deep(dist, n, b);
+      if(check)
+      {
+        Node::clearAllFlags();
+        return dist + 1;
+      }
+    }
+  }
+  return -1;
+}
+bool num_jumps_deep(int & dist,Node &current, Node &target)
+{
+  if(current.id == target.id)
+  {
+    return true;
+  }
+  current.flag = true;
+  bool check;
+  std::vector<std::reference_wrapper<Node>> list;
+  for(int con: current.connectionIndicies)
+  {
+    if(connections[con].a.id == current.id)
+    {
+      list.push_back(connections[con].b);
+    }
+    else
+    {
+      list.push_back(connections[con].a);
+    }
+  }
+  list = dist_sort(target,list);
+  for(Node n: list)
+  {
+    if (!n.flag)
+    {
+      check = num_jumps_deep(dist, n, target);
+      if (check)
+      {
+        dist += 1;
+        return true;
+      }
+    }
 
+  }
   return false;
 }
-
 std::vector<std::vector<Node *>>
 findNetworkGroups()
 {

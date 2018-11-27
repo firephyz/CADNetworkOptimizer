@@ -49,8 +49,6 @@ public:
 };
 
 Node& getNodeByName(std::string& name);
-bool clear_Flags();
-bool add_node_to_hash(Node& node);
 bool update_node_hash();
 
 class Connection {

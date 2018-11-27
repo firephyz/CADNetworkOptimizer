@@ -1,0 +1,2 @@
+send-receive node biasing for simulation
+not simulating packet protocol, 

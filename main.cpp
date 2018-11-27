@@ -174,9 +174,61 @@ void outputResults(char * fileName) {
   file.close();
 }
 
+bool
+routePresent(Node& nodeA, Node& nodeB)
+{
+
+  return false;
+}
+
+std::vector<std::vector<Node *>>
+findNetworkGroups()
+{
+  std::vector<std::vector<Node *>> groups;
+  std::vector<Node *> nodesToBeGrouped;
+
+  for(auto& node : nodes) {
+    nodesToBeGrouped.push_back(&node);
+  }
+
+  while(!nodesToBeGrouped.empty()) {
+    std::vector<Node *> currentNodes;
+    for(int i = nodesToBeGrouped.size() - 1; i >= 0; --i) {
+      currentNodes.push_back(nodesToBeGrouped[i]);
+      nodesToBeGrouped.pop_back();
+    }
+    
+    std::vector<Node *> group;
+    for(auto node : currentNodes) {
+      if(group.empty()) {
+        group.push_back(node);
+      }
+      else if(routePresent(*node, *group[0])) {
+        group.push_back(node);
+      }
+      else {
+        nodesToBeGrouped.push_back(node);
+      }
+    }
+    groups.push_back(std::move(group));
+  }
+
+  return std::move(groups);
+}
+
+Node *
+findGroupMidNode(std::vector<Node *> group)
+{
+  return NULL;
+}
+
 void completeNetworkGraph()
 {
-  // TODO
+  std::vector<std::vector<Node*>> groups = findNetworkGroups();
+  std::vector<Node *> midNodes;
+  for(auto& group : groups) {
+    midNodes.push_back(findGroupMidNode(group));
+  }
 }
 
 int main(int argc, char **argv)

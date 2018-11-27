@@ -196,6 +196,10 @@ double net_distance(Node& a, Node& b)// assumes network is complete
   bool check;
   std::vector<std::reference_wrapper<Node>> list;
   double dist = 0;
+  if(a.id == b.id)
+  {
+    return 0;
+  }
   for(int con: a.connectionIndicies)
   {
     if(connections[con].a.id == a.id)

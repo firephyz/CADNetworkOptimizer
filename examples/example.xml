@@ -2,10 +2,10 @@
   <ListOfNodes>
     <!-- rates are packets per second -->
     <Node name='node1' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node2' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node3' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node4' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node5' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node2' x='6.0' y='1.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node3' x='11.0' y='13.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node4' x='2.0' y='2.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node5' x='5.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
   </ListOfNodes>
   <WireTypes>
     <!-- cost is per meter. bandwidth is in packets per second. errorRate is percent

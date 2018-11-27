@@ -216,7 +216,7 @@ double net_distance(Node& a, Node& b)// assumes network is complete
       if(check)
       {
         Node::clearAllFlags();
-       return dist;
+       return dist + real_distance(a,b);
       }
     }
   }

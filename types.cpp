@@ -249,7 +249,7 @@ bool net_distance_deep(double & dist,Node &current, Node &target)
     {
       list.push_back(connections[con].b);
     }
-    else if (connections[con].a.flag == false)
+    else if (connections[con].b.id == current.id && connections[con].a.flag == false)
     {
       list.push_back(connections[con].a);
     }

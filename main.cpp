@@ -17,6 +17,8 @@ int num_jumps(Node& a, Node& b);
 bool num_jumps_deep(int & dist,Node &current, Node &target);
 int num_jumps_breadth(Node& a, Node& b);
 bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target);
+std::vector<int> connection_jumps(Node& a, Node& b);
+bool connection_jumps_deep(std::vector<int> & outlist,Node &current, Node &target);
 
 
 void printUsage()
@@ -185,8 +187,7 @@ void outputResults(char * fileName) {
   file.close();
 }
 
-int
-num_jumps(Node& a, Node& b)
+int num_jumps(Node& a, Node& b)
 {
   a.flag=true;
   bool check;
@@ -251,6 +252,99 @@ bool num_jumps_deep(int & dist,Node &current, Node &target)
       if (check)
       {
         dist += 1;
+        return true;
+      }
+    }
+
+  }
+  return false;
+}
+std::vector<int> connection_jumps(Node& a, Node& b)
+{
+  a.flag=true;
+  bool check;
+  std::vector<std::reference_wrapper<Node>> list;
+  std::vector<int> outlist;
+  if(a.id == b.id)
+  {
+    return outlist;
+  }
+  for(int con: a.connectionIndicies)
+  {
+    if(connections[con].a.id == a.id)
+    {
+      list.push_back(connections[con].b);
+    }
+    else
+    {
+      list.push_back(connections[con].a);
+    }
+  }
+  dist_sort(b,list);
+  for(Node & n: list)
+  {
+    if(!n.flag)
+    {
+      check = connection_jumps_deep(outlist, n, b);
+      if(check)
+      {
+        for(int  con: n.connectionIndicies)
+        {
+          if( connections[con].a.id == a.id && connections[con].b.id == n.id )
+          {
+            outlist.push_back(con);
+          }
+          else if( connections[con].b.id == a.id && connections[con].a.id == n.id)
+          {
+            outlist.push_back(con);
+          }
+        }
+        Node::clearAllFlags();
+        return outlist;
+      }
+    }
+  }
+  return outlist;
+}
+bool connection_jumps_deep(std::vector<int> & outlist, Node &current, Node &target)
+{
+  if(current.id == target.id)
+  {
+    return true;
+  }
+  current.flag = true;
+  bool check;
+  std::vector<std::reference_wrapper<Node>> list;
+  for(int con: current.connectionIndicies)
+  {
+    if(connections[con].a.id == current.id && connections[con].b.flag == false)
+    {
+      list.push_back(connections[con].b);
+    }
+    else if(connections[con].b.id == current.id && connections[con].a.flag == false)
+    {
+      list.push_back(connections[con].a);
+    }
+  }
+  dist_sort(target,list);
+  for(Node & n: list)
+  {
+    if (!n.flag)
+    {
+      check = connection_jumps_deep(outlist, n, target);
+      if (check)
+      {
+        for(int  con: current.connectionIndicies)
+        {
+          if( connections[con].a.id == current.id && connections[con].b.id == n.id )
+          {
+            outlist.push_back(con);
+          }
+          else if( connections[con].b.id == current.id && connections[con].a.id == n.id)
+          {
+            outlist.push_back(con);
+          }
+        }
         return true;
       }
     }
@@ -411,8 +505,9 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
 
   completeNetworkGraph();
-  int dist = num_jumps_breadth(nodes[0],nodes[3]);
+  int dist = num_jumps_breadth(nodes[0],nodes[4]);
   std::cout << dist << std::endl;
+  std::cout << connection_jumps(nodes[0],nodes[4]).size() << std::endl;
   outputResults(argv[2]);
 
   for(const Node& node : nodes) {

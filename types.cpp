@@ -219,7 +219,7 @@ double net_distance(Node& a, Node& b)// assumes network is complete
     }
   }
   dist_sort(b,list);
-  for(Node n: list)
+  for(Node & n: list)
   {
     if(!n.flag)
     {
@@ -255,7 +255,7 @@ bool net_distance_deep(double & dist,Node &current, Node &target)
     }
   }
   dist_sort(target,list);
-  for(Node n: list)
+  for(Node & n: list)
   {
     if (!n.flag)
     {
@@ -277,6 +277,10 @@ void dist_sort(Node& target, std::vector<std::reference_wrapper<Node>> & list)
   int count;
   double dist1;
   double dist2;
+  if(list.empty())
+  {
+    return;
+  }
   Node temp = list[0];
   while(!done)
   {

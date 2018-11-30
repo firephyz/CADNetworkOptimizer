@@ -205,7 +205,7 @@ num_jumps(Node& a, Node& b)
     }
   }
   dist_sort(b,list);
-  for(Node n: list)
+  for(Node & n: list)
   {
     if(!n.flag)
     {
@@ -240,7 +240,7 @@ bool num_jumps_deep(int & dist,Node &current, Node &target)
     }
   }
   dist_sort(target,list);
-  for(Node n: list)
+  for(Node & n: list)
   {
     if (!n.flag)
     {

@@ -204,7 +204,7 @@ num_jumps(Node& a, Node& b)
       list.push_back(connections[con].a);
     }
   }
-  list = dist_sort(b,list);
+  dist_sort(b,list);
   for(Node n: list)
   {
     if(!n.flag)
@@ -230,16 +230,16 @@ bool num_jumps_deep(int & dist,Node &current, Node &target)
   std::vector<std::reference_wrapper<Node>> list;
   for(int con: current.connectionIndicies)
   {
-    if(connections[con].a.id == current.id)
+    if(connections[con].a.id == current.id && connections[con].b.flag == false)
     {
       list.push_back(connections[con].b);
     }
-    else
+    else if(connections[con].a.flag == false)
     {
       list.push_back(connections[con].a);
     }
   }
-  list = dist_sort(target,list);
+  dist_sort(target,list);
   for(Node n: list)
   {
     if (!n.flag)

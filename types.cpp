@@ -23,6 +23,7 @@ Node::Node(std::string& name,
   : xLoc(xLoc)
   , yLoc(yLoc)
   , name(name)
+  , flag(false)
   , sendRate(send)
   , receiveRate(receive)
   , routeRate(route)
@@ -217,7 +218,7 @@ double net_distance(Node& a, Node& b)// assumes network is complete
       list.push_back(connections[con].a);
     }
   }
-  list = dist_sort(b,list);
+  dist_sort(b,list);
   for(Node n: list)
   {
     if(!n.flag)
@@ -244,16 +245,16 @@ bool net_distance_deep(double & dist,Node &current, Node &target)
   std::vector<std::reference_wrapper<Node>> list;
   for(int con: current.connectionIndicies)
   {
-    if(connections[con].a.id == current.id)
+    if(connections[con].a.id == current.id && connections[con].b.flag == false)
     {
       list.push_back(connections[con].b);
     }
-    else
+    else if (connections[con].a.flag == false)
     {
       list.push_back(connections[con].a);
     }
   }
-  list = dist_sort(target,list);
+  dist_sort(target,list);
   for(Node n: list)
   {
     if (!n.flag)
@@ -270,7 +271,7 @@ bool net_distance_deep(double & dist,Node &current, Node &target)
   return false;
 }
 //replacing the vectors of nodes with lists of node&
-std::vector<std::reference_wrapper<Node>> dist_sort(Node& target, std::vector<std::reference_wrapper<Node>>  list)
+void dist_sort(Node& target, std::vector<std::reference_wrapper<Node>> & list)
 {
   bool done = false;
   int count;
@@ -297,5 +298,5 @@ std::vector<std::reference_wrapper<Node>> dist_sort(Node& target, std::vector<st
       count++;
     }
   }
-  return list;
+  //return list;
 }

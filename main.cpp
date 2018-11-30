@@ -15,6 +15,9 @@ std::vector<WireType> wires; // sorted by cost
 std::unordered_map<std::string, Node *> hashed_nodes;
 int num_jumps(Node& a, Node& b);
 bool num_jumps_deep(int & dist,Node &current, Node &target);
+int num_jumps_breath(Node& a, Node& b);
+bool num_jumps_breath_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target);
+
 
 void printUsage()
 {
@@ -255,6 +258,67 @@ bool num_jumps_deep(int & dist,Node &current, Node &target)
   }
   return false;
 }
+int num_jumps_breath(Node& a, Node& b) //returns the minimum number of jumps neccessary between 2 nodes
+{
+  a.flag=true;
+  bool check;
+  std::vector<std::reference_wrapper<Node>> list;
+  int dist = 1;
+  if(a.id == b.id)
+  {
+    return 0;
+  }
+  for(int con: a.connectionIndicies)
+  {
+    if(connections[con].a.id == a.id)
+    {
+      list.push_back(connections[con].b);
+    }
+    else
+    {
+      list.push_back(connections[con].a);
+    }
+  }
+  int levelEnd =list.size();
+  for(int i = 0; i < (int)list.size(); i++)
+  {
+    if(i > levelEnd)
+    {
+      levelEnd = list.size();
+      dist++;
+    }
+    if(!list[i].get().flag)
+    {
+      check = num_jumps_breath_deep(list,list[i],b);
+      if(check)
+      {
+        Node::clearAllFlags();
+        return dist;
+      }
+    }
+  }
+  return -1;
+}
+bool num_jumps_breath_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target)
+{
+  if(current.id == target.id)
+  {
+    return true;
+  }
+  current.flag = true;
+  for(int con: current.connectionIndicies)
+  {
+    if(connections[con].a.id == current.id && connections[con].b.flag == false)
+    {
+      list.push_back(connections[con].b);
+    }
+    else if(connections[con].b.id == current.id && connections[con].a.flag == false)
+    {
+      list.push_back(connections[con].a);
+    }
+  }
+  return false;
+}
 std::vector<std::vector<Node *>>
 findNetworkGroups()
 {
@@ -347,7 +411,7 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
 
   completeNetworkGraph();
-  double dist = net_distance(nodes[0] ,nodes[1]);
+  int dist = num_jumps_breath(nodes[0],nodes[3]);
   std::cout << dist << std::endl;
   outputResults(argv[2]);
 

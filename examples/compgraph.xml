@@ -2,10 +2,14 @@
   <ListOfNodes>
     <!-- rates are packets per second -->
     <Node name='node1' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node2' x='6.0' y='1.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node3' x='11.0' y='13.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node4' x='2.0' y='2.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node5' x='5.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node2' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node3' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node4' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node5' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node6' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node7' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node8' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node9' x='0.0' y='0.0' sendRate='0.0' receiveRate='0.0' routeRate='0.0' queueSize='0'/>
   </ListOfNodes>
   <WireTypes>
     <!-- cost is per meter. bandwidth is in packets per second. errorRate is percent
@@ -15,9 +19,12 @@
   </WireTypes>
   <ListOfConnections>
     <Connection wireType='type0' node1='node1' node2='node2'/>
-    <Connection wireType='type0' node1='node2' node2='node3'/>
-    <Connection wireType='type1' node1='node1' node2='node4'/>
-    <Connection wireType='type1' node1='node4' node2='node5'/>
+    <Connection wireType='type0' node1='node3' node2='node4'/>
+    <Connection wireType='type0' node1='node4' node2='node5'/>
+    <Connection wireType='type0' node1='node6' node2='node7'/>
+    <Connection wireType='type0' node1='node7' node2='node8'/>
+    <Connection wireType='type0' node1='node8' node2='node9'/>
+    <Connection wireType='type0' node1='node9' node2='node7'/>
   </ListOfConnections>
 
   <!-- Note for remaining sections: Throughput is derived concept from latency, packetLoss,

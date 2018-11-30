@@ -15,8 +15,8 @@ std::vector<WireType> wires; // sorted by cost
 std::unordered_map<std::string, Node *> hashed_nodes;
 int num_jumps(Node& a, Node& b);
 bool num_jumps_deep(int & dist,Node &current, Node &target);
-int num_jumps_bredth(Node& a, Node& b);
-bool num_jumps_bredth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target);
+int num_jumps_breadth(Node& a, Node& b);
+bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target);
 
 
 void printUsage()
@@ -258,7 +258,7 @@ bool num_jumps_deep(int & dist,Node &current, Node &target)
   }
   return false;
 }
-int num_jumps_bredth(Node& a, Node& b) //returns the minimum number of jumps neccessary between 2 nodes
+int num_jumps_breadth(Node& a, Node& b) //returns the minimum number of jumps neccessary between 2 nodes
 {
   a.flag=true;
   bool check;
@@ -289,7 +289,7 @@ int num_jumps_bredth(Node& a, Node& b) //returns the minimum number of jumps nec
     }
     if(!list[i].get().flag)
     {
-      check = num_jumps_bredth_deep(list,list[i],b);
+      check = num_jumps_breadth_deep(list,list[i],b);
       if(check)
       {
         Node::clearAllFlags();
@@ -299,7 +299,7 @@ int num_jumps_bredth(Node& a, Node& b) //returns the minimum number of jumps nec
   }
   return -1;
 }
-bool num_jumps_bredth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target)
+bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target)
 {
   if(current.id == target.id)
   {
@@ -411,7 +411,7 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
 
   completeNetworkGraph();
-  int dist = num_jumps_bredth(nodes[0],nodes[3]);
+  int dist = num_jumps_breadth(nodes[0],nodes[3]);
   std::cout << dist << std::endl;
   outputResults(argv[2]);
 

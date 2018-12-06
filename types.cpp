@@ -219,7 +219,7 @@ double net_distance(Node& a, Node& b)// assumes network is complete
     }
   }
   dist_sort(b,list);
-  for(Node n: list)
+  for(Node & n: list)
   {
     if(!n.flag)
     {
@@ -249,13 +249,13 @@ bool net_distance_deep(double & dist,Node &current, Node &target)
     {
       list.push_back(connections[con].b);
     }
-    else if (connections[con].a.flag == false)
+    else if (connections[con].b.id == current.id && connections[con].a.flag == false)
     {
       list.push_back(connections[con].a);
     }
   }
   dist_sort(target,list);
-  for(Node n: list)
+  for(Node & n: list)
   {
     if (!n.flag)
     {

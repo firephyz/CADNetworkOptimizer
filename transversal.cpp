@@ -1,0 +1,286 @@
+#include "types.h"
+#include "transversal.h"
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <functional>
+
+int num_jumps(Node& a, Node& b)
+{
+    a.flag=true;
+    bool check;
+    std::vector<std::reference_wrapper<Node>> list;
+    int dist = 0;
+    if(a.id == b.id)
+    {
+        return 0;
+    }
+    for(int con: a.connectionIndicies)
+    {
+        if(connections[con].a.id == a.id)
+        {
+            list.push_back(connections[con].b);
+        }
+        else
+        {
+            list.push_back(connections[con].a);
+        }
+    }
+    dist_sort(b,list);
+    for(Node & n: list)
+    {
+        if(!n.flag)
+        {
+            check = num_jumps_deep(dist, n, b);
+            if(check)
+            {
+                Node::clearAllFlags();
+                return dist + 1;
+            }
+        }
+    }
+    return -1;
+}
+bool num_jumps_deep(int & dist,Node &current, Node &target)
+{
+    if(current.id == target.id)
+    {
+        return true;
+    }
+    current.flag = true;
+    bool check;
+    std::vector<std::reference_wrapper<Node>> list;
+    for(int con: current.connectionIndicies)
+    {
+        if(connections[con].a.id == current.id && connections[con].b.flag == false)
+        {
+            list.push_back(connections[con].b);
+        }
+        else if(connections[con].b.id == current.id && connections[con].a.flag == false)
+        {
+            list.push_back(connections[con].a);
+        }
+    }
+    dist_sort(target,list);
+    for(Node & n: list)
+    {
+        if (!n.flag)
+        {
+            check = num_jumps_deep(dist, n, target);
+            if (check)
+            {
+                dist += 1;
+                return true;
+            }
+        }
+
+    }
+    return false;
+}
+std::vector<int> connection_jumps(Node& a, Node& b)
+{
+    a.flag=true;
+    bool check;
+    std::vector<std::reference_wrapper<Node>> list;
+    std::vector<int> outlist;
+    if(a.id == b.id)
+    {
+        return outlist;
+    }
+    for(int con: a.connectionIndicies)
+    {
+        if(connections[con].a.id == a.id)
+        {
+            list.push_back(connections[con].b);
+        }
+        else
+        {
+            list.push_back(connections[con].a);
+        }
+    }
+    dist_sort(b,list);
+    for(Node & n: list)
+    {
+        if(!n.flag)
+        {
+            check = connection_jumps_deep(outlist, n, b);
+            if(check)
+            {
+                for(int  con: n.connectionIndicies)
+                {
+                    if( connections[con].a.id == a.id && connections[con].b.id == n.id )
+                    {
+                        outlist.push_back(con);
+                    }
+                    else if( connections[con].b.id == a.id && connections[con].a.id == n.id)
+                    {
+                        outlist.push_back(con);
+                    }
+                }
+                Node::clearAllFlags();
+                return outlist;
+            }
+        }
+    }
+    return outlist;
+}
+bool connection_jumps_deep(std::vector<int> & outlist, Node &current, Node &target)
+{
+    if(current.id == target.id)
+    {
+        return true;
+    }
+    current.flag = true;
+    bool check;
+    std::vector<std::reference_wrapper<Node>> list;
+    for(int con: current.connectionIndicies)
+    {
+        if(connections[con].a.id == current.id && connections[con].b.flag == false)
+        {
+            list.push_back(connections[con].b);
+        }
+        else if(connections[con].b.id == current.id && connections[con].a.flag == false)
+        {
+            list.push_back(connections[con].a);
+        }
+    }
+    dist_sort(target,list);
+    for(Node & n: list)
+    {
+        if (!n.flag)
+        {
+            check = connection_jumps_deep(outlist, n, target);
+            if (check)
+            {
+                for(int  con: current.connectionIndicies)
+                {
+                    if( connections[con].a.id == current.id && connections[con].b.id == n.id )
+                    {
+                        outlist.push_back(con);
+                    }
+                    else if( connections[con].b.id == current.id && connections[con].a.id == n.id)
+                    {
+                        outlist.push_back(con);
+                    }
+                }
+                return true;
+            }
+        }
+
+    }
+    return false;
+}
+int num_jumps_breadth(Node& a, Node& b) //returns the minimum number of jumps neccessary between 2 nodes
+{
+    a.flag=true;
+    bool check;
+    std::vector<std::reference_wrapper<Node>> list;
+    int dist = 1;
+    if(a.id == b.id)
+    {
+        return 0;
+    }
+    for(int con: a.connectionIndicies)
+    {
+        if(connections[con].a.id == a.id)
+        {
+            list.push_back(connections[con].b);
+        }
+        else
+        {
+            list.push_back(connections[con].a);
+        }
+    }
+    int levelEnd =list.size();
+    for(int i = 0; i < (int)list.size(); i++)
+    {
+        if(i > levelEnd)
+        {
+            levelEnd = list.size();
+            dist++;
+        }
+        if(!list[i].get().flag)
+        {
+            check = num_jumps_breadth_deep(list,list[i],b);
+            if(check)
+            {
+                Node::clearAllFlags();
+                return dist;
+            }
+        }
+    }
+    return -1;
+}
+bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target)
+{
+    if(current.id == target.id)
+    {
+        return true;
+    }
+    current.flag = true;
+    for(int con: current.connectionIndicies)
+    {
+        if(connections[con].a.id == current.id && connections[con].b.flag == false)
+        {
+            list.push_back(connections[con].b);
+        }
+        else if(connections[con].b.id == current.id && connections[con].a.flag == false)
+        {
+            list.push_back(connections[con].a);
+        }
+    }
+    return false;
+}
+std::vector<std::reference_wrapper<Node>> connection_jumps_path(Node& a, Node& b)
+{
+    //a.flag=true;
+    //bool check;
+    std::vector<std::vector<std::reference_wrapper<Node>>> queue;
+    std::vector<std::reference_wrapper<Node>> temp;
+    temp.push_back(a);
+    queue.push_back(temp);
+    for(int i = 0; i < (int)queue.size();i++)
+    {
+        queue[i].back().get().flag = true;
+        if(queue[i].back().get().id == b.id)
+        {
+            Node::clearAllFlags();
+            return queue[i];
+        }
+        for(int con: queue[i].back().get().connectionIndicies)
+        {
+            temp = queue[i];
+            if(connections[con].a.id == queue[i].back().get().id && connections[con].b.flag == false)
+            {
+                temp.push_back(connections[con].b);
+            }
+            else if(connections[con].b.id == queue[i].back().get().id && connections[con].a.flag == false)
+            {
+                temp.push_back(connections[con].a);
+            }
+            queue.push_back(temp);
+        }
+    }
+    std::vector<std::reference_wrapper<Node>> empty;
+    return empty;
+}
+std::vector<int> path_to_con(std::vector<std::reference_wrapper<Node>> path) {
+    std::vector<int> connect;
+    if (path.size() == 0) {
+        return connect;
+    }
+    for (int i = 0; i < (int) path.size() - 1; i++) {
+        for (int con: path[i].get().connectionIndicies) {
+
+            if (connections[con].a.id == path[i + 1].get().id) {
+                connect.push_back(con);
+            } else if (connections[con].b.id == path[i + 1].get().id) {
+                connect.push_back(con);
+            }
+        }
+    }
+    return connect;
+}

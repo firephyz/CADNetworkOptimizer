@@ -1,5 +1,6 @@
 #include "types.h"
 #include "simulator.h"
+#include "transversal.h"
 
 #include <iostream>
 #include <fstream>
@@ -18,6 +19,11 @@ struct pref_t prefs;
 std::unordered_map<std::string, Node *> hashed_nodes;
 int num_jumps(Node& a, Node& b);
 bool num_jumps_deep(int & dist,Node &current, Node &target);
+int num_jumps_breadth(Node& a, Node& b);
+bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target);
+std::vector<int> connection_jumps(Node& a, Node& b);
+bool connection_jumps_deep(std::vector<int> & outlist,Node &current, Node &target);
+
 
 void printUsage()
 {
@@ -188,79 +194,7 @@ void outputResults(char * fileName) {
   file.close();
 }
 
-int
-num_jumps(Node& a, Node& b)
-{
-  a.flag=true;
-  bool check;
-  std::vector<std::reference_wrapper<Node>> list;
-  int dist = 0;
-  if(a.id == b.id)
-  {
-    return 0;
-  }
-  for(int con: a.connectionIndicies)
-  {
-    if(connections[con].a.id == a.id)
-    {
-      list.push_back(connections[con].b);
-    }
-    else
-    {
-      list.push_back(connections[con].a);
-    }
-  }
-  dist_sort(b,list);
-  for(Node& n: list)
-  {
-    if(!n.flag)
-    {
-      check = num_jumps_deep(dist, n, b);
-      if(check)
-      {
-        Node::clearAllFlags();
-        return dist + 1;
-      }
-    }
-  }
-  return -1;
-}
-bool num_jumps_deep(int & dist,Node &current, Node &target)
-{
-  if(current.id == target.id)
-  {
-    return true;
-  }
-  current.flag = true;
-  bool check;
-  std::vector<std::reference_wrapper<Node>> list;
-  for(int con: current.connectionIndicies)
-  {
-    if(connections[con].a.id == current.id && connections[con].b.flag == false)
-    {
-      list.push_back(connections[con].b);
-    }
-    else if(connections[con].b.id == current.id && connections[con].a.flag == false)
-    {
-      list.push_back(connections[con].a);
-    }
-  }
-  dist_sort(target,list);
-  for(Node& n: list)
-  {
-    if (!n.flag)
-    {
-      check = num_jumps_deep(dist, n, target);
-      if (check)
-      {
-        dist += 1;
-        return true;
-      }
-    }
 
-  }
-  return false;
-}
 std::vector<std::vector<Node *>>
 findNetworkGroups()
 {

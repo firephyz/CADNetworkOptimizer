@@ -1,10 +1,14 @@
 <NetworkDefinition>
 	<ListOfNodes>
 		<Node name='node1' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
-		<Node name='node2' x='6' y='1' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
-		<Node name='node3' x='11' y='13' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
-		<Node name='node4' x='2' y='2' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
-		<Node name='node5' x='5' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node2' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node3' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node4' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node5' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node6' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node7' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node8' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
+		<Node name='node9' x='0' y='0' sendRate='0' receiveRate='0' routeRate='0' queueSize='0'/>
 	</ListOfNodes>
 	<WireTypess>
 		<Wire type='type0' cost='1' bandwidth='10' errorRate='0'/>
@@ -12,9 +16,17 @@
 	</WireTypes>
 	<ListOfConnections>
 		<Connection wireType='type0' node1='node1' node='node2'/>
-		<Connection wireType='type0' node1='node2' node='node3'/>
-		<Connection wireType='type1' node1='node1' node='node4'/>
-		<Connection wireType='type1' node1='node4' node='node5'/>
+		<Connection wireType='type0' node1='node3' node='node4'/>
+		<Connection wireType='type0' node1='node4' node='node5'/>
+		<Connection wireType='type0' node1='node6' node='node7'/>
+		<Connection wireType='type0' node1='node7' node='node8'/>
+		<Connection wireType='type0' node1='node8' node='node9'/>
+		<Connection wireType='type0' node1='node9' node='node7'/>
+		<Connection wireType='type0' node1='node8' node='node1'/>
+		<Connection wireType='type0' node1='node1' node='node5'/>
+		<Connection wireType='type0' node1='node5' node='node2'/>
+		<Connection wireType='type0' node1='node2' node='node4'/>
+		<Connection wireType='type0' node1='node4' node='node3'/>
 	</ListOfConnections>
 	<Preferences/>
 	<Statistics/>

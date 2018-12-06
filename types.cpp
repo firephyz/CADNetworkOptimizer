@@ -277,6 +277,10 @@ void dist_sort(Node& target, std::vector<std::reference_wrapper<Node>> & list)
   int count;
   double dist1;
   double dist2;
+  if(list.empty())
+  {
+    return;
+  }
   Node temp = list[0];
   while(!done)
   {

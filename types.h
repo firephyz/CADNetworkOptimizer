@@ -1,8 +1,16 @@
 #ifndef TYPES_INCLUDED
+#define TYPES_INCLUDED
 
 #include <string>
 #include <vector>
 #include <unordered_map>
+
+struct pref_t {
+  double latency;
+  double packetLoss;
+  double throughput;
+  double budget;
+};
 
 class WireType {
 public:

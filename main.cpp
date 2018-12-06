@@ -1,4 +1,5 @@
 #include "types.h"
+#include "simulator.h"
 
 #include <iostream>
 #include <fstream>
@@ -12,6 +13,8 @@
 std::vector<Node> nodes;
 std::vector<Connection> connections;
 std::vector<WireType> wires; // sorted by cost
+struct pref_t prefs;
+
 std::unordered_map<std::string, Node *> hashed_nodes;
 int num_jumps(Node& a, Node& b);
 bool num_jumps_deep(int & dist,Node &current, Node &target);
@@ -107,7 +110,10 @@ void parseListOfConnections(xmlNodePtr node)
 
 void parsePreferences(xmlNodePtr node)
 {
-
+  prefs.latency = std::atof((const char *)xmlGetAttribute(node, "latency")->children->content);
+  prefs.packetLoss = std::atof((const char *)xmlGetAttribute(node, "packetLoss")->children->content);
+  prefs.throughput = std::atof((const char *)xmlGetAttribute(node, "throughput")->children->content);
+  prefs.budget = std::atof((const char *)xmlGetAttribute(node, "budget")->children->content);
 }
 
 void readInputFile(char * fileName)
@@ -205,7 +211,7 @@ num_jumps(Node& a, Node& b)
     }
   }
   dist_sort(b,list);
-  for(Node n: list)
+  for(Node& n: list)
   {
     if(!n.flag)
     {
@@ -234,13 +240,13 @@ bool num_jumps_deep(int & dist,Node &current, Node &target)
     {
       list.push_back(connections[con].b);
     }
-    else if(connections[con].a.flag == false)
+    else if(connections[con].b.id == current.id && connections[con].a.flag == false)
     {
       list.push_back(connections[con].a);
     }
   }
   dist_sort(target,list);
-  for(Node n: list)
+  for(Node& n: list)
   {
     if (!n.flag)
     {
@@ -271,7 +277,7 @@ findNetworkGroups()
       currentNodes.push_back(nodesToBeGrouped[i]);
       nodesToBeGrouped.pop_back();
     }
-    
+
     std::vector<Node *> group;
     for(auto node : currentNodes) {
       if(group.empty()) {
@@ -345,26 +351,20 @@ int main(int argc, char **argv)
   }
 
   readInputFile(argv[1]);
-
   completeNetworkGraph();
-  double dist = net_distance(nodes[0] ,nodes[1]);
-  std::cout << dist << std::endl;
-  outputResults(argv[2]);
 
-  for(const Node& node : nodes) {
-    std::cout << node << std::endl;
+  Simulator sim(nodes, connections, wires, prefs);
+  while(prefs.budget > 0) {
+    sim.simulate();
+    // TODO upgrade network
+
+    // Stop if network is full
+    //if()
   }
 
-  for(const WireType& wire : wires) {
-    std::cout << wire.typeName << std::endl;
-    std::cout << wire.cost << std::endl;
-    std::cout << wire.bandwidth << std::endl;
-    std::cout << wire.errorRate << std::endl;
-  }
-
-  for(const Connection& connection : connections) {
-    std::cout << connection << std::endl;
-  }
+  // double dist = net_distance(nodes[0] ,nodes[1]);
+  // std::cout << dist << std::endl;
+  // outputResults(argv[2]);
 
   return 0;
 }

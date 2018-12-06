@@ -6,6 +6,7 @@
 #include <cmath>
 #include <vector>
 #include <functional>
+#include <cstdlib>
 
 /*
  * Node functions
@@ -84,6 +85,13 @@ bool Node::addToHash()
     return true;
 }
 
+double
+Node::getNextPacketTime()
+{
+  static double randRange = 0.05;
+  return sendRate * 2 * randRange * (std::rand() / RAND_MAX - 0.5);
+}
+
 bool update_node_hash()
 {
     hashed_nodes.clear();
@@ -110,6 +118,14 @@ operator<(const WireType& wire1, const WireType& wire2)
 {
   return wire1.cost < wire2.cost;
 }
+
+netpacket_t::netpacket_t(double sendTime, Node * source)
+  : sendTime(sendTime)
+  , sourceNode(source)
+  , destNode(NULL)
+  , lastNode(source)
+  , currentConnection(NULL)
+{}
 
 /*
  * Connection functions

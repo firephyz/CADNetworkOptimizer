@@ -413,6 +413,63 @@ bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Nod
   }
   return false;
 }
+std::vector<std::reference_wrapper<Node>> connection_jumps_path(Node& a, Node& b)
+{
+  //a.flag=true;
+  //bool check;
+  std::vector<std::vector<std::reference_wrapper<Node>>> queue;
+  std::vector<std::reference_wrapper<Node>> temp;
+  temp.push_back(a);
+  queue.push_back(temp);
+  for(int i = 0; i < (int)queue.size();i++)
+  {
+    queue[i].back().get().flag = true;
+    if(queue[i].back().get().id == b.id)
+    {
+      Node::clearAllFlags();
+      return queue[i];
+    }
+    for(int con: queue[i].back().get().connectionIndicies)
+    {
+      temp = queue[i];
+      if(connections[con].a.id == queue[i].back().get().id && connections[con].b.flag == false)
+      {
+        temp.push_back(connections[con].b);
+      }
+      else if(connections[con].b.id == queue[i].back().get().id && connections[con].a.flag == false)
+      {
+        temp.push_back(connections[con].a);
+      }
+      queue.push_back(temp);
+    }
+  }
+  std::vector<std::reference_wrapper<Node>> empty;
+  return empty;
+}
+std::vector<int> path_to_con(std::vector<std::reference_wrapper<Node>> path)
+{
+  std::vector<int> connect;
+  if (path.size() == 0)
+  {
+    return connect;
+  }
+  for(int i = 0; i < (int)path.size()-1; i++)
+  {
+    for(int con: path[i].get().connectionIndicies)
+    {
+
+      if(connections[con].a.id == path[i+1].get().id)
+      {
+        connect.push_back(con);
+      }
+      else if(connections[con].b.id == path[i+1].get().id)
+      {
+        connect.push_back(con);
+      }
+    }
+  }
+  return connect;
+}
 std::vector<std::vector<Node *>>
 findNetworkGroups()
 {

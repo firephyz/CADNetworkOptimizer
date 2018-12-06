@@ -1,4 +1,5 @@
 #ifndef TYPES_INCLUDED
+#define TYPES_INCLUDED
 
 #include <string>
 #include <vector>

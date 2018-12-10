@@ -268,12 +268,34 @@ void completeNetworkGraph()
 
   // TODO improve initial connection.
   WireType& wire = wires[0];
+  double price;
+  bool check;
   for(uint i = 0; i < midNodes.size() - 1; ++i) {
     if(i == midNodes.size() - 1) {
-      midNodes[i]->connect(*midNodes[0], wire);
+      price = connection_cost(*midNodes[i], *midNodes[0],wire);
+      check = can_afford(price);
+      if(check)
+      {
+        midNodes[i]->connect(*midNodes[0], wire);
+        pay(price);
+      }
+      else
+      {
+        std::cerr <<"insufficient Budget to provide a complete network";
+      }
     }
     else {
-      midNodes[i]->connect(*midNodes[i + 1], wire);
+      price = connection_cost(*midNodes[i], *midNodes[i + 1],wire);
+      check = can_afford(price);
+      if(check)
+      {
+        midNodes[i]->connect(*midNodes[i + 1], wire);
+        pay(price);
+      }
+      else
+      {
+        std::cerr <<"insufficient Budget to provide a complete network";
+      }
     }
   }
 }

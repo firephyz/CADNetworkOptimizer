@@ -209,5 +209,43 @@ operator<<(std::ostream& out, const WireType& wire)
   return out;
 }
 
-//TRANSVERSAL FUNCTIONS
+//BUDGETING FUNCTIONS
+double connection_cost(Node& a, Node& b, WireType& wire)
+{
+  double dist;
+  double cost;
+  dist = real_distance(a,b);
+  cost = wire.cost * dist;
+  return cost;
+}
+double upgrade_cost(int con, WireType wire)
+{
+  double dist;
+  double cost;
+  dist = real_distance(connections[con].a,connections[con].b);
+  cost = wire.cost * dist;
+  return cost;
+}
+bool can_afford(double cost)
+{
+  if(cost > prefs.budget)
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+}
+void pay(double cost)
+{
+  if(can_afford(cost))
+  {
+    prefs.budget -= cost;
+  }
+  else
+  {
+    std::cerr << "ERROR: ATTEMPT TO OVERSPEND BUDGET";
+  }
+}
 

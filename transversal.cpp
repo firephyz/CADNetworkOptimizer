@@ -401,16 +401,17 @@ double latency(std::vector<std::reference_wrapper<Node>> path)
     if (path.size() == 0) {
         return 0;
     }
-    double dist;
+    //double dist;
     double latency;
     std::vector<int> cons;
     cons = path_to_con(path);
-    for (int i = 0; i < (int) path.size() - 1; i++)
+    for (int i = 0; i < (int) path.size(); i++)
     {
-        latency += path[i].get().routeRate;
+        latency += 1 / path[i].get().routeRate;
     }
-    for (int i = 0; i < (int) cons.size() - 1; i++)
+    for (int i = 0; i < (int) cons.size(); i++)
     {
-        return latency;
+        latency += connections[cons[i]].travelTime;
     }
+    return latency;
 }

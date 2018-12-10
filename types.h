@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <list>
 
 struct pref_t {
   double latency;
@@ -30,6 +31,18 @@ public:
 WireType& getWireTypeByName(const char * name);
 
 class Connection;
+class Node;
+
+typedef struct netpacket_t {
+  double sendTime;
+  Node * sourceNode;
+  Node * destNode;
+  Node * lastNode;
+  Connection * currentConnection;
+  std::list<int> route; // Indexes into the connections vector
+
+  netpacket_t(double sendTime, Node * source); // For packets not yet routed.
+} NetPacket;
 
 class Node {
   static int nextID;
@@ -50,6 +63,8 @@ public:
   void clear_Flag() { flag =false; }
   bool addToHash();
   std::string toXML();
+  double getNextPacketTime();
+  Node * determineDestNode(); // Stoicastically determine destination node
 
   friend std::ostream& operator<<(std::ostream& out, const Node& node);
 

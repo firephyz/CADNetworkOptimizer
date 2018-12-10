@@ -14,36 +14,80 @@ Simulator::Simulator(
   , connections(connections)
   , wires(wires)
   , prefs(prefs)
+  , maxSimTime(1)
 {
+  // Schedule initial packets
   for(Node& node : nodes) {
-    sortedSendNodes.emplace_back(std::pair<double, Node *>(node.sendRate, &node));
+    NetPacket * packet = new NetPacket(simTime, &node);
+    scheduler.schedule((ScheduledEvent){node.getNextPacketTime(), EventType::NODE_GEN_PKT, packet});
   }
-  std::sort(sortedSendNodes.begin(), sortedSendNodes.end(),
-            [](auto& pair1, auto& pair2) -> bool
-    {
-      return pair1.second->sendRate < pair2.second->sendRate;
-    });
+}
+
+// Scheduling new events (likely) will be near the end of the
+// events list. Could use this fact to improve performance.
+void
+Scheduler::schedule(ScheduledEvent event)
+{
+  // Insert event into the right spot on the schedule
+  auto pos = events.begin();
+  while(pos != events.end()) {
+    if(pos->deltaTime > event.deltaTime) {
+      events.insert(pos, event);
+    }
+    else {
+      pos++;
+    }
+  }
+  if(pos == events.end()) {
+    events.insert(pos, event);
+  }
 }
 
 void
 Simulator::simulate()
 {
-  prefs.budget = 0;
+  while(simTime < maxSimTime) {
+    ScheduledEvent event = scheduler.events.front();
+    scheduler.events.pop_front();
+    simTime += event.deltaTime;
+    NetPacket& packet = *event.packet;
 
+    switch(event.type) {
+      case EventType::NODE_GEN_PKT:
+        packet.destNode = packet.sourceNode->determineDestNode();
+        packet.route = routePacket(packet.destNode, packet.sourceNode);
 
+        // Start packet on its journey
+        if(packet.route.length() == 0) {
+          scheduler.schedule({0, EventType::NODE_RECV_PKT, &packet});
+        }
+        else {
+          int connIndex = packet.route.pop();
+          Connection * connection = connections[connIndex];
+          //connection.packets.push(&packet);
+          packet->currentConnection = connection;
+          scheduler.schedule((ScheduledEvent){connection->travelTime, EventType::NODE_RECV_PKT, &packet});
+        }
+        break;
+      case EventType::NODE_RECV_PKT:
+        Node * currentNode = packet.currentConnection.a;
+        if(currentNode == packet.lastNode) {
+          currentNode = packet.currentConnection.b;
+        }
+        packet.lastNode = currentNode;
 
-  // for(const Node& node : nodes) {
-  //   std::cout << node << std::endl;
-  // }
-  //
-  // for(const WireType& wire : wires) {
-  //   std::cout << wire.typeName << std::endl;
-  //   std::cout << wire.cost << std::endl;
-  //   std::cout << wire.bandwidth << std::endl;
-  //   std::cout << wire.errorRate << std::endl;
-  // }
-  //
-  // for(const Connection& connection : connections) {
-  //   std::cout << connection << std::endl;
-  // }
+        // Packet finished route
+        if(packet.route.length() == 0) {
+          free(&packet);
+        }
+        else {
+          int connIndex = packet.route.pop();
+          Connection * connection = connections[connIndex];
+          packet.currentConnection = connection;
+
+          scheduler.schedule((ScheduledEvent){connection->travelTime, EventType::NODE_RECV_PKT, &packet});
+        }
+        break;
+    }
+  }
 }

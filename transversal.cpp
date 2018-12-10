@@ -381,7 +381,8 @@ std::vector<std::reference_wrapper<Node>> connection_jumps_path(Node& a, Node& b
 }
 std::vector<int> path_to_con(std::vector<std::reference_wrapper<Node>> path) {
     std::vector<int> connect;
-    if (path.size() == 0) {
+    if (path.size() < 2)
+    {
         return connect;
     }
     for (int i = 0; i < (int) path.size() - 1; i++) {
@@ -396,9 +397,12 @@ std::vector<int> path_to_con(std::vector<std::reference_wrapper<Node>> path) {
     }
     return connect;
 }
-double latency(std::vector<std::reference_wrapper<Node>> path)
+double latency(Node& a, Node& b)
 {
-    if (path.size() == 0) {
+    std::vector<std::reference_wrapper<Node>> path;
+    path = connection_jumps_path(a, b);
+    if (path.size() < 2)
+    {
         return 0;
     }
     //double dist;
@@ -414,4 +418,22 @@ double latency(std::vector<std::reference_wrapper<Node>> path)
         latency += connections[cons[i]].travelTime;
     }
     return latency;
+}
+double avg_latency()
+{
+    double count;
+    double lat;
+    for(int i = 0; i < (int)nodes.size(); i++)
+    {
+        for(int j = 0; j < (int)nodes.size(); j++)
+        {
+            if( i != j)
+            {
+                count ++;
+                lat += latency(nodes[i],nodes[j]);
+            }
+        }
+    }
+    return lat / count;
+
 }

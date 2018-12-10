@@ -22,6 +22,6 @@ std::vector<int> connection_jumps(Node& a, Node& b);
 bool connection_jumps_deep(std::vector<int> & outlist,Node &current, Node &target);
 std::vector<std::reference_wrapper<Node>> connection_jumps_path(Node& a, Node& b);
 std::vector<int> path_to_con(std::vector<std::reference_wrapper<Node>> path);
-double latency(std::vector<std::reference_wrapper<Node>> path);
+double latency(Node& a, Node& b);
 
 #endif

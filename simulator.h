@@ -21,7 +21,7 @@ typedef struct scheduled_event_t {
 class Scheduler {
   std::list<ScheduledEvent> events;
 public:
-  Scheduler();
+  Scheduler() = default;
 
   void schedule(ScheduledEvent event);
 
@@ -47,5 +47,9 @@ public:
 
   void simulate();
 };
+
+std::list<int> routePacket(const Node& dest, const Node& src);
+// Randomly find node based on node receive rates
+Node * determineDestNode(Node * sourceNode);
 
 #endif

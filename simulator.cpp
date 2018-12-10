@@ -54,40 +54,53 @@ Simulator::simulate()
 
     switch(event.type) {
       case EventType::NODE_GEN_PKT:
-        packet.destNode = packet.sourceNode->determineDestNode();
-        packet.route = routePacket(packet.destNode, packet.sourceNode);
+        packet.destNode = determineDestNode(packet.sourceNode);
+        packet.route = routePacket(*packet.destNode, *packet.sourceNode);
 
         // Start packet on its journey
-        if(packet.route.length() == 0) {
+        if(packet.route.size() == 0) {
           scheduler.schedule({0, EventType::NODE_RECV_PKT, &packet});
         }
         else {
-          int connIndex = packet.route.pop();
-          Connection * connection = connections[connIndex];
+          int connIndex = packet.route.front();
+          packet.route.pop_front();
+          Connection& connection = connections[connIndex];
           //connection.packets.push(&packet);
-          packet->currentConnection = connection;
-          scheduler.schedule((ScheduledEvent){connection->travelTime, EventType::NODE_RECV_PKT, &packet});
+          packet.currentConnection = &connection;
+          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, &packet});
         }
         break;
       case EventType::NODE_RECV_PKT:
-        Node * currentNode = packet.currentConnection.a;
+        Node * currentNode = &packet.currentConnection->a;
         if(currentNode == packet.lastNode) {
-          currentNode = packet.currentConnection.b;
+          currentNode = &packet.currentConnection->b;
         }
         packet.lastNode = currentNode;
 
         // Packet finished route
-        if(packet.route.length() == 0) {
+        if(packet.route.size() == 0) {
           free(&packet);
         }
         else {
-          int connIndex = packet.route.pop();
-          Connection * connection = connections[connIndex];
-          packet.currentConnection = connection;
+          int connIndex = packet.route.front();
+          packet.route.pop_front();
+          Connection& connection = connections[connIndex];
+          packet.currentConnection = &connection;
 
-          scheduler.schedule((ScheduledEvent){connection->travelTime, EventType::NODE_RECV_PKT, &packet});
+          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, &packet});
         }
         break;
     }
   }
+}
+
+std::list<int>
+routePacket(const Node& dest, const Node& src)
+{
+}
+
+Node *
+determineDestNode(Node * sourceNode)
+{
+
 }

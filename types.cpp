@@ -140,6 +140,7 @@ Connection::Connection(WireType& type, Node& a, Node& b)
 {
   id = nextID;
   nextID++;
+  travelTime = real_distance(a, b);
 }
 
 std::string

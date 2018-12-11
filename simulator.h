@@ -18,6 +18,18 @@ typedef struct scheduled_event_t {
   NetPacket * packet;
 } ScheduledEvent;
 
+typedef struct cons_t{
+    long num_packets;
+    long num_denied;
+    double time_full; // percentage of the time spent full
+} Cons;
+
+typedef struct stats_t{
+    std::vector<NetPacket> packets;
+    std::vector<Cons> cons;
+} Stats;
+
+
 class Scheduler {
   std::list<ScheduledEvent> events;
 public:
@@ -40,12 +52,15 @@ class Simulator {
   double totalSimTime;
 
 public:
+    struct stats_t stats;
   Simulator(std::vector<Node>& nodes,
-    std::vector<Connection>& connections,
-    std::vector<WireType>& wires,
-    struct pref_t & prefs);
+            std::vector<Connection>& connections,
+            std::vector<WireType>& wires,
+            struct pref_t & prefs);
+
 
   void simulate();
+
 };
 
 std::list<int> routePacket( Node& dest, Node& src);

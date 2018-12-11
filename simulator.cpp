@@ -17,6 +17,7 @@ Simulator::Simulator(
   , wires(wires)
   , prefs(prefs)
   , maxSimTime(1)
+  , stats()
 {
   // Schedule initial packets
   for(Node& node : nodes) {

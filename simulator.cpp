@@ -97,7 +97,7 @@ Simulator::simulate()
 }
 
 std::list<int>
-routePacket(Node& dest, Node& src)
+routePacket(Node& dest, Node& src)//returns empty in case of error ( src = dest/not connected)
 {
   std::vector<std::reference_wrapper<Node>> path = connection_jumps_path(src, dest);
   std::vector<int> cons = path_to_con(path);

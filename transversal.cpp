@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <vector>
 #include <functional>
+#include <cmath>
 
 double real_distance(Node& a, Node& b)
 {

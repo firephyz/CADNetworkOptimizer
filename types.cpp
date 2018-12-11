@@ -90,7 +90,8 @@ double
 Node::getNextPacketTime()
 {
   static double randRange = 0.05;
-  return sendRate * 2 * randRange * (std::rand() / RAND_MAX - 0.5);
+  double randDouble = (double)std::rand() / RAND_MAX;
+  return sendRate * 2 * randRange * (randDouble - 0.5);
 }
 
 bool update_node_hash()
@@ -209,6 +210,9 @@ operator<<(std::ostream& out, const WireType& wire)
   return out;
 }
 
+<<<<<<< HEAD
+//TRANSVERSAL FUNCTIONS
+=======
 //BUDGETING FUNCTIONS
 double connection_cost(Node& a, Node& b, WireType& wire)
 {
@@ -249,3 +253,4 @@ void pay(double cost)
   }
 }
 
+>>>>>>> 7be91b53c0d4305b3cc77283af2c78fa7ef58cff

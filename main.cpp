@@ -9,6 +9,8 @@
 #include <libxml2/libxml/parser.h>
 #include <vector>
 #include <functional>
+#include <cmath>
+#include <ctime>
 
 // Populated by input file
 std::vector<Node> nodes;
@@ -306,6 +308,7 @@ int main(int argc, char **argv)
     printUsage();
   }
 
+  std::srand(clock());
   readInputFile(argv[1]);
   completeNetworkGraph();
 

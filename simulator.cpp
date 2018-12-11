@@ -5,7 +5,11 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+<<<<<<< HEAD
+#include <cmath>
+=======
 #include <functional>
+>>>>>>> 7be91b53c0d4305b3cc77283af2c78fa7ef58cff
 
 Simulator::Simulator(
     std::vector<Node>& nodes,
@@ -19,10 +23,26 @@ Simulator::Simulator(
   , maxSimTime(1)
   , stats()
 {
+  // Sort nodes by receive rate for determineDestNode
+  for(Node& node : nodes) {
+    sortedNodes.push_back(&node);
+  }
+  std::sort(sortedNodes.begin(), sortedNodes.end(),
+    [](auto& a, auto& b)
+    {
+      return a->receiveRate < b->receiveRate;
+    });
+
   // Schedule initial packets
   for(Node& node : nodes) {
-    NetPacket * packet = new NetPacket(simTime, &node);
-    scheduler.schedule((ScheduledEvent){node.getNextPacketTime(), EventType::NODE_GEN_PKT, packet});
+    double packetTime = node.getNextPacketTime();
+    if(packetTime < 0) {
+      packetTime *= -1;
+    }
+    scheduler.schedule((ScheduledEvent){
+      packetTime,
+      EventType::NODE_GEN_PKT,
+      NetPacket(simTime, &node)});
   }
 }
 
@@ -36,6 +56,7 @@ Scheduler::schedule(ScheduledEvent event)
   while(pos != events.end()) {
     if(pos->deltaTime > event.deltaTime) {
       events.insert(pos, event);
+      break;
     }
     else {
       pos++;
@@ -53,7 +74,7 @@ Simulator::simulate()
     ScheduledEvent event = scheduler.events.front();
     scheduler.events.pop_front();
     simTime += event.deltaTime;
-    NetPacket& packet = *event.packet;
+    NetPacket& packet = event.packet;
 
     switch(event.type) {
       case EventType::NODE_GEN_PKT:
@@ -62,7 +83,7 @@ Simulator::simulate()
 
         // Start packet on its journey
         if(packet.route.size() == 0) {
-          scheduler.schedule({0, EventType::NODE_RECV_PKT, &packet});
+          scheduler.schedule({0, EventType::NODE_RECV_PKT, packet});
         }
         else {
           int connIndex = packet.route.front();
@@ -70,7 +91,7 @@ Simulator::simulate()
           Connection& connection = connections[connIndex];
           //connection.packets.push(&packet);
           packet.currentConnection = &connection;
-          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, &packet});
+          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, packet});
         }
         break;
       case EventType::NODE_RECV_PKT:
@@ -90,25 +111,21 @@ Simulator::simulate()
           Connection& connection = connections[connIndex];
           packet.currentConnection = &connection;
 
-          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, &packet});
+          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, packet});
         }
         break;
     }
   }
 }
 
-std::list<int>
-routePacket(Node& dest, Node& src)//returns empty in case of error ( src = dest/not connected)
+Node *
+Simulator::determineDestNode(Node * sourceNode)
 {
-  std::vector<std::reference_wrapper<Node>> path = connection_jumps_path(src, dest);
-  std::vector<int> cons = path_to_con(path);
-  std::list<int> list;
-  std::copy( cons.begin(), cons.end(), std::back_inserter( list ) );
-  return list;
+  double nodeIndex = (double)rand() / RAND_MAX * sortedNodes.size();
+  return sortedNodes[(int)nodeIndex];
 }
 
-Node *
-determineDestNode(Node * sourceNode)
+std::list<int>
+routePacket(const Node& dest, const Node& src)
 {
-
 }

@@ -312,6 +312,7 @@ int main(int argc, char **argv)
   Simulator sim(nodes, connections, wires, prefs);
   while(prefs.budget > 0) {
     sim.simulate();
+    
     // TODO upgrade network
 
     // Stop if network is full

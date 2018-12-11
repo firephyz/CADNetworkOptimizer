@@ -210,9 +210,6 @@ operator<<(std::ostream& out, const WireType& wire)
   return out;
 }
 
-<<<<<<< HEAD
-//TRANSVERSAL FUNCTIONS
-=======
 //BUDGETING FUNCTIONS
 double connection_cost(Node& a, Node& b, WireType& wire)
 {
@@ -252,5 +249,3 @@ void pay(double cost)
     std::cerr << "ERROR: ATTEMPT TO OVERSPEND BUDGET";
   }
 }
-
->>>>>>> 7be91b53c0d4305b3cc77283af2c78fa7ef58cff

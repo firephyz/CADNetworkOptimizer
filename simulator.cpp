@@ -5,11 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-<<<<<<< HEAD
 #include <cmath>
-=======
 #include <functional>
->>>>>>> 7be91b53c0d4305b3cc77283af2c78fa7ef58cff
 
 Simulator::Simulator(
     std::vector<Node>& nodes,
@@ -21,7 +18,6 @@ Simulator::Simulator(
   , wires(wires)
   , prefs(prefs)
   , maxSimTime(1)
-  , stats()
 {
   // Sort nodes by receive rate for determineDestNode
   for(Node& node : nodes) {
@@ -126,6 +122,11 @@ Simulator::determineDestNode(Node * sourceNode)
 }
 
 std::list<int>
-routePacket(const Node& dest, const Node& src)
+routePacket(Node& dest, Node& src)//returns empty in case of error ( src = dest/not connected)
 {
+  std::vector<std::reference_wrapper<Node>> path = connection_jumps_path(src, dest);
+  std::vector<int> cons = path_to_con(path);
+  std::list<int> list;
+  std::copy( cons.begin(), cons.end(), std::back_inserter( list ) );
+  return list;
 }

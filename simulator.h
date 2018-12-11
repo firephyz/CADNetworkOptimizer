@@ -61,12 +61,8 @@ public:
 
 
   void simulate();
-<<<<<<< HEAD
   // Randomly find node based on node receive rates
   Node * determineDestNode(Node * sourceNode);
-=======
-
->>>>>>> 9b1138ce551c5865956ed64c6128b91a032b589b
 };
 
 std::list<int> routePacket( Node& dest, Node& src);

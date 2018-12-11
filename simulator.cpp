@@ -1,9 +1,11 @@
 #include "simulator.h"
 #include "types.h"
+#include "transversal.h"
 
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <functional>
 
 Simulator::Simulator(
     std::vector<Node>& nodes,
@@ -95,8 +97,13 @@ Simulator::simulate()
 }
 
 std::list<int>
-routePacket(const Node& dest, const Node& src)
+routePacket(Node& dest, Node& src)
 {
+  std::vector<std::reference_wrapper<Node>> path = connection_jumps_path(src, dest);
+  std::vector<int> cons = path_to_con(path);
+  std::list<int> list;
+  std::copy( cons.begin(), cons.end(), std::back_inserter( list ) );
+  return list;
 }
 
 Node *

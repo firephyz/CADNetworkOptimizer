@@ -15,7 +15,7 @@ class Simulator;
 typedef struct scheduled_event_t {
   double deltaTime;
   EventType type;
-  NetPacket * packet;
+  NetPacket packet;
 } ScheduledEvent;
 
 class Scheduler {

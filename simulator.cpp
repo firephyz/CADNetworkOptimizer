@@ -28,14 +28,15 @@ Simulator::Simulator(
     });
 
   // Schedule initial packets
-  NetPacket * packet;
   for(Node& node : nodes) {
-    packet = new NetPacket(simTime, &node);
     double packetTime = node.getNextPacketTime();
     if(packetTime < 0) {
       packetTime *= -1;
     }
-    scheduler.schedule((ScheduledEvent){packetTime, EventType::NODE_GEN_PKT, packet});
+    scheduler.schedule((ScheduledEvent){
+      packetTime,
+      EventType::NODE_GEN_PKT,
+      NetPacket(simTime, &node)});
   }
 }
 
@@ -49,6 +50,7 @@ Scheduler::schedule(ScheduledEvent event)
   while(pos != events.end()) {
     if(pos->deltaTime > event.deltaTime) {
       events.insert(pos, event);
+      break;
     }
     else {
       pos++;
@@ -66,7 +68,7 @@ Simulator::simulate()
     ScheduledEvent event = scheduler.events.front();
     scheduler.events.pop_front();
     simTime += event.deltaTime;
-    NetPacket& packet = *event.packet;
+    NetPacket& packet = event.packet;
 
     switch(event.type) {
       case EventType::NODE_GEN_PKT:
@@ -75,7 +77,7 @@ Simulator::simulate()
 
         // Start packet on its journey
         if(packet.route.size() == 0) {
-          scheduler.schedule({0, EventType::NODE_RECV_PKT, &packet});
+          scheduler.schedule({0, EventType::NODE_RECV_PKT, packet});
         }
         else {
           int connIndex = packet.route.front();
@@ -83,7 +85,7 @@ Simulator::simulate()
           Connection& connection = connections[connIndex];
           //connection.packets.push(&packet);
           packet.currentConnection = &connection;
-          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, &packet});
+          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, packet});
         }
         break;
       case EventType::NODE_RECV_PKT:
@@ -103,7 +105,7 @@ Simulator::simulate()
           Connection& connection = connections[connIndex];
           packet.currentConnection = &connection;
 
-          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, &packet});
+          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, packet});
         }
         break;
     }
@@ -113,8 +115,8 @@ Simulator::simulate()
 Node *
 Simulator::determineDestNode(Node * sourceNode)
 {
-  double nodeIndex = rand() * sortedNodes.size();
-  return sortedNodes[nodeIndex];
+  double nodeIndex = (double)rand() / RAND_MAX * sortedNodes.size();
+  return sortedNodes[(int)nodeIndex];
 }
 
 std::list<int>

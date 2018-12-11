@@ -1,10 +1,15 @@
 #include "simulator.h"
 #include "types.h"
+#include "transversal.h"
 
 #include <vector>
 #include <iostream>
 #include <algorithm>
+<<<<<<< HEAD
 #include <cmath>
+=======
+#include <functional>
+>>>>>>> 7be91b53c0d4305b3cc77283af2c78fa7ef58cff
 
 Simulator::Simulator(
     std::vector<Node>& nodes,

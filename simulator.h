@@ -51,6 +51,8 @@ public:
   Node * determineDestNode(Node * sourceNode);
 };
 
-std::list<int> routePacket(const Node& dest, const Node& src);
+std::list<int> routePacket( Node& dest, Node& src);
+// Randomly find node based on node receive rates
+Node * determineDestNode(Node * sourceNode);
 
 #endif

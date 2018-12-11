@@ -95,5 +95,11 @@ extern std::vector<Node> nodes;
 extern std::vector<Connection> connections;
 extern std::vector<WireType> wires;
 extern std::unordered_map<std::string, Node *> hashed_nodes;
+extern struct pref_t prefs;
+
+double connection_cost(Node& a, Node& b, WireType& wire);
+double upgrade_cost(int con, WireType wire);
+bool can_afford(double cost);
+void pay(double cost);
 
 #endif

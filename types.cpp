@@ -1,4 +1,5 @@
 #include "types.h"
+#include "transversal.h"
 
 #include <string>
 #include <iostream>
@@ -89,7 +90,8 @@ double
 Node::getNextPacketTime()
 {
   static double randRange = 0.05;
-  return sendRate * 2 * randRange * (std::rand() / RAND_MAX - 0.5);
+  double randDouble = (double)std::rand() / RAND_MAX;
+  return sendRate * 2 * randRange * (randDouble - 0.5);
 }
 
 bool update_node_hash()
@@ -209,4 +211,3 @@ operator<<(std::ostream& out, const WireType& wire)
 }
 
 //TRANSVERSAL FUNCTIONS
-

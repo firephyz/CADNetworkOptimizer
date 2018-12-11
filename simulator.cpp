@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 
 Simulator::Simulator(
     std::vector<Node>& nodes,
@@ -16,10 +17,25 @@ Simulator::Simulator(
   , prefs(prefs)
   , maxSimTime(1)
 {
-  // Schedule initial packets
+  // Sort nodes by receive rate for determineDestNode
   for(Node& node : nodes) {
-    NetPacket * packet = new NetPacket(simTime, &node);
-    scheduler.schedule((ScheduledEvent){node.getNextPacketTime(), EventType::NODE_GEN_PKT, packet});
+    sortedNodes.push_back(&node);
+  }
+  std::sort(sortedNodes.begin(), sortedNodes.end(),
+    [](auto& a, auto& b)
+    {
+      return a->receiveRate < b->receiveRate;
+    });
+
+  // Schedule initial packets
+  NetPacket * packet;
+  for(Node& node : nodes) {
+    packet = new NetPacket(simTime, &node);
+    double packetTime = node.getNextPacketTime();
+    if(packetTime < 0) {
+      packetTime *= -1;
+    }
+    scheduler.schedule((ScheduledEvent){packetTime, EventType::NODE_GEN_PKT, packet});
   }
 }
 
@@ -94,13 +110,14 @@ Simulator::simulate()
   }
 }
 
+Node *
+Simulator::determineDestNode(Node * sourceNode)
+{
+  double nodeIndex = rand() * sortedNodes.size();
+  return sortedNodes[nodeIndex];
+}
+
 std::list<int>
 routePacket(const Node& dest, const Node& src)
 {
-}
-
-Node *
-determineDestNode(Node * sourceNode)
-{
-
 }

@@ -220,7 +220,7 @@ findNetworkGroups()
       if(group.empty()) {
         group.push_back(node);
       }
-      else if(num_jumps(*node, *group[0]) != -1) {
+      else if(num_jumps_breadth(*node, *group[0]) != -1) {
         group.push_back(node);
       }
       else {

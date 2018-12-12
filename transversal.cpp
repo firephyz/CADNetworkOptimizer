@@ -21,6 +21,7 @@ double net_distance(Node& a, Node& b)// assumes network is complete
     double dist = 0;
     if(a.id == b.id)
     {
+        Node::clearAllFlags();
         return 0;
     }
     for(int con: a.connectionIndicies)
@@ -47,7 +48,7 @@ double net_distance(Node& a, Node& b)// assumes network is complete
             }
         }
     }
-
+    Node::clearAllFlags();
     return 0;
 }
 bool net_distance_deep(double & dist,Node &current, Node &target)
@@ -129,6 +130,7 @@ int num_jumps(Node& a, Node& b)
     int dist = 0;
     if(a.id == b.id)
     {
+        Node::clearAllFlags();
         return 0;
     }
     for(int con: a.connectionIndicies)
@@ -155,6 +157,7 @@ int num_jumps(Node& a, Node& b)
             }
         }
     }
+    Node::clearAllFlags();
     return -1;
 }
 bool num_jumps_deep(int & dist,Node &current, Node &target)
@@ -238,6 +241,7 @@ std::vector<int> connection_jumps(Node& a, Node& b)
             }
         }
     }
+    Node::clearAllFlags();
     return outlist;
 }
 bool connection_jumps_deep(std::vector<int> & outlist, Node &current, Node &target)

@@ -1,21 +1,21 @@
 <NetworkDefinition>
   <ListOfNodes>
     <!-- rates are packets per second -->
-    <Node name='node1' x='0.0' y='0.0' sendRate='35.0' receiveRate='25.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node2' x='0.0' y='0.0' sendRate='72.0' receiveRate='63.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node3' x='0.0' y='0.0' sendRate='68.0' receiveRate='53.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node4' x='0.0' y='0.0' sendRate='45.0' receiveRate='27.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node5' x='0.0' y='0.0' sendRate='12.0' receiveRate='74.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node6' x='0.0' y='0.0' sendRate='32.0' receiveRate='63.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node7' x='0.0' y='0.0' sendRate='49.0' receiveRate='46.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node8' x='0.0' y='0.0' sendRate='37.0' receiveRate='49.0' routeRate='0.0' queueSize='0'/>
-    <Node name='node9' x='0.0' y='0.0' sendRate='28.0' receiveRate='51.0' routeRate='0.0' queueSize='0'/>
+    <Node name='node1' x='0.0' y='0.0' sendRate='35.0' receiveRate='25.0' routeRate='100.0' queueSize='0'/>
+    <Node name='node2' x='0.0' y='0.0' sendRate='72.0' receiveRate='63.0' routeRate='150.0' queueSize='0'/>
+    <Node name='node3' x='0.0' y='0.0' sendRate='68.0' receiveRate='53.0' routeRate='75.0' queueSize='0'/>
+    <Node name='node4' x='0.0' y='0.0' sendRate='45.0' receiveRate='27.0' routeRate='200.0' queueSize='0'/>
+    <Node name='node5' x='0.0' y='0.0' sendRate='12.0' receiveRate='74.0' routeRate='60.0' queueSize='0'/>
+    <Node name='node6' x='0.0' y='0.0' sendRate='32.0' receiveRate='63.0' routeRate='180.0' queueSize='0'/>
+    <Node name='node7' x='0.0' y='0.0' sendRate='49.0' receiveRate='46.0' routeRate='180.0' queueSize='0'/>
+    <Node name='node8' x='0.0' y='0.0' sendRate='37.0' receiveRate='49.0' routeRate='90.0' queueSize='0'/>
+    <Node name='node9' x='0.0' y='0.0' sendRate='28.0' receiveRate='51.0' routeRate='500.0' queueSize='0'/>
   </ListOfNodes>
   <WireTypes>
     <!-- cost is per meter. bandwidth is in packets per second. errorRate is percent
     chance a given packet transmitted will be lost -->
-    <Wire type='type0' cost='1.0' bandwidth='10.0' errorRate='0.0'/>
-    <Wire type='type1' cost='5.0' bandwidth='70.0' errorRate='0.0'/>
+    <Wire type='type0' cost='1.0' bandwidth='10.0' errorRate='0.0001'/>
+    <Wire type='type1' cost='5.0' bandwidth='70.0' errorRate='0.00005'/>
   </WireTypes>
   <ListOfConnections>
     <Connection wireType='type0' node1='node1' node2='node2'/>

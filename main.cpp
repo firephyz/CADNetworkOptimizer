@@ -314,11 +314,11 @@ void Graphviz(std::string name)
     {
       if(connections[con].a.id == node.id && connections[con].b.flag == false)
       {
-        myfile <<"    " << connections[con].a.name << " -> " << connections[con].b.name << ";\n";
+        myfile <<"    " << connections[con].a.name << " -> " << connections[con].b.name << " [label=" << "\""<< connections[con].type.typeName <<  "\"];\n";
       }
       else if(connections[con].b.id == node.id && connections[con].a.flag == false)
       {
-        myfile << "    " << connections[con].b.name << " -> " << connections[con].a.name << ";\n";
+        myfile << "    " << connections[con].b.name << " -> " << connections[con].a.name << " [label=" << "\""<< connections[con].type.typeName <<  "\"];\n";
       }
     }
   }

@@ -25,6 +25,7 @@ int num_jumps_breadth(Node& a, Node& b);
 bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target);
 std::vector<int> connection_jumps(Node& a, Node& b);
 bool connection_jumps_deep(std::vector<int> & outlist,Node &current, Node &target);
+void Graphviz(std::string name);
 
 
 void printUsage()
@@ -301,6 +302,30 @@ void completeNetworkGraph()
     }
   }
 }
+void Graphviz(std::string name)
+{
+  std::ofstream myfile;
+  myfile.open (name);
+  myfile << "digraph G { \n";
+  for( Node & node: nodes)
+  {
+    node.flag =true;
+    for(int con : node.connectionIndicies)
+    {
+      if(connections[con].a.id == node.id && connections[con].b.flag == false)
+      {
+        myfile <<"    " << connections[con].a.name << " -> " << connections[con].b.name << ";\n";
+      }
+      else if(connections[con].b.id == node.id && connections[con].a.flag == false)
+      {
+        myfile << "    " << connections[con].b.name << " -> " << connections[con].a.name << ";\n";
+      }
+    }
+  }
+  myfile << "}\n";
+  Node::clearAllFlags();
+
+}
 
 int main(int argc, char **argv)
 {
@@ -310,21 +335,24 @@ int main(int argc, char **argv)
 
   std::srand(clock());
   readInputFile(argv[1]);
+  Graphviz("Input_graph.dot");
+  std::cout << num_jumps_breadth(nodes[0],nodes[1]) << "\n";
   completeNetworkGraph();
+  Graphviz("graph.dot");
 
-  Simulator sim(nodes, connections, wires, prefs);
-  while(prefs.budget > 0) {
-    sim.simulate();
+  //Simulator sim(nodes, connections, wires, prefs);
+ // while(prefs.budget > 0) {
+    //sim.simulate();
     
     // TODO upgrade network
 
     // Stop if network is full
     //if()
-  }
+ // }
 
   // double dist = net_distance(nodes[0] ,nodes[1]);
   // std::cout << dist << std::endl;
   // outputResults(argv[2]);
-
+  Graphviz("Output_graph.dot");
   return 0;
 }

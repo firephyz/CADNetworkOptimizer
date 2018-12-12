@@ -294,6 +294,7 @@ int num_jumps_breadth(Node& a, Node& b) //returns the minimum number of jumps ne
     int dist = 1;
     if(a.id == b.id)
     {
+        Node::clearAllFlags();
         return 0;
     }
     for(int con: a.connectionIndicies)
@@ -325,6 +326,7 @@ int num_jumps_breadth(Node& a, Node& b) //returns the minimum number of jumps ne
             }
         }
     }
+    Node::clearAllFlags();
     return -1;
 }
 bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target)
@@ -377,6 +379,7 @@ std::vector<std::reference_wrapper<Node>> connection_jumps_path(Node& a, Node& b
             queue.push_back(temp);
         }
     }
+    Node::clearAllFlags();
     std::vector<std::reference_wrapper<Node>> empty;
     return empty;
 }

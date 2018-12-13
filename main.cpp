@@ -374,8 +374,10 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
   Graphviz("Input_graph.dot");
   std::cout << num_jumps_breadth(nodes[0],nodes[1]) << "\n";
+  std::cout << num_jumps_breadth(nodes[5],nodes[7]) << "\n";
   completeNetworkGraph();
-  Graphviz("graph.dot");
+  //Graphviz("graph.dot");
+
 
   //Simulator sim(nodes, connections, wires, prefs);
  // while(prefs.budget > 0) {

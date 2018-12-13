@@ -445,3 +445,37 @@ double avg_latency()
     return lat / count;
 
 }
+std::vector<std::reference_wrapper<Node>> find_alt_path(Node& a, Node& b, std::vector<int> blocked)
+{
+    //a.flag=true;
+    //bool check;
+    std::vector<std::vector<std::reference_wrapper<Node>>> queue;
+    std::vector<std::reference_wrapper<Node>> temp;
+    temp.push_back(a);
+    queue.push_back(temp);
+    for(int i = 0; i < (int)queue.size();i++)
+    {
+        queue[i].back().get().flag = true;
+        if(queue[i].back().get().id == b.id)
+        {
+            Node::clearAllFlags();
+            return queue[i];
+        }
+        for(int con: queue[i].back().get().connectionIndicies)
+        {
+            temp = queue[i];
+            if(connections[con].a.id == queue[i].back().get().id && connections[con].b.flag == false && std::find(blocked.begin(), blocked.end(), con) == blocked.end())
+            {
+                temp.push_back(connections[con].b);
+            }
+            else if(connections[con].b.id == queue[i].back().get().id && connections[con].a.flag == false && std::find(blocked.begin(), blocked.end(), con) == blocked.end())
+            {
+                temp.push_back(connections[con].a);
+            }
+            queue.push_back(temp);
+        }
+    }
+    Node::clearAllFlags();
+    std::vector<std::reference_wrapper<Node>> empty;
+    return empty;
+}

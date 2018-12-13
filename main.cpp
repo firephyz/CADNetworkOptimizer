@@ -410,6 +410,7 @@ int main(int argc, char **argv)
   Simulator sim(nodes, connections, wires, prefs);
   while(prefs.budget > 0) {
     sim.simulate();
+    std::cout << "simulation complete";
 
     // TODO upgrade network
 

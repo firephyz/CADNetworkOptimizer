@@ -38,11 +38,9 @@ typedef struct netpacket_t {
   Node * sourceNode;
   Node * destNode;
   Node * lastNode;
+  Node * nextNode;
   Connection * currentConnection;
   std::list<int> route; // Indexes into the connections vector
-  double latency;
-  bool arrived;
-  std::vector<int> turned_away;
 
   netpacket_t(double sendTime, Node * source); // For packets not yet routed.
 } NetPacket;
@@ -59,6 +57,7 @@ public:
   double receiveRate; // packets per second
   double routeRate; // packets per second
   int queueSize;
+  double nextAvailableRouteTime;
 
   Node(std::string& name, double xLoc, double yLoc, double send, double receive, double route, int queue);
 
@@ -100,7 +99,7 @@ extern std::vector<WireType> wires;
 extern std::unordered_map<std::string, Node *> hashed_nodes;
 extern struct pref_t prefs;
 
-double connection_cost(Node& a, Node& b, WireType& wire);
+double connection_cost(Node& a, Node&b, WireType& wire);
 double upgrade_cost(int con, WireType wire);
 bool can_afford(double cost);
 void pay(double cost);

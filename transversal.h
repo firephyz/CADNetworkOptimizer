@@ -23,5 +23,7 @@ bool connection_jumps_deep(std::vector<int> & outlist,Node &current, Node &targe
 std::vector<std::reference_wrapper<Node>> connection_jumps_path(Node& a, Node& b);
 std::vector<int> path_to_con(std::vector<std::reference_wrapper<Node>> path);
 double latency(Node& a, Node& b);
+double avg_latency();
+std::vector<std::reference_wrapper<Node>> find_alt_path(Node& a, Node& b, std::vector<int> blocked);
 
 #endif

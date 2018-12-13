@@ -74,41 +74,80 @@ Simulator::simulate()
 
     switch(event.type) {
       case EventType::NODE_GEN_PKT:
+        packet.sendTime = simTime;
         packet.destNode = determineDestNode(packet.sourceNode);
         packet.route = routePacket(*packet.destNode, *packet.sourceNode);
 
         // Start packet on its journey
         if(packet.route.size() == 0) {
-          scheduler.schedule({0, EventType::NODE_RECV_PKT, packet});
+          //scheduler.schedule({0, EventType::NODE_RECV_PKT, packet});
+          std::cerr << "Simulator routed packet to itself" << std::endl;
         }
         else {
-          int connIndex = packet.route.front();
-          packet.route.pop_front();
-          Connection& connection = connections[connIndex];
           //connection.packets.push(&packet);
-          packet.currentConnection = &connection;
-          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, packet});
+          packet.currentConnection = &connections[packet.route.front()];
+          packet.route.pop_front();
+          if(&packet.currentConnection->a == packet.lastNode) {
+            packet.nextNode = &packet.currentConnection->b;
+          }
+          else {
+            packet.nextNode = &packet.currentConnection->a;
+          }
+
+          if(packet.route.size() == 0) {
+            scheduler.schedule((ScheduledEvent)
+              {packet.currentConnection->travelTime,
+               EventType::NODE_RECV_PKT,
+               packet});
+          }
+          else {
+            scheduler.schedule((ScheduledEvent)
+              {packet.currentConnection->travelTime,
+               EventType::NODE_ROUTE_PKT,
+               packet});
+          }
+        }
+        break;
+      case EventType::NODE_ROUTE_PKT:
+
+        if(simTime < packet.nextNode->nextAvailableRouteTime) {
+          // Reschedule the routing
+          scheduler.schedule((ScheduledEvent)
+            {packet.nextNode->nextAvailableRouteTime - simTime,
+             EventType::NODE_ROUTE_PKT,
+             packet});
+        }
+        else {
+          packet.nextNode->nextAvailableRouteTime += 1 / packet.nextNode->routeRate;
+
+          // Move packet to staging area of node it is routed to
+          packet.lastNode = packet.nextNode;
+          if(&packet.currentConnection->a == packet.lastNode) {
+            packet.nextNode = &packet.currentConnection->b;
+          }
+          else {
+            packet.nextNode = &packet.currentConnection->a;
+          }
+          packet.currentConnection = &connections[packet.route.front()];
+          packet.route.pop_front();
+
+          // Route
+          if(packet.route.size() == 0) {
+            scheduler.schedule((ScheduledEvent)
+              {packet.currentConnection->travelTime,
+               EventType::NODE_RECV_PKT,
+               packet});
+          }
+          else {
+            scheduler.schedule((ScheduledEvent)
+              {packet.currentConnection->travelTime + 1 / packet.nextNode->routeRate,
+               EventType::NODE_ROUTE_PKT,
+               packet});
+          }
         }
         break;
       case EventType::NODE_RECV_PKT:
-        Node * currentNode = &packet.currentConnection->a;
-        if(currentNode == packet.lastNode) {
-          currentNode = &packet.currentConnection->b;
-        }
-        packet.lastNode = currentNode;
-
-        // Packet finished route
-        if(packet.route.size() == 0) {
-          free(&packet);
-        }
-        else {
-          int connIndex = packet.route.front();
-          packet.route.pop_front();
-          Connection& connection = connections[connIndex];
-          packet.currentConnection = &connection;
-
-          scheduler.schedule((ScheduledEvent){connection.travelTime, EventType::NODE_RECV_PKT, packet});
-        }
+        free(&packet);
         break;
     }
   }

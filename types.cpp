@@ -30,6 +30,7 @@ Node::Node(std::string& name,
   , receiveRate(receive)
   , routeRate(route)
   , queueSize(queue)
+  , nextAvailableRouteTime(0)
 {
   id = nextID;
   nextID++;

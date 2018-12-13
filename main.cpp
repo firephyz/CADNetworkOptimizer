@@ -19,14 +19,6 @@ std::vector<WireType> wires; // sorted by cost
 struct pref_t prefs;
 
 std::unordered_map<std::string, Node *> hashed_nodes;
-int num_jumps(Node& a, Node& b);
-bool num_jumps_deep(int & dist,Node &current, Node &target);
-int num_jumps_breadth(Node& a, Node& b);
-bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target);
-std::vector<int> connection_jumps(Node& a, Node& b);
-bool connection_jumps_deep(std::vector<int> & outlist,Node &current, Node &target);
-void Graphviz(std::string name);
-
 
 void printUsage()
 {
@@ -61,10 +53,10 @@ void parseListOfNodes(xmlNodePtr node)
     double yLoc = std::atof((const char *)xmlGetAttribute(child, "y")->children->content);
     double sendRate = std::atof((const char *)xmlGetAttribute(child, "sendRate")->children->content);
     double receiveRate = std::atof((const char *)xmlGetAttribute(child, "receiveRate")->children->content);
-    double routeRate = std::atof((const char *)xmlGetAttribute(child, "routeRate")->children->content);
+    double routeDelay = std::atof((const char *)xmlGetAttribute(child, "routeDelay")->children->content);
     int queueSize = std::atoi((const char *)xmlGetAttribute(child, "queueSize")->children->content);
 
-    nodes.emplace_back(Node(name, xLoc, yLoc, sendRate, receiveRate, routeRate, queueSize));
+    nodes.emplace_back(Node(name, xLoc, yLoc, sendRate, receiveRate, routeDelay, queueSize));
 
     child = xmlNextElementSibling(child);
   }
@@ -273,7 +265,7 @@ void completeNetworkGraph()
   WireType& wire = wires[0];
   double price;
   bool check;
-  for(uint i = 0; i < midNodes.size() - 1; ++i) {
+  for(uint i = 0; i < midNodes.size(); ++i) {
     if(i == midNodes.size() - 1) {
       price = connection_cost(*midNodes[i], *midNodes[0],wire);
       check = can_afford(price);
@@ -314,17 +306,54 @@ void Graphviz(std::string name)
     {
       if(connections[con].a.id == node.id && connections[con].b.flag == false)
       {
-        myfile <<"    " << connections[con].a.name << " -> " << connections[con].b.name << ";\n";
+        myfile <<"    " << connections[con].a.name << " -> " << connections[con].b.name << " [label=" << "\""<< connections[con].type.typeName <<  "\"];\n";
       }
       else if(connections[con].b.id == node.id && connections[con].a.flag == false)
       {
-        myfile << "    " << connections[con].b.name << " -> " << connections[con].a.name << ";\n";
+        myfile << "    " << connections[con].b.name << " -> " << connections[con].a.name << " [label=" << "\""<< connections[con].type.typeName <<  "\"];\n";
       }
     }
   }
   myfile << "}\n";
   Node::clearAllFlags();
 
+}
+bool check_for_connection(Node& a, Node& b)
+{
+  for(Connection con : connections)
+  {
+    if((con.a.id == a.id && con.b.id == b.id)||(con.a.id == b.id && con.b.id == a.id))
+    {
+      return true;
+    }
+  }
+  return false;
+}
+bool check_graph_full()
+{
+  bool check;
+  for(int i = 0; i < (int)nodes.size(); i++)
+  {
+    for(int j = 0; j < (int)nodes.size(); j++)
+    {
+      if( i != j)
+      {
+        check = false;
+        for(Connection con : connections)
+        {
+          if((con.a.id == nodes[i].id && con.b.id == nodes[j].id)||(con.a.id == nodes[j].id && con.b.id == nodes[i].id))
+          {
+            check = true;
+          }
+        }
+        if(!check)
+        {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
 }
 
 int main(int argc, char **argv)
@@ -337,8 +366,10 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
   Graphviz("Input_graph.dot");
   std::cout << num_jumps_breadth(nodes[0],nodes[1]) << "\n";
+  std::cout << num_jumps_breadth(nodes[5],nodes[7]) << "\n";
   completeNetworkGraph();
-  Graphviz("graph.dot");
+  //Graphviz("graph.dot");
+
 
   Simulator sim(nodes, connections, wires, prefs);
   while(prefs.budget > 0) {
@@ -352,7 +383,7 @@ int main(int argc, char **argv)
 
   // double dist = net_distance(nodes[0] ,nodes[1]);
   // std::cout << dist << std::endl;
-  // outputResults(argv[2]);
+  outputResults(argv[2]);
   Graphviz("Output_graph.dot");
   return 0;
 }

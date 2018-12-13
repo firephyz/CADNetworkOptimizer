@@ -1,4 +1,8 @@
 tool
+Input_graph.dot
+Input_graph.dot.png
+Output_graph.dot
+Output_graph.dot.png
 /assignment_folder/
 /.vscode/
 /.idea/

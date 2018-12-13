@@ -7,6 +7,7 @@
 
 enum class EventType {
   NODE_GEN_PKT,
+  NODE_ROUTE_PKT,
   NODE_RECV_PKT
 };
 

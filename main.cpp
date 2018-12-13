@@ -420,6 +420,7 @@ int main(int argc, char **argv)
   std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
   //Graphviz("graph.dot");
 
+  prefs.budget = 0;
 
   Simulator sim(nodes, connections, wires, prefs);
   while(prefs.budget > 0) {
@@ -429,6 +430,7 @@ int main(int argc, char **argv)
 
     // Stop if network is full
     //if()
+    prefs.budget = 0;
   }
 
   // double dist = net_distance(nodes[0] ,nodes[1]);

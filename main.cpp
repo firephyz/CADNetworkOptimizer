@@ -366,19 +366,22 @@ bool check_graph_completely_upgraded()
   }
   return true;
 }
-double simmed_avg_latency( Simulator sim)
+double simmed_avg_latency( Simulator sim)// averaged latency
 {
   int count = 0;
   double lat = 0;
   for( NetPacket pack : sim.stats.packets)
   {
-    lat += pack.latency;
-    count++;
+    if(pack.arrived)
+    {
+      lat += pack.latency;
+      count++;
+    }
   }
   return lat / count;
 }
 
-double simmed_total_error_rate(Simulator sim)
+double simmed_total_error_rate(Simulator sim) // rate of errors for the entire network
 {
   int count = 0;
   double err_count = 0;
@@ -420,7 +423,7 @@ int main(int argc, char **argv)
   std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
   //Graphviz("graph.dot");
 
-  prefs.budget = 0;
+  //prefs.budget = 0;
 
   Simulator sim(nodes, connections, wires, prefs);
   while(prefs.budget > 0) {
@@ -430,6 +433,9 @@ int main(int argc, char **argv)
 
     // Stop if network is full
     //if()
+    std::cout << simmed_avg_latency(sim);
+    std::cout << simmed_total_error_rate(sim);
+    std::cout << simmed_throughput(sim, .5, .9)
     prefs.budget = 0;
   }
 

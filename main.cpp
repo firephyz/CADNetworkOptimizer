@@ -416,9 +416,9 @@ int main(int argc, char **argv)
 
     // Stop if network is full
     //if()
-    std::cout << simmed_avg_latency(sim);
-    std::cout << simmed_total_error_rate(sim);
-    std::cout << simmed_throughput(sim, .5, .9);
+    std::cout << simmed_avg_latency(sim) << std::endl;
+    std::cout << simmed_total_error_rate(sim) << std::endl;
+    std::cout << simmed_throughput(sim, 0, 1) << std::endl;
     prefs.budget = 0;
   }
 

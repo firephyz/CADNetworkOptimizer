@@ -108,6 +108,11 @@ Simulator::simulate()
                packet});
           }
         }
+
+        scheduler.schedule((ScheduledEvent)
+          {1 / packet.lastNode->sendRate,
+           EventType::NODE_GEN_PKT,
+           NetPacket(simTime, packet.lastNode)});
         break;
       case EventType::NODE_ROUTE_PKT:
 

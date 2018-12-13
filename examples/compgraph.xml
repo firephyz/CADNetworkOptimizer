@@ -33,7 +33,7 @@
 
   <!-- latency, packetLoss and throughput are weights and relative to eachother.
   Will be normalized by the tool. Budget is not a weight but rather a fixed max boundary-->
-  <Preferences latency='1' packetLoss='1' throughput='1' budget='10000'/>
+  <Preferences latency='1' packetLoss='1' throughput='1' budget='100000'/>
 
   <!-- Following section will be present if file is output from the CAD tool -->
   <!-- latency is in milliseconds, packetLoss is a percentage and throughput is

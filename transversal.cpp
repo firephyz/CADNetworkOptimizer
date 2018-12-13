@@ -292,46 +292,35 @@ bool connection_jumps_deep(std::vector<int> & outlist, Node &current, Node &targ
 }
 int num_jumps_breadth(Node& a, Node& b) //returns the minimum number of jumps neccessary between 2 nodes
 {
-    a.flag=true;
-    bool check;
-    std::vector<std::reference_wrapper<Node>> list;
-    int dist = 1;
-    if(a.id == b.id)
+    std::vector<std::vector<std::reference_wrapper<Node>>> queue;
+    std::vector<std::reference_wrapper<Node>> temp;
+    temp.push_back(a);
+    queue.push_back(temp);
+    for(int i = 0; i < (int)queue.size();i++)
     {
-        Node::clearAllFlags();
-        return 0;
-    }
-    for(int con: a.connectionIndicies)
-    {
-        if(connections[con].a.id == a.id)
+        queue[i].back().get().flag = true;
+        if(queue[i].back().get().id == b.id)
         {
-            list.push_back(connections[con].b);
+            Node::clearAllFlags();
+            return (int)queue[i].size() - 1;
         }
-        else
+        for(int con: queue[i].back().get().connectionIndicies)
         {
-            list.push_back(connections[con].a);
-        }
-    }
-    int levelEnd =list.size();
-    for(int i = 0; i < (int)list.size(); i++)
-    {
-        if(i > levelEnd)
-        {
-            levelEnd = list.size();
-            dist++;
-        }
-        if(!list[i].get().flag)
-        {
-            check = num_jumps_breadth_deep(list,list[i],b);
-            if(check)
+            temp = queue[i];
+            if(connections[con].a.id == queue[i].back().get().id && connections[con].b.flag == false)
             {
-                Node::clearAllFlags();
-                return dist;
+                temp.push_back(connections[con].b);
             }
+            else if(connections[con].b.id == queue[i].back().get().id && connections[con].a.flag == false)
+            {
+                temp.push_back(connections[con].a);
+            }
+            queue.push_back(temp);
         }
     }
     Node::clearAllFlags();
-    return -1;
+    std::vector<std::reference_wrapper<Node>> empty;
+    return (int)empty.size();
 }
 bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Node& current, Node& target)
 {

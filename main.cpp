@@ -326,6 +326,43 @@ void Graphviz(std::string name)
   Node::clearAllFlags();
 
 }
+bool check_for_connection(Node& a, Node& b)
+{
+  for(Connection con : connections)
+  {
+    if((con.a.id == a.id && con.b.id == b.id)||(con.a.id == b.id && con.b.id == a.id))
+    {
+      return true;
+    }
+  }
+  return false;
+}
+bool check_graph_full()
+{
+  bool check;
+  for(int i = 0; i < (int)nodes.size(); i++)
+  {
+    for(int j = 0; j < (int)nodes.size(); j++)
+    {
+      if( i != j)
+      {
+        check = false;
+        for(Connection con : connections)
+        {
+          if((con.a.id == nodes[i].id && con.b.id == nodes[j].id)||(con.a.id == nodes[j].id && con.b.id == nodes[i].id))
+          {
+            check = true;
+          }
+        }
+        if(!check)
+        {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
 
 int main(int argc, char **argv)
 {
@@ -352,7 +389,7 @@ int main(int argc, char **argv)
 
   // double dist = net_distance(nodes[0] ,nodes[1]);
   // std::cout << dist << std::endl;
-  // outputResults(argv[2]);
+  outputResults(argv[2]);
   Graphviz("Output_graph.dot");
   return 0;
 }

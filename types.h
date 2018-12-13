@@ -40,6 +40,8 @@ typedef struct netpacket_t {
   Node * destNode;
   Node * lastNode;
   Node * nextNode;
+  bool arrived;
+  double latency;
   Connection * currentConnection;
   std::list<int> route; // Indexes into the connections vector
 

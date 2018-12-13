@@ -266,11 +266,11 @@ void completeNetworkGraph()
   WireType& wire = wires[0];
   for(uint i = 0; i < midNodes.size(); ++i) {
     if(i == midNodes.size() - 1) {
-      pay(connection_cost(*midNodes[i], *midNodes[0],wire));
+      prefs.budget -= connection_cost(*midNodes[i], *midNodes[0],wire);
       midNodes[i]->connect(*midNodes[0], wire);
     }
     else {
-      pay(connection_cost(*midNodes[i], *midNodes[i + 1],wire));
+      prefs.budget -= connection_cost(*midNodes[i], *midNodes[i + 1],wire);
       midNodes[i]->connect(*midNodes[i + 1], wire);
     }
   }
@@ -400,8 +400,8 @@ int main(int argc, char **argv)
   Graphviz("Input_graph.dot");
   completeNetworkGraph();
   if(prefs.budget < 0) {
-    std::cerr << "Cost to complete graph is too large. Requesting ";
-    std::cerr << prefs.originalBudget - prefs.budget << " of " << prefs.originalBudget ".";
+    std::cerr << "Could not complete graph within budget. Requests ";
+    std::cerr << prefs.originalBudget - prefs.budget << " of " << prefs.originalBudget << ".\n";
   }
   //Graphviz("graph.dot");
 

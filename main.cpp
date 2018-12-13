@@ -276,7 +276,8 @@ void completeNetworkGraph()
       }
       else
       {
-        std::cerr <<"insufficient Budget to provide a complete network";
+        std::cerr <<"insufficient Budget to provide a complete network\n";
+        exit(1);
       }
     }
     else {
@@ -289,7 +290,8 @@ void completeNetworkGraph()
       }
       else
       {
-        std::cerr <<"insufficient Budget to provide a complete network";
+        std::cerr <<"insufficient Budget to provide a complete network\n";
+        exit(1);
       }
     }
   }
@@ -418,9 +420,12 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
   Graphviz("Input_graph.dot");
   std::cout << num_jumps_breadth(nodes[0],nodes[1]) << "\n";
-  std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
+  std::cout << real_distance(nodes[0],nodes[1]) << "\n";
+  std::cout << connection_cost(nodes[0],nodes[1], wires[0]) << "\n";
+  std::cout << prefs.budget << "\n";
   completeNetworkGraph();
-  std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
+  std::cout << num_jumps_breadth(nodes[1],nodes[2]) << "\n";
+  std::cout << prefs.budget << "\n";
   //Graphviz("graph.dot");
 
   //prefs.budget = 0;
@@ -428,6 +433,7 @@ int main(int argc, char **argv)
   Simulator sim(nodes, connections, wires, prefs);
   while(prefs.budget > 0) {
     sim.simulate();
+    std::cout << "simulation complete";
 
     // TODO upgrade network
 

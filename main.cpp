@@ -246,7 +246,7 @@ findGroupMidNode(std::vector<Node *> group)
     double averageDistance = 0;
     for(auto& target : group) {
       if(node == target) continue;
-      int distance = num_jumps(*node, *target);
+      double distance = num_jumps_breadth(*node, *target);
       averageDistance += distance / (group.size() - 1);
     }
 
@@ -340,15 +340,15 @@ int main(int argc, char **argv)
   completeNetworkGraph();
   Graphviz("graph.dot");
 
-  //Simulator sim(nodes, connections, wires, prefs);
- // while(prefs.budget > 0) {
-    //sim.simulate();
-    
+  Simulator sim(nodes, connections, wires, prefs);
+  while(prefs.budget > 0) {
+    sim.simulate();
+
     // TODO upgrade network
 
     // Stop if network is full
     //if()
- // }
+  }
 
   // double dist = net_distance(nodes[0] ,nodes[1]);
   // std::cout << dist << std::endl;

@@ -53,10 +53,10 @@ void parseListOfNodes(xmlNodePtr node)
     double yLoc = std::atof((const char *)xmlGetAttribute(child, "y")->children->content);
     double sendRate = std::atof((const char *)xmlGetAttribute(child, "sendRate")->children->content);
     double receiveRate = std::atof((const char *)xmlGetAttribute(child, "receiveRate")->children->content);
-    double routeDelay = std::atof((const char *)xmlGetAttribute(child, "routeDelay")->children->content);
+    double routeRate = std::atof((const char *)xmlGetAttribute(child, "routeRate")->children->content);
     int queueSize = std::atoi((const char *)xmlGetAttribute(child, "queueSize")->children->content);
 
-    nodes.emplace_back(Node(name, xLoc, yLoc, sendRate, receiveRate, routeDelay, queueSize));
+    nodes.emplace_back(Node(name, xLoc, yLoc, sendRate, receiveRate, routeRate, queueSize));
 
     child = xmlNextElementSibling(child);
   }
@@ -420,6 +420,7 @@ int main(int argc, char **argv)
   std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
   //Graphviz("graph.dot");
 
+  prefs.budget = 0;
 
   Simulator sim(nodes, connections, wires, prefs);
   while(prefs.budget > 0) {
@@ -429,6 +430,7 @@ int main(int argc, char **argv)
 
     // Stop if network is full
     //if()
+    prefs.budget = 0;
   }
 
   // double dist = net_distance(nodes[0] ,nodes[1]);

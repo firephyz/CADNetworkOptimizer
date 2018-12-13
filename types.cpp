@@ -92,7 +92,7 @@ Node::getNextPacketTime()
 {
   static double randRange = 0.05;
   double randDouble = (double)std::rand() / RAND_MAX;
-  return sendRate * 2 * randRange * (randDouble - 0.5);
+  return 1 / sendRate + 2 * randRange * (randDouble - 0.5);
 }
 
 bool update_node_hash()
@@ -128,6 +128,7 @@ netpacket_t::netpacket_t(double sendTime, Node * source)
   , destNode(NULL)
   , lastNode(source)
   , currentConnection(NULL)
+  , 
 {}
 
 /*
@@ -143,7 +144,7 @@ Connection::Connection(WireType& type, Node& a, Node& b)
 {
   id = nextID;
   nextID++;
-  travelTime = real_distance(a, b);
+  travelTime = real_distance(a, b) / 150000000;
 }
 
 std::string

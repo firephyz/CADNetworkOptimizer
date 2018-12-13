@@ -17,6 +17,7 @@ Simulator::Simulator(
   , connections(connections)
   , wires(wires)
   , prefs(prefs)
+  , simTime(0)
   , maxSimTime(1)
 {
   // Sort nodes by receive rate for determineDestNode
@@ -147,7 +148,9 @@ Simulator::simulate()
         }
         break;
       case EventType::NODE_RECV_PKT:
-        free(&packet);
+        packet.arrive = true;
+        packet.latency = simTime - packet.sendTime;
+        stats.packets.push_back(packet);
         break;
     }
   }
@@ -156,8 +159,11 @@ Simulator::simulate()
 Node *
 Simulator::determineDestNode(Node * sourceNode)
 {
-  double nodeIndex = (double)rand() / RAND_MAX * sortedNodes.size();
-  return sortedNodes[(int)nodeIndex];
+  int nodeIndex = (int)((double)rand() / RAND_MAX * sortedNodes.size());
+  while(sortedNodes[nodeIndex] == sourceNode) {
+    nodeIndex = (int)((double)rand() / RAND_MAX * sortedNodes.size());
+  }
+  return sortedNodes[nodeIndex];
 }
 
 std::list<int>

@@ -49,14 +49,14 @@ void parseListOfNodes(xmlNodePtr node)
     }
 
     std::string name = (const char *)xmlGetAttribute(child, "name")->children->content;
-    double xLoc = std::atof((const char *)xmlGetAttribute(child, "x")->children->content);
-    double yLoc = std::atof((const char *)xmlGetAttribute(child, "y")->children->content);
+    double xLoc = 1000 * std::atof((const char *)xmlGetAttribute(child, "x")->children->content);
+    double yLoc = 1000 * std::atof((const char *)xmlGetAttribute(child, "y")->children->content);
     double sendRate = std::atof((const char *)xmlGetAttribute(child, "sendRate")->children->content);
     double receiveRate = std::atof((const char *)xmlGetAttribute(child, "receiveRate")->children->content);
-    double routeDelay = std::atof((const char *)xmlGetAttribute(child, "routeDelay")->children->content);
+    double routeRate = std::atof((const char *)xmlGetAttribute(child, "routeRate")->children->content);
     int queueSize = std::atoi((const char *)xmlGetAttribute(child, "queueSize")->children->content);
 
-    nodes.emplace_back(Node(name, xLoc, yLoc, sendRate, receiveRate, routeDelay, queueSize));
+    nodes.emplace_back(Node(name, xLoc, yLoc, sendRate, receiveRate, routeRate, queueSize));
 
     child = xmlNextElementSibling(child);
   }

@@ -326,7 +326,7 @@ void Graphviz(std::string name)
   Node::clearAllFlags();
 
 }
-bool check_for_connection(Node& a, Node& b)
+bool check_for_direct_connection(Node& a, Node& b)
 {
   for(Connection con : connections)
   {
@@ -363,7 +363,56 @@ bool check_graph_full()
   }
   return true;
 }
+bool check_graph_completely_upgraded()
+{
+  for(Connection con : connections)
+  {
+    if(con.type.typeName != wires.back().typeName) // assumes that the wireTypes are ordered from worst to best
+    {
+      return false;
+    }
+  }
+  return true;
+}
+double simmed_avg_latency( Simulator sim)
+{
+  int count = 0;
+  double lat = 0;
+  for( NetPacket pack : sim.stats.packets)
+  {
+    lat += pack.latency;
+    count++;
+  }
+  return lat / count;
+}
 
+double simmed_total_error_rate(Simulator sim)
+{
+  int count = 0;
+  double err_count = 0;
+  for( NetPacket pack : sim.stats.packets)
+  {
+    if(!pack.arrived)
+  {
+     err_count += 1;
+  }
+    count++;
+  }
+  return err_count / count;
+}
+
+double simmed_throughput(Simulator sim, double startTime, double endTime) //successful packets per second during the defined period of the simulation
+{
+  double count = 0;
+  for( NetPacket pack : sim.stats.packets)
+  {
+    if( pack.sendTime >= startTime && (pack.sendTime + pack.latency) <= endTime && pack.arrived)
+    {
+      count +=1;
+    }
+  }
+  return count / (endTime - startTime);
+}
 int main(int argc, char **argv)
 {
   if(argc != 3) {
@@ -374,8 +423,9 @@ int main(int argc, char **argv)
   readInputFile(argv[1]);
   Graphviz("Input_graph.dot");
   std::cout << num_jumps_breadth(nodes[0],nodes[1]) << "\n";
-  std::cout << num_jumps_breadth(nodes[5],nodes[7]) << "\n";
+  std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
   completeNetworkGraph();
+  std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
   //Graphviz("graph.dot");
 
 

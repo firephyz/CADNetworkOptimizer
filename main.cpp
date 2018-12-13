@@ -115,6 +115,7 @@ void parsePreferences(xmlNodePtr node)
   prefs.packetLoss = std::atof((const char *)xmlGetAttribute(node, "packetLoss")->children->content);
   prefs.throughput = std::atof((const char *)xmlGetAttribute(node, "throughput")->children->content);
   prefs.budget = std::atof((const char *)xmlGetAttribute(node, "budget")->children->content);
+  prefs.originalBudget = prefs.budget;
 }
 
 void readInputFile(char * fileName)
@@ -263,34 +264,14 @@ void completeNetworkGraph()
 
   // TODO improve initial connection.
   WireType& wire = wires[0];
-  double price;
-  bool check;
   for(uint i = 0; i < midNodes.size(); ++i) {
     if(i == midNodes.size() - 1) {
-      price = connection_cost(*midNodes[i], *midNodes[0],wire);
-      check = can_afford(price);
-      if(check)
-      {
-        midNodes[i]->connect(*midNodes[0], wire);
-        pay(price);
-      }
-      else
-      {
-        std::cerr <<"insufficient Budget to provide a complete network";
-      }
+      pay(connection_cost(*midNodes[i], *midNodes[0],wire));
+      midNodes[i]->connect(*midNodes[0], wire);
     }
     else {
-      price = connection_cost(*midNodes[i], *midNodes[i + 1],wire);
-      check = can_afford(price);
-      if(check)
-      {
-        midNodes[i]->connect(*midNodes[i + 1], wire);
-        pay(price);
-      }
-      else
-      {
-        std::cerr <<"insufficient Budget to provide a complete network";
-      }
+      pay(connection_cost(*midNodes[i], *midNodes[i + 1],wire));
+      midNodes[i]->connect(*midNodes[i + 1], wire);
     }
   }
 }
@@ -417,10 +398,11 @@ int main(int argc, char **argv)
   std::srand(clock());
   readInputFile(argv[1]);
   Graphviz("Input_graph.dot");
-  std::cout << num_jumps_breadth(nodes[0],nodes[1]) << "\n";
-  std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
   completeNetworkGraph();
-  std::cout << num_jumps_breadth(nodes[5],nodes[4]) << "\n";
+  if(prefs.budget < 0) {
+    std::cerr << "Cost to complete graph is too large. Requesting ";
+    std::cerr << prefs.originalBudget - prefs.budget << " of " << prefs.originalBudget ".";
+  }
   //Graphviz("graph.dot");
 
   //prefs.budget = 0;

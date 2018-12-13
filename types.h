@@ -10,6 +10,7 @@ struct pref_t {
   double latency;
   double packetLoss;
   double throughput;
+  double originalBudget;
   double budget;
 };
 
@@ -39,8 +40,6 @@ typedef struct netpacket_t {
   Node * destNode;
   Node * lastNode;
   Node * nextNode;
-  bool arrived;
-  double latency;
   Connection * currentConnection;
   std::list<int> route; // Indexes into the connections vector
 

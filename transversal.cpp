@@ -353,7 +353,7 @@ bool num_jumps_breadth_deep(std::vector<std::reference_wrapper<Node>> & list,Nod
     }
     return false;
 }
-std::vector<std::reference_wrapper<Node>> connection_jumps_path(Node& a, Node& b)
+std::vector<std::reference_wrapper<Node>> connection_jumps_path(Node& a, Node& b) // only use on complete graphs
 {
     //a.flag=true;
     //bool check;

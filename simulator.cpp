@@ -148,7 +148,7 @@ Simulator::simulate()
         }
         break;
       case EventType::NODE_RECV_PKT:
-        packet.arrive = true;
+        packet.arrived = true;
         packet.latency = simTime - packet.sendTime;
         stats.packets.push_back(packet);
         break;

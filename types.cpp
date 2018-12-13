@@ -130,7 +130,6 @@ netpacket_t::netpacket_t(double sendTime, Node * source)
   , arrived(false)
   , latency(0)
   , currentConnection(NULL)
-  , 
 {}
 
 /*

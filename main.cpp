@@ -389,6 +389,30 @@ double simmed_throughput(Simulator sim, double startTime, double endTime) //succ
   }
   return count / (endTime - startTime);
 }
+NetPacket longest_travel(Simulator sim)
+{
+    NetPacket longest = sim.stats.packets[0];
+    for (NetPacket pack : sim.stats.packets)
+    {
+        if(pack.latency > longest.latency)
+        {
+            longest = pack;
+        }
+    }
+    return longest;
+}
+int most_rejections(Simulator sim)
+{
+    int worst = 0;
+    for(int i = 0; i<(int)sim.stats.cons.size(); i++)
+    {
+        if(sim.stats.cons[i].num_denied > sim.stats.cons[worst].num_denied)
+        {
+            worst = i;
+        }
+    }
+    return worst;
+}
 int main(int argc, char **argv)
 {
   if(argc != 3) {
@@ -410,7 +434,7 @@ int main(int argc, char **argv)
   Simulator sim(nodes, connections, wires, prefs);
   while(prefs.budget > 0) {
     sim.simulate();
-    std::cout << "simulation complete";
+    std::cout << "simulation complete \n";
 
     // TODO upgrade network
 

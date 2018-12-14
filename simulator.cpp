@@ -97,13 +97,13 @@ Simulator::simulate()
 
           if(packet.route.size() == 0) {
             scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime,
+              {packet.currentConnection->travelTime + simTime,
                EventType::NODE_RECV_PKT,
                packet});
           }
           else {
             scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime,
+              {packet.currentConnection->travelTime + simTime,
                EventType::NODE_ROUTE_PKT,
                packet});
           }
@@ -126,10 +126,11 @@ Simulator::simulate()
             {packet.nextNode->nextAvailableRouteTime,
              EventType::NODE_ROUTE_PKT,
              packet});
+
         }
         else {
-          packet.nextNode->nextAvailableRouteTime += 1 / packet.nextNode->routeRate;
 
+          packet.nextNode->nextAvailableRouteTime += 1 / packet.nextNode->routeRate;
           // Move packet to staging area of node it is routed to
           packet.lastNode = packet.nextNode;
           if(&packet.currentConnection->a == packet.lastNode) {
@@ -144,7 +145,7 @@ Simulator::simulate()
           // Route
           if(packet.route.size() == 0) {
             scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime + simTime,
+              {packet.currentConnection->travelTime + 1 / packet.nextNode->routeRate + simTime,
                EventType::NODE_RECV_PKT,
                packet});
           }

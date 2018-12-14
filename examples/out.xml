@@ -1,14 +1,14 @@
 <NetworkDefinition>
 	<ListOfNodes>
 		<Node name='node1' x='0' y='0' sendRate='35' receiveRate='25' routeRate='100' queueSize='0'/>
-		<Node name='node2' x='5' y='5' sendRate='72' receiveRate='63' routeRate='150' queueSize='0'/>
-		<Node name='node3' x='1' y='1' sendRate='68' receiveRate='53' routeRate='75' queueSize='0'/>
-		<Node name='node4' x='13' y='2' sendRate='45' receiveRate='27' routeRate='200' queueSize='0'/>
-		<Node name='node5' x='4' y='6' sendRate='12' receiveRate='74' routeRate='60' queueSize='0'/>
-		<Node name='node6' x='3' y='1' sendRate='32' receiveRate='63' routeRate='180' queueSize='0'/>
-		<Node name='node7' x='1.5' y='7' sendRate='49' receiveRate='46' routeRate='180' queueSize='0'/>
-		<Node name='node8' x='16' y='20' sendRate='37' receiveRate='49' routeRate='90' queueSize='0'/>
-		<Node name='node9' x='4' y='10' sendRate='28' receiveRate='51' routeRate='500' queueSize='0'/>
+		<Node name='node2' x='5000' y='5000' sendRate='72' receiveRate='63' routeRate='150' queueSize='0'/>
+		<Node name='node3' x='1000' y='1000' sendRate='68' receiveRate='53' routeRate='75' queueSize='0'/>
+		<Node name='node4' x='13000' y='2000' sendRate='45' receiveRate='27' routeRate='200' queueSize='0'/>
+		<Node name='node5' x='4000' y='6000' sendRate='12' receiveRate='74' routeRate='60' queueSize='0'/>
+		<Node name='node6' x='3000' y='1000' sendRate='32' receiveRate='63' routeRate='180' queueSize='0'/>
+		<Node name='node7' x='1500' y='7000' sendRate='49' receiveRate='46' routeRate='180' queueSize='0'/>
+		<Node name='node8' x='16000' y='20000' sendRate='37' receiveRate='49' routeRate='90' queueSize='0'/>
+		<Node name='node9' x='4000' y='10000' sendRate='28' receiveRate='51' routeRate='500' queueSize='0'/>
 	</ListOfNodes>
 	<WireTypess>
 		<Wire type='type0' cost='1' bandwidth='10' errorRate='0.0001'/>

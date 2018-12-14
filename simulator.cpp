@@ -16,19 +16,15 @@ Simulator::Simulator(
   : nodes(nodes)
   , connections(connections)
   , wires(wires)
+  , totalReceiveRate(0)
   , prefs(prefs)
   , simTime(0)
   , maxSimTime(1)
 {
   // Sort nodes by receive rate for determineDestNode
   for(Node& node : nodes) {
-    sortedNodes.push_back(&node);
+    totalReceiveRate += node.receiveRate;
   }
-  std::sort(sortedNodes.begin(), sortedNodes.end(),
-    [](auto& a, auto& b)
-    {
-      return a->receiveRate < b->receiveRate;
-    });
 
   // Schedule initial packets
   for(Node& node : nodes) {
@@ -130,8 +126,6 @@ Simulator::simulate()
         }
         else {
           packet.nextNode->nextAvailableRouteTime = simTime + 1 / packet.nextNode->routeRate;
-
-          packet.nextNode->nextAvailableRouteTime += 1 / packet.nextNode->routeRate;
           // Move packet to staging area of node it is routed to
           packet.lastNode = packet.nextNode;
           if(&packet.currentConnection->a == packet.lastNode) {
@@ -172,11 +166,21 @@ Simulator::simulate()
 Node *
 Simulator::determineDestNode(Node * sourceNode)
 {
-  int nodeIndex = (int)((double)rand() / RAND_MAX * sortedNodes.size());
-  while(sortedNodes[nodeIndex] == sourceNode) {
-    nodeIndex = (int)((double)rand() / RAND_MAX * sortedNodes.size());
-  }
-  return sortedNodes[nodeIndex];
+  Node * result = NULL;
+
+  do {
+    double randNum = (double)rand() / RAND_MAX * totalReceiveRate;
+    double counter = 0;
+    for(uint index = 0; index < nodes.size(); ++index) {
+      counter += nodes[index].receiveRate;
+      if(randNum <= counter) {
+        result = &nodes[index];
+        break;
+      }
+    }
+  } while(result == sourceNode);
+
+  return result;
 }
 
 std::list<int>

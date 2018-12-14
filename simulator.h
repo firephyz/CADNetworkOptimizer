@@ -45,7 +45,8 @@ class Simulator {
   std::vector<Node>& nodes;
   std::vector<Connection>& connections;
   std::vector<WireType>& wires;
-  std::vector<Node *> sortedNodes; // sorted by receive rate
+  // sorted by receive rate. First element of pair is the ratio of receive rate it consumes
+  double totalReceiveRate;
   struct pref_t & prefs;
   Scheduler scheduler;
 

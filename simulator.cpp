@@ -26,19 +26,6 @@ Simulator::Simulator(
   for(Node& node : nodes) {
     totalReceiveRate += node.receiveRate;
   }
-
-  // Schedule initial packets
-  for(Node& node : nodes) {
-    double packetTime = node.getNextPacketTime();
-    if(packetTime < 0) {
-      packetTime *= -1;
-    }
-    scheduler.schedule((ScheduledEvent){
-      packetTime,
-      EventType::NODE_GEN_PKT,
-      false,
-      NetPacket(simTime, &node)});
-  }
 }
 
 // Scheduling new events (likely) will be near the end of the
@@ -65,6 +52,23 @@ Scheduler::schedule(ScheduledEvent event)
 void
 Simulator::simulate()
 {
+  scheduler.events.clear();
+  for(Connection& con : connections) {
+    con.numPackets = 0;
+  }
+  simTime = 0;
+  for(Node& node : nodes) {
+    double packetTime = node.getNextPacketTime();
+    if(packetTime < 0) {
+      packetTime *= -1;
+    }
+    scheduler.schedule((ScheduledEvent){
+            packetTime,
+            EventType::NODE_GEN_PKT,
+            false,
+            NetPacket(simTime, &node)});
+    node.nextAvailableRouteTime = 0;
+  }
   while(simTime < maxSimTime) {
     ScheduledEvent event = scheduler.events.front();
     scheduler.events.pop_front();
@@ -73,7 +77,7 @@ Simulator::simulate()
 
     switch(event.type) {
       case EventType::NODE_GEN_PKT:
-        std::cout << "GEN_PKT: {" << packet.sourceNode->id << "}\n";
+        //std::cout << "GEN_PKT: {" << packet.sourceNode->id << "}\n";
         packet.destNode = determineDestNode(packet.sourceNode);
         packet.route = routePacket(*packet.destNode, *packet.sourceNode);
 
@@ -109,6 +113,7 @@ Simulator::simulate()
               }
               else {
                 //std::cout << "check";
+                packet.currentConnection->numPackets--;
                 packet.arrived = false;
                 stats.packets.push_back(packet);
               }
@@ -144,7 +149,7 @@ Simulator::simulate()
         double nextPacketTime = simTime + packet.lastNode->getNextPacketTime();
         if(nextPacketTime < 0) nextPacketTime *= -1;
         scheduler.schedule((ScheduledEvent)
-                    {nextPacketTime + packet.lastNode->getNextPacketTime(),
+                    {nextPacketTime,
                     EventType::NODE_GEN_PKT,
                     false,
                     NetPacket(nextPacketTime, packet.lastNode)});
@@ -172,7 +177,6 @@ Simulator::simulate()
           else {
             packet.nextNode = &packet.currentConnection->a;
           }
-          std::cout << "CONN PKT DEC: " << packet.currentConnection->id << ", " << packet.currentConnection->numPackets << std::endl;
           packet.currentConnection = &connections[packet.route.front()];
           packet.route.pop_front();
 
@@ -230,8 +234,8 @@ Simulator::simulate()
         packet.arrived = true;
         packet.latency = simTime - packet.sendTime;
         stats.packets.push_back(packet);
-        std::cout << "RECV_PKT: " << simTime << " {" << packet.destNode->id << ", latency: " << packet.latency;
-        std::cout << " , sendTime: " << packet.sendTime << "}\n";
+        //std::cout << "RECV_PKT: " << simTime << " {" << packet.destNode->id << ", latency: " << packet.latency;
+       // std::cout << " , sendTime: " << packet.sendTime << "}\n";
         break;
     }
   }

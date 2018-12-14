@@ -154,7 +154,6 @@ Connection::Connection(WireType& type, Node& a, Node& b)
 bool
 Connection::isFull()
 {
-  std::cout << numPackets << ", " << maxPackets << std::endl;
   return numPackets == maxPackets;
 }
 

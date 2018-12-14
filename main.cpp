@@ -21,9 +21,9 @@ struct pref_t prefs;
 
 std::unordered_map<std::string, Node *> hashed_nodes;
 
-double simmed_avg_latency(Simulator& sim);
-double simmed_total_error_rate(Simulator& sim);
-double simmed_throughput(Simulator sim, double startTime, double endTime);
+double simmed_avg_latency(Simulator& sim, int time);
+double simmed_total_error_rate(Simulator& sim, int time);
+double simmed_throughput(Simulator& sim, double startTime, double endTime);
 
 void printUsage()
 {
@@ -165,8 +165,8 @@ std::string preferencesToXML() {
 std::string statsToXML(Simulator& sim) {
   std::ostringstream result;
   result << "<Statistics ";
-  result << "latency=\'" << simmed_avg_latency(sim) << "\' ";
-  result << "packetLoss=\'" << simmed_total_error_rate(sim) << "\' ";
+  result << "latency=\'" << simmed_avg_latency(sim,5) << "\' ";
+  result << "packetLoss=\'" << simmed_total_error_rate(sim,5) << "\' ";
   result << "throughput=\'" << simmed_throughput(sim, 0, sim.simTime) << "\' ";
   result << "cost=\'" << (prefs.originalBudget - prefs.budget) << "\' ";
   result << "/>";
@@ -310,7 +310,7 @@ void Graphviz(std::string name)
 }
 bool check_for_direct_connection(Node& a, Node& b)
 {
-  for(Connection con : connections)
+  for(Connection& con : connections)
   {
     if((con.a.id == a.id && con.b.id == b.id)||(con.a.id == b.id && con.b.id == a.id))
     {
@@ -329,7 +329,7 @@ bool check_graph_full()
       if( i != j)
       {
         check = false;
-        for(Connection con : connections)
+        for(Connection& con : connections)
         {
           if((con.a.id == nodes[i].id && con.b.id == nodes[j].id)||(con.a.id == nodes[j].id && con.b.id == nodes[i].id))
           {
@@ -347,7 +347,7 @@ bool check_graph_full()
 }
 bool check_graph_completely_upgraded()
 {
-  for(Connection con : connections)
+  for(Connection& con : connections)
   {
     if(con.type.typeName != wires.back().typeName) // assumes that the wireTypes are ordered from worst to best
     {
@@ -356,13 +356,13 @@ bool check_graph_completely_upgraded()
   }
   return true;
 }
-double simmed_avg_latency(Simulator& sim)// averaged latency
+double simmed_avg_latency( Simulator& sim, int time)// averaged latency
 {
   int count = 0;
   double lat = 0;
-  for( NetPacket pack : sim.stats.packets)
+  for( NetPacket& pack : sim.stats.packets)
   {
-    if(pack.arrived)
+    if(pack.arrived && pack.sendTime >= time)
     {
       lat += pack.latency;
       count++;
@@ -371,25 +371,28 @@ double simmed_avg_latency(Simulator& sim)// averaged latency
   return lat / count;
 }
 
-double simmed_total_error_rate(Simulator& sim) // rate of errors for the entire network
+double simmed_total_error_rate(Simulator& sim, int time) // rate of errors for the entire network
 {
   int count = 0;
   double err_count = 0;
-  for( NetPacket pack : sim.stats.packets)
+  for( NetPacket& pack : sim.stats.packets)
   {
-    if(!pack.arrived)
-  {
-     err_count += 1;
-  }
-    count++;
+      if( pack.sendTime >= time)
+      {
+          if(!pack.arrived)
+          {
+              err_count += 1;
+          }
+          count++;
+      }
   }
   return err_count / count;
 }
 
-double simmed_throughput(Simulator sim, double startTime, double endTime) //successful packets per second during the defined period of the simulation
+double simmed_throughput(Simulator& sim, double startTime, double endTime) //successful packets per second during the defined period of the simulation
 {
   double count = 0;
-  for( NetPacket pack : sim.stats.packets)
+  for( NetPacket& pack : sim.stats.packets)
   {
     if( pack.sendTime >= startTime && (pack.sendTime + pack.latency) <= endTime && pack.arrived)
     {
@@ -397,6 +400,126 @@ double simmed_throughput(Simulator sim, double startTime, double endTime) //succ
     }
   }
   return count / (endTime - startTime);
+}
+bool upgrade_con(int con)
+{
+    WireType type = connections[con].type;
+    for (int i = 0; i < (int)wires.size();i++)
+    {
+        if (wires[i].typeName == type.typeName)
+        {
+            if((int)wires.size() - 1 >  i)
+            {
+                connections[con].type = wires[i+1];
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    return false;
+}
+bool downgrade_con(int con)
+{
+    WireType type = connections[con].type;
+    for (int i = 0; i < (int)wires.size();i++)
+    {
+        if (wires[i].typeName == type.typeName)
+        {
+            if(i > 0)
+            {
+                connections[con].type = wires[i-1];
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    return false;
+}
+int add_con(Node& a, Node& b)
+{
+    a.connect(b,wires[0]);
+    return connections.size() -1;
+}
+bool remove_connection() //do not use for anything not in source code
+{
+    if(connections[(int)connections.size()-1].a.connectionIndicies[connections[(int)connections.size()-1].a.connectionIndicies.size()-1] == (int)connections.size()-1 && connections[(int)connections.size()-1].b.connectionIndicies[connections[(int)connections.size()-1].b.connectionIndicies.size()-1] == (int)connections.size()-1 )
+    {
+        connections[(int)connections.size()-1].a.connectionIndicies.pop_back();
+        connections[(int)connections.size()-1].b.connectionIndicies.pop_back();
+        connections.pop_back();
+        return true;
+    }
+    return false;
+}
+int find_uprade_target1(Simulator sim)
+{
+    int upgrade_target = 0;
+    for(int i = 0; i < (int)sim.stats.cons.size(); i++)
+    {
+        if(sim.stats.cons[i].num_denied > sim.stats.cons[upgrade_target].num_denied )
+        {
+            upgrade_target = i;
+        }
+    }
+    return upgrade_target;
+}
+int find_uprade_target2(Simulator sim)
+{
+    int upgrade_target = 0;
+    for(int i = 0; i < (int)sim.stats.cons.size(); i++)
+    {
+        if(sim.stats.cons[i].num_packets > sim.stats.cons[upgrade_target].num_packets )
+        {
+            upgrade_target = i;
+        }
+    }
+    return upgrade_target;
+}
+std::vector<int> potential_con1(Simulator sim)
+{
+    int upgrade_target = 0;
+    std::vector<int> out;
+    for(int i = 0; i < (int)sim.stats.packets.size(); i++)
+    {
+        if(sim.stats.packets[i].latency > sim.stats.packets[upgrade_target].latency )
+        {
+            upgrade_target = i;
+        }
+    }
+    out.push_back(sim.stats.packets[upgrade_target].sourceNode->id);
+    out.push_back(sim.stats.packets[upgrade_target].destNode->id);
+    return  out;
+}
+std::vector<int> potential_con2(Simulator sim)
+{
+    int node1 = 0;
+    int node2 = 1;
+    int jumps = 0;
+    int temp = 0;
+    std::vector<int> out;
+    for(int i = 0; i < (int)nodes.size(); i++)
+    {
+        for(int j = 0; j < (int)nodes.size(); j++)
+        {
+            if ( i != j)
+            {
+                temp = num_jumps_breadth(nodes[i],nodes[j]);
+                if(temp > jumps)
+                {
+                    jumps = temp;
+                    node1 = i;
+                    node2 = j;
+                }
+            }
+        }
+    }
+    out.push_back(node1);
+    out.push_back(node2);
+    return out;
 }
 int main(int argc, char **argv)
 {
@@ -415,18 +538,89 @@ int main(int argc, char **argv)
   //Graphviz("graph.dot");
 
   //prefs.budget = 0;
+    Simulator sim(nodes, connections, wires, prefs);
+    std::vector<double> current_lat;
+    std::vector<double> current_err;
+    std::vector<double> current_thru;
+    //sim.simulate();
+    current_lat.push_back( simmed_avg_latency(sim,5));
+    current_err.push_back(simmed_total_error_rate(sim,5));
+    current_thru.push_back( simmed_throughput(sim, 5, 15));
+    current_lat.push_back( 0);
+    current_err.push_back(0);
+    current_thru.push_back( 0);
+    current_lat.push_back( 0);
+    current_err.push_back(0);
+    current_thru.push_back( 0);
+    current_lat.push_back( 0);
+    current_err.push_back(0);
+    current_thru.push_back( 0);
+    current_lat.push_back( 0);
+    current_err.push_back(0);
+    current_thru.push_back( 0);
 
-  Simulator sim(nodes, connections, wires, prefs);
-  while(prefs.budget > 0) {
-    sim.simulate();
-    std::cout << "simulation complete";
+  while(prefs.budget > 0 || (check_graph_full() && check_graph_completely_upgraded())) {
+      sim.simulate();
+      // int upgrade_target1 = find_uprade_target1(sim);
+      // int upgrade_target2 = find_uprade_target2(sim);
+      // std::vector<int> add_target1 = potential_con2(sim);
+      // std::vector<int> add_target2 = potential_con1(sim);
+
+/*      // simulation 1
+      bool check = upgrade_con(upgrade_target1);
+      if(check)
+      {
+          sim.simulate();
+          current_lat[1]=simmed_avg_latency(sim,5);
+          current_err[1] = simmed_total_error_rate(sim,5);
+          current_thru[1] = simmed_throughput(sim, 5, 15);
+          downgrade_con(upgrade_target1);
+      }
+      else
+      {
+          current_lat[1]= -1;
+          current_err[1] = 1;
+          current_thru[1] = -1;
+      }
+
+      //simulation 2
+      check = upgrade_con(upgrade_target2);
+      if(check)
+      {
+          sim.simulate();
+          current_lat[2]=simmed_avg_latency(sim,5);
+          current_err[2] = simmed_total_error_rate(sim,5);
+          current_thru[2] = simmed_throughput(sim, 5, 15);
+          downgrade_con(upgrade_target2);
+      }
+      else
+      {
+          current_lat[2]= -1;
+          current_err[2] = 1;
+          current_thru[2] = -1;
+      }
+
+      //simulation 3
+
+      add_con(nodes[add_target1[0]],nodes[add_target1[1]]);
+      sim.simulate();
+      current_lat[3]=simmed_avg_latency(sim,5);
+      current_err[3] = simmed_total_error_rate(sim,5);
+      current_thru[3] = simmed_throughput(sim, 5, 15);
+      remove_connection();
+
+*/
+
+
+
 
     // TODO upgrade network
 
+
     if(check_graph_completely_upgraded() && check_graph_full()) break;
 
-    std::cout << simmed_avg_latency(sim) << std::endl;
-    std::cout << simmed_total_error_rate(sim) << std::endl;
+    std::cout << simmed_avg_latency(sim, 0) << std::endl;
+    std::cout << simmed_total_error_rate(sim, 0) << std::endl;
     std::cout << simmed_throughput(sim, 0, sim.maxSimTime) << std::endl;
     std::cout << "Sent: " << sim.stats.packets.size() << ", ";
     int count = 0;
@@ -439,6 +633,7 @@ int main(int argc, char **argv)
 
   // double dist = net_distance(nodes[0] ,nodes[1]);
   // std::cout << dist << std::endl;
+
   outputResults(argv[2], sim);
   Graphviz("Output_graph.dot");
   return 0;

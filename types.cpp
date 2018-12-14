@@ -92,7 +92,7 @@ Node::getNextPacketTime()
 {
   static double randRange = 0.05;
   double randDouble = (double)std::rand() / RAND_MAX;
-  return 1 / sendRate + 2 * randRange * (randDouble - 0.5);
+  return 1 / (sendRate * (1 + 2 * randRange * (randDouble - 0.5)));
 }
 
 bool update_node_hash()

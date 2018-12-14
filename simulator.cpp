@@ -70,12 +70,12 @@ Simulator::simulate()
   while(simTime < maxSimTime) {
     ScheduledEvent event = scheduler.events.front();
     scheduler.events.pop_front();
-    simTime += event.deltaTime;
+    simTime = event.deltaTime;
     NetPacket& packet = event.packet;
 
     switch(event.type) {
       case EventType::NODE_GEN_PKT:
-        packet.sendTime = simTime;
+        std::cout << "GEN_PKT: {" << packet.sourceNode->id << "}\n";
         packet.destNode = determineDestNode(packet.sourceNode);
         packet.route = routePacket(*packet.destNode, *packet.sourceNode);
 
@@ -109,17 +109,21 @@ Simulator::simulate()
           }
         }
 
+        {
+        double nextPacketTime = simTime + packet.lastNode->getNextPacketTime();
+        if(nextPacketTime < 0) nextPacketTime *= -1;
         scheduler.schedule((ScheduledEvent)
-          {1 / packet.lastNode->sendRate,
+          {nextPacketTime,
            EventType::NODE_GEN_PKT,
-           NetPacket(simTime, packet.lastNode)});
+           NetPacket(nextPacketTime, packet.lastNode)});
+        }
         break;
       case EventType::NODE_ROUTE_PKT:
 
         if(simTime < packet.nextNode->nextAvailableRouteTime) {
           // Reschedule the routing
           scheduler.schedule((ScheduledEvent)
-            {packet.nextNode->nextAvailableRouteTime - simTime,
+            {packet.nextNode->nextAvailableRouteTime,
              EventType::NODE_ROUTE_PKT,
              packet});
         }
@@ -140,13 +144,13 @@ Simulator::simulate()
           // Route
           if(packet.route.size() == 0) {
             scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime,
+              {packet.currentConnection->travelTime + simTime,
                EventType::NODE_RECV_PKT,
                packet});
           }
           else {
             scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime + 1 / packet.nextNode->routeRate,
+              {packet.currentConnection->travelTime + 1 / packet.nextNode->routeRate + simTime,
                EventType::NODE_ROUTE_PKT,
                packet});
           }
@@ -156,6 +160,8 @@ Simulator::simulate()
         packet.arrived = true;
         packet.latency = simTime - packet.sendTime;
         stats.packets.push_back(packet);
+        std::cout << "RECV_PKT: " << simTime << " {" << packet.destNode->id << ", latency: " << packet.latency;
+        std::cout << " , sendTime: " << packet.sendTime << "}\n";
         break;
     }
   }

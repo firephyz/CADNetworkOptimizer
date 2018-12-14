@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <cmath>
 
 Simulator::Simulator(
     std::vector<Node>& nodes,
@@ -92,26 +93,69 @@ Simulator::simulate()
           }
 
           if(packet.route.size() == 0) {
-            scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime + simTime,
-               EventType::NODE_RECV_PKT,
-               packet});
+            double err = ((double)rand() / RAND_MAX);
+            double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+            //std::cout << success << std::endl;
+            if(err < success )
+            {
+              scheduler.schedule((ScheduledEvent)
+                                         {packet.currentConnection->travelTime + simTime,
+                                          EventType::NODE_RECV_PKT,
+                                          packet});
+            }
+            else
+            {
+              //std::cout << "check";
+              packet.arrived = false;
+              stats.packets.push_back(packet);
+            }
+
           }
           else {
-            scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime + simTime,
-               EventType::NODE_ROUTE_PKT,
-               packet});
+            double err = ((double)rand() / RAND_MAX);
+            double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+            //std::cout << success << std::endl;
+            if(err < success ) {
+              scheduler.schedule((ScheduledEvent)
+                                         {packet.currentConnection->travelTime + simTime,
+                                          EventType::NODE_ROUTE_PKT,
+                                          packet});
+            }
+            else
+            {
+              //std::cout << "check";
+              packet.arrived = false;
+              stats.packets.push_back(packet);
+            }
           }
         }
 
         {
         double nextPacketTime = simTime + packet.lastNode->getNextPacketTime();
         if(nextPacketTime < 0) nextPacketTime *= -1;
-        scheduler.schedule((ScheduledEvent)
-          {nextPacketTime,
-           EventType::NODE_GEN_PKT,
-           NetPacket(nextPacketTime, packet.lastNode)});
+        double err = ((double)rand() / RAND_MAX);
+        double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+        //std::cout << success << std::endl;
+        int attempts = 0;
+        while (err > success)
+        {
+          err = ((double)rand() / RAND_MAX);
+          packet.arrived = false;
+          stats.packets.push_back(packet);
+          attempts++;
+        }
+        if(err < success ) {
+            scheduler.schedule((ScheduledEvent)
+                                       {nextPacketTime + packet.lastNode->getNextPacketTime()*attempts,
+                                        EventType::NODE_GEN_PKT,
+                                        NetPacket(nextPacketTime, packet.lastNode)});
+        }
+        else {
+          //std::cout << "check";
+          packet.arrived = false;
+          stats.packets.push_back(packet);
+        }
+
         }
         break;
       case EventType::NODE_ROUTE_PKT:
@@ -139,16 +183,40 @@ Simulator::simulate()
 
           // Route
           if(packet.route.size() == 0) {
-            scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime + 1 / packet.nextNode->routeRate + simTime,
-               EventType::NODE_RECV_PKT,
-               packet});
+
+            double err = ((double)rand() / RAND_MAX);
+            double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+            //std::cout << success << std::endl;
+            if(err < success ) {
+              scheduler.schedule((ScheduledEvent)
+                                         {packet.currentConnection->travelTime + 1 / packet.nextNode->routeRate + simTime,
+                                          EventType::NODE_RECV_PKT,
+                                          packet});
+            }
+            else
+            {
+              //std::cout << "check";
+              packet.arrived = false;
+              stats.packets.push_back(packet);
+            }
           }
           else {
-            scheduler.schedule((ScheduledEvent)
-              {packet.currentConnection->travelTime + 1 / packet.lastNode->routeRate + simTime,
-               EventType::NODE_ROUTE_PKT,
-               packet});
+
+            double err = ((double)rand() / RAND_MAX);
+            double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+            //std::cout << success << std::endl;
+            if(err < success ) {
+              scheduler.schedule((ScheduledEvent)
+                                         {packet.currentConnection->travelTime + 1 / packet.lastNode->routeRate + simTime,
+                                          EventType::NODE_ROUTE_PKT,
+                                          packet});
+            }
+            else
+            {
+              //std::cout << "check";
+              packet.arrived = false;
+              stats.packets.push_back(packet);
+            }
           }
         }
         break;

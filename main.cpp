@@ -21,9 +21,9 @@ struct pref_t prefs;
 
 std::unordered_map<std::string, Node *> hashed_nodes;
 
-double simmed_avg_latency(Simulator& sim);
-double simmed_total_error_rate(Simulator& sim);
-double simmed_throughput(Simulator sim, double startTime, double endTime);
+double simmed_avg_latency(Simulator& sim, int time);
+double simmed_total_error_rate(Simulator& sim, int time);
+double simmed_throughput(Simulator& sim, double startTime, double endTime);
 
 void printUsage()
 {
@@ -165,8 +165,8 @@ std::string preferencesToXML() {
 std::string statsToXML(Simulator& sim) {
   std::ostringstream result;
   result << "<Statistics ";
-  result << "latency=\'" << simmed_avg_latency(sim) << "\' ";
-  result << "packetLoss=\'" << simmed_total_error_rate(sim) << "\' ";
+  result << "latency=\'" << simmed_avg_latency(sim,5) << "\' ";
+  result << "packetLoss=\'" << simmed_total_error_rate(sim,5) << "\' ";
   result << "throughput=\'" << simmed_throughput(sim, 0, sim.simTime) << "\' ";
   result << "cost=\'" << (prefs.originalBudget - prefs.budget) << "\' ";
   result << "/>";
@@ -356,7 +356,7 @@ bool check_graph_completely_upgraded()
   }
   return true;
 }
-double simmed_avg_latency( Simulator sim, int time)// averaged latency
+double simmed_avg_latency( Simulator& sim, int time)// averaged latency
 {
   int count = 0;
   double lat = 0;
@@ -371,7 +371,7 @@ double simmed_avg_latency( Simulator sim, int time)// averaged latency
   return lat / count;
 }
 
-double simmed_total_error_rate(Simulator sim, int time) // rate of errors for the entire network
+double simmed_total_error_rate(Simulator& sim, int time) // rate of errors for the entire network
 {
   int count = 0;
   double err_count = 0;
@@ -389,7 +389,7 @@ double simmed_total_error_rate(Simulator sim, int time) // rate of errors for th
   return err_count / count;
 }
 
-double simmed_throughput(Simulator sim, double startTime, double endTime) //successful packets per second during the defined period of the simulation
+double simmed_throughput(Simulator& sim, double startTime, double endTime) //successful packets per second during the defined period of the simulation
 {
   double count = 0;
   for( NetPacket pack : sim.stats.packets)
@@ -602,7 +602,13 @@ int main(int argc, char **argv)
 
       //simulation 3
 
-      //add_con(nodes[add_target])
+      add_con(nodes[add_target1[0]],nodes[add_target1[1]]);
+      sim.simulate();
+      current_lat[3]=simmed_avg_latency(sim,5);
+      current_err[3] = simmed_total_error_rate(sim,5);
+      current_thru[3] = simmed_throughput(sim, 5, 15);
+      remove_connection();
+
 
 
 
@@ -613,8 +619,8 @@ int main(int argc, char **argv)
 
     if(check_graph_completely_upgraded() && check_graph_full()) break;
 
-    std::cout << simmed_avg_latency(sim) << std::endl;
-    std::cout << simmed_total_error_rate(sim) << std::endl;
+    std::cout << simmed_avg_latency(sim,5) << std::endl;
+    std::cout << simmed_total_error_rate(sim,5) << std::endl;
     std::cout << simmed_throughput(sim, 0, 1) << std::endl;
 
     prefs.budget = 0;

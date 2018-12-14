@@ -5,13 +5,13 @@
 		<Node name='node3' x='200000' y='450000' sendRate='100' receiveRate='200' routeRate='100' queueSize='0'/>
 	</ListOfNodes>
 	<WireTypess>
-		<Wire type='type0' cost='1' bandwidth='10' errorRate='1e-07'/>
-		<Wire type='type1' cost='5' bandwidth='70' errorRate='5e-08'/>
+		<Wire type='type0' cost='1' bandwidth='10' errorRate='1e-08'/>
+		<Wire type='type1' cost='5' bandwidth='70' errorRate='1e-08'/>
 	</WireTypes>
 	<ListOfConnections>
 		<Connection wireType='type0' node1='node1' node='node2'/>
 		<Connection wireType='type0' node1='node2' node='node3'/>
 	</ListOfConnections>
 	<Preferences/>
-	<Statistics/>
+	<Statistics latency='0.032603' packetLoss='0.0282486' throughput='171.812' cost='100' />
 </NetworkDefinition>

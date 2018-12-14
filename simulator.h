@@ -50,12 +50,12 @@ class Simulator {
   struct pref_t & prefs;
   Scheduler scheduler;
 
-  double simTime; // simulation time of the current run
   double maxSimTime; // max sim time for a single run
   double totalSimTime;
 
 public:
-    struct stats_t stats;
+  double simTime; // simulation time of the current run
+  struct stats_t stats;
   Simulator(std::vector<Node>& nodes,
             std::vector<Connection>& connections,
             std::vector<WireType>& wires,

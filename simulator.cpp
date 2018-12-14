@@ -19,8 +19,8 @@ Simulator::Simulator(
   , wires(wires)
   , totalReceiveRate(0)
   , prefs(prefs)
-  , simTime(0)
   , maxSimTime(15)
+  , simTime(0)
 {
   // Sort nodes by receive rate for determineDestNode
   for(Node& node : nodes) {

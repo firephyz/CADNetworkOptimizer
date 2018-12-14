@@ -11,6 +11,7 @@
 #include <functional>
 #include <cmath>
 #include <ctime>
+#include <sstream>
 
 // Populated by input file
 std::vector<Node> nodes;
@@ -19,6 +20,10 @@ std::vector<WireType> wires; // sorted by cost
 struct pref_t prefs;
 
 std::unordered_map<std::string, Node *> hashed_nodes;
+
+double simmed_avg_latency(Simulator& sim);
+double simmed_total_error_rate(Simulator& sim);
+double simmed_throughput(Simulator sim, double startTime, double endTime);
 
 void printUsage()
 {
@@ -157,14 +162,18 @@ std::string preferencesToXML() {
   return result;
 }
 
-std::string statsToXML() {
-  std::string result = "";
-  result += "<Statistics";
-  result += "/>";
-  return result;
+std::string statsToXML(Simulator& sim) {
+  std::ostringstream result;
+  result << "<Statistics ";
+  result << "latency=\'" << simmed_avg_latency(sim) << "\' ";
+  result << "packetLoss=\'" << simmed_total_error_rate(sim) << "\' ";
+  result << "throughput=\'" << simmed_throughput(sim, 0, sim.simTime) << "\' ";
+  result << "cost=\'" << (prefs.originalBudget - prefs.budget) << "\' ";
+  result << "/>";
+  return result.str();
 }
 
-void outputResults(char * fileName) {
+void outputResults(char * fileName, Simulator& sim) {
   std::ofstream file(fileName, std::ios_base::out);
 
   file << "<NetworkDefinition>\n";
@@ -184,7 +193,7 @@ void outputResults(char * fileName) {
   }
   file << "\t</ListOfConnections>\n";
   file << "\t" << preferencesToXML() << std::endl;
-  file << "\t" << statsToXML() << std::endl;
+  file << "\t" << statsToXML(sim) << std::endl;
   file << "</NetworkDefinition>\n";
 
   file.close();
@@ -601,21 +610,20 @@ int main(int argc, char **argv)
 
     // TODO upgrade network
 
-    // Stop if network is full
-    //if()
-    std::cout << simmed_avg_latency(sim,5) << std::endl;
-    std::cout << simmed_total_error_rate(sim,5) << std::endl;
-    std::cout << simmed_throughput(sim, 5, 15) << std::endl;
+
+    if(check_graph_completely_upgraded() && check_graph_full()) break;
+
+    std::cout << simmed_avg_latency(sim) << std::endl;
+    std::cout << simmed_total_error_rate(sim) << std::endl;
+    std::cout << simmed_throughput(sim, 0, 1) << std::endl;
+
     prefs.budget = 0;
   }
 
   // double dist = net_distance(nodes[0] ,nodes[1]);
   // std::cout << dist << std::endl;
-  outputResults(argv[2]);
-  add_con(nodes[0],nodes[8]);
-  Graphviz("check.dot");
-  remove_connection();
 
+  outputResults(argv[2], sim);
   Graphviz("Output_graph.dot");
   return 0;
 }

@@ -11,6 +11,7 @@
 #include <functional>
 #include <cmath>
 #include <ctime>
+#include <sstream>
 
 // Populated by input file
 std::vector<Node> nodes;
@@ -19,6 +20,10 @@ std::vector<WireType> wires; // sorted by cost
 struct pref_t prefs;
 
 std::unordered_map<std::string, Node *> hashed_nodes;
+
+double simmed_avg_latency(Simulator& sim);
+double simmed_total_error_rate(Simulator& sim);
+double simmed_throughput(Simulator sim, double startTime, double endTime);
 
 void printUsage()
 {
@@ -157,14 +162,18 @@ std::string preferencesToXML() {
   return result;
 }
 
-std::string statsToXML() {
-  std::string result = "";
-  result += "<Statistics";
-  result += "/>";
-  return result;
+std::string statsToXML(Simulator& sim) {
+  std::ostringstream result;
+  result << "<Statistics ";
+  result << "latency=\'" << simmed_avg_latency(sim) << "\' ";
+  result << "packetLoss=\'" << simmed_total_error_rate(sim) << "\' ";
+  result << "throughput=\'" << simmed_throughput(sim, 0, sim.simTime) << "\' ";
+  result << "cost=\'" << (prefs.originalBudget - prefs.budget) << "\' ";
+  result << "/>";
+  return result.str();
 }
 
-void outputResults(char * fileName) {
+void outputResults(char * fileName, Simulator& sim) {
   std::ofstream file(fileName, std::ios_base::out);
 
   file << "<NetworkDefinition>\n";
@@ -184,7 +193,7 @@ void outputResults(char * fileName) {
   }
   file << "\t</ListOfConnections>\n";
   file << "\t" << preferencesToXML() << std::endl;
-  file << "\t" << statsToXML() << std::endl;
+  file << "\t" << statsToXML(sim) << std::endl;
   file << "</NetworkDefinition>\n";
 
   file.close();
@@ -347,7 +356,7 @@ bool check_graph_completely_upgraded()
   }
   return true;
 }
-double simmed_avg_latency( Simulator sim)// averaged latency
+double simmed_avg_latency(Simulator& sim)// averaged latency
 {
   int count = 0;
   double lat = 0;
@@ -362,7 +371,7 @@ double simmed_avg_latency( Simulator sim)// averaged latency
   return lat / count;
 }
 
-double simmed_total_error_rate(Simulator sim) // rate of errors for the entire network
+double simmed_total_error_rate(Simulator& sim) // rate of errors for the entire network
 {
   int count = 0;
   double err_count = 0;
@@ -414,17 +423,17 @@ int main(int argc, char **argv)
 
     // TODO upgrade network
 
-    // Stop if network is full
-    //if()
+    if(check_graph_completely_upgraded() && check_graph_full()) break;
+
     std::cout << simmed_avg_latency(sim) << std::endl;
     std::cout << simmed_total_error_rate(sim) << std::endl;
-    std::cout << simmed_throughput(sim, 0, 1) << " " << (double)((double)rand() / RAND_MAX) << std::endl;
+    std::cout << simmed_throughput(sim, 0, 1) << std::endl;
     prefs.budget = 0;
   }
 
   // double dist = net_distance(nodes[0] ,nodes[1]);
   // std::cout << dist << std::endl;
-  outputResults(argv[2]);
+  outputResults(argv[2], sim);
   Graphviz("Output_graph.dot");
   return 0;
 }

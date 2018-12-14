@@ -9,8 +9,8 @@
   <WireTypes>
     <!-- cost is per meter. bandwidth is in packets per second. errorRate is percent
     chance a given packet transmitted will be lost -->
-    <Wire type='type0' cost='1.0' bandwidth='10.0' errorRate='0.0001'/>
-    <Wire type='type1' cost='5.0' bandwidth='70.0' errorRate='0.00005'/>
+    <Wire type='type0' cost='1.0' bandwidth='10.0' errorRate='1e-5'/>
+    <Wire type='type1' cost='5.0' bandwidth='70.0' errorRate='1e-5'/>
   </WireTypes>
   <ListOfConnections>
     <Connection wireType='type0' node1='node1' node2='node2'/>

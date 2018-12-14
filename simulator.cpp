@@ -57,6 +57,7 @@ Simulator::simulate()
     con.numPackets = 0;
   }
   simTime = 0;
+  stats.packets.clear();
   for(Node& node : nodes) {
     double packetTime = node.getNextPacketTime();
     if(packetTime < 0) {

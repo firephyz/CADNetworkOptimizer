@@ -11,21 +11,23 @@
 		<Node name='node9' x='4000' y='10000' sendRate='28' receiveRate='51' routeRate='500' queueSize='0'/>
 	</ListOfNodes>
 	<WireTypess>
-		<Wire type='type0' cost='1' bandwidth='10' errorRate='1e-07'/>
-		<Wire type='type1' cost='5' bandwidth='70' errorRate='5e-08'/>
+		<Wire type='type1' cost='5' bandwidth='50000' errorRate='5e-09'/>
+		<Wire type='type1' cost='5' bandwidth='50000' errorRate='5e-09'/>
 	</WireTypes>
 	<ListOfConnections>
-		<Connection wireType='type0' node1='node1' node='node2'/>
-		<Connection wireType='type0' node1='node3' node='node4'/>
-		<Connection wireType='type0' node1='node4' node='node5'/>
-		<Connection wireType='type0' node1='node6' node='node7'/>
-		<Connection wireType='type0' node1='node7' node='node8'/>
-		<Connection wireType='type0' node1='node8' node='node9'/>
-		<Connection wireType='type0' node1='node9' node='node7'/>
-		<Connection wireType='type0' node1='node7' node='node1'/>
-		<Connection wireType='type0' node1='node1' node='node4'/>
-		<Connection wireType='type0' node1='node4' node='node7'/>
+		<Connection wireType='type1' node1='node1' node='node2'/>
+		<Connection wireType='type1' node1='node3' node='node4'/>
+		<Connection wireType='type1' node1='node4' node='node5'/>
+		<Connection wireType='type1' node1='node6' node='node7'/>
+		<Connection wireType='type1' node1='node7' node='node8'/>
+		<Connection wireType='type1' node1='node8' node='node9'/>
+		<Connection wireType='type1' node1='node9' node='node7'/>
+		<Connection wireType='type1' node1='node7' node='node1'/>
+		<Connection wireType='type1' node1='node1' node='node4'/>
+		<Connection wireType='type1' node1='node4' node='node7'/>
+		<Connection wireType='type1' node1='node2' node='node3'/>
+		<Connection wireType='type1' node1='node1' node='node3'/>
 	</ListOfConnections>
 	<Preferences/>
-	<Statistics/>
+	<Statistics latency='0.00848749' packetLoss='0.344225' throughput='246.483' cost='32851.8' />
 </NetworkDefinition>

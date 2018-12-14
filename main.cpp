@@ -487,7 +487,10 @@ std::vector<int> potential_con1(Simulator sim)
     {
         if(sim.stats.packets[i].latency > sim.stats.packets[upgrade_target].latency )
         {
-            upgrade_target = i;
+            if( !check_for_direct_connection(*sim.stats.packets[upgrade_target].sourceNode, *sim.stats.packets[upgrade_target].destNode))
+            {
+                upgrade_target = i;
+            }
         }
     }
     out.push_back(sim.stats.packets[upgrade_target].sourceNode->id);
@@ -508,7 +511,7 @@ std::vector<int> potential_con2(Simulator sim)
             if ( i != j)
             {
                 temp = num_jumps_breadth(nodes[i],nodes[j]);
-                if(temp > jumps)
+                if(temp > jumps && !check_for_direct_connection(nodes[i],nodes[j]))
                 {
                     jumps = temp;
                     node1 = i;
@@ -542,7 +545,15 @@ int main(int argc, char **argv)
     std::vector<double> current_lat;
     std::vector<double> current_err;
     std::vector<double> current_thru;
-    //sim.simulate();
+    std::vector<double> heuristics;
+    heuristics.push_back(0);
+    heuristics.push_back(0);
+    heuristics.push_back(0);
+    heuristics.push_back(0);
+    heuristics.push_back(0);
+    heuristics.push_back(0);
+    std::cout << "Beginning initial simulation \n";
+    sim.simulate();
     current_lat.push_back( simmed_avg_latency(sim,5));
     current_err.push_back(simmed_total_error_rate(sim,5));
     current_thru.push_back( simmed_throughput(sim, 5, 15));
@@ -558,18 +569,43 @@ int main(int argc, char **argv)
     current_lat.push_back( 0);
     current_err.push_back(0);
     current_thru.push_back( 0);
+    current_lat.push_back( 0);
+    current_err.push_back(0);
+    current_thru.push_back( 0); // its 5:30 AM fuck you!
+    bool done = false;
+    int mutation_count=1;
 
-  while(prefs.budget > 0 || (check_graph_full() && check_graph_completely_upgraded())) {
-      sim.simulate();
-      // int upgrade_target1 = find_uprade_target1(sim);
-      // int upgrade_target2 = find_uprade_target2(sim);
-      // std::vector<int> add_target1 = potential_con2(sim);
-      // std::vector<int> add_target2 = potential_con1(sim);
+  while(!done ) {
+      //sim.simulate();
+      std::cout << "Mutation simulation " << mutation_count << "\n";
+      mutation_count++;
 
-/*      // simulation 1
+      int upgrade_target1 = find_uprade_target1(sim);
+      int upgrade_target2 = find_uprade_target2(sim);
+      std::vector<int> add_target1 = potential_con2(sim);
+      std::vector<int> add_target2 = potential_con1(sim);
+      std::vector<int> add_target3;
+      for (int i = 0; i < (int)nodes.size();i++)
+      {
+          for (int j = 0; j < (int)nodes.size();j++)
+          {
+              if ( i != j && !check_for_direct_connection(nodes[i],nodes[j]))
+              {
+                  add_target3.push_back(i);
+                  add_target3.push_back(j);
+              }
+          }
+      }
+      heuristics[1]=0;
+      heuristics[2]=0;
+      heuristics[3]=0;
+      heuristics[4]=0;
+      heuristics[5]=0;
+     // simulation 1
       bool check = upgrade_con(upgrade_target1);
       if(check)
       {
+          std::cout << "sim 1" << "\n";
           sim.simulate();
           current_lat[1]=simmed_avg_latency(sim,5);
           current_err[1] = simmed_total_error_rate(sim,5);
@@ -578,15 +614,17 @@ int main(int argc, char **argv)
       }
       else
       {
-          current_lat[1]= -1;
-          current_err[1] = 1;
-          current_thru[1] = -1;
+          current_lat[1]= 10000;
+          current_err[1] = 10000;
+          current_thru[1] = -10000;
+          heuristics[1]=-9999;
       }
 
       //simulation 2
       check = upgrade_con(upgrade_target2);
       if(check)
       {
+          std::cout << "sim 2" << "\n";
           sim.simulate();
           current_lat[2]=simmed_avg_latency(sim,5);
           current_err[2] = simmed_total_error_rate(sim,5);
@@ -595,28 +633,237 @@ int main(int argc, char **argv)
       }
       else
       {
-          current_lat[2]= -1;
-          current_err[2] = 1;
-          current_thru[2] = -1;
+          current_lat[2]= 10000;
+          current_err[2] = 10000;
+          current_thru[2] = 10000;
+          heuristics[2]=-9999;
       }
 
       //simulation 3
+      if(!check_for_direct_connection(nodes[add_target1[0]],nodes[add_target1[1]]))
+      {
+          std::cout << "sim 3" << "\n";
+          add_con(nodes[add_target1[0]],nodes[add_target1[1]]);
+          sim.simulate();
+          current_lat[3]=simmed_avg_latency(sim,5);
+          current_err[3] = simmed_total_error_rate(sim,5);
+          current_thru[3] = simmed_throughput(sim, 5, 15);
+          remove_connection();
+      }
+      else
+      {
 
-      add_con(nodes[add_target1[0]],nodes[add_target1[1]]);
-      sim.simulate();
-      current_lat[3]=simmed_avg_latency(sim,5);
-      current_err[3] = simmed_total_error_rate(sim,5);
-      current_thru[3] = simmed_throughput(sim, 5, 15);
-      remove_connection();
+          current_lat[3]= 10000;
+          current_err[3] = 10000;
+          current_thru[3] = -10000;
+          heuristics[3]=-9999;
+      }
 
-*/
+      //simulation 4
+
+      if(!check_for_direct_connection(nodes[add_target2[0]],nodes[add_target2[1]]))
+      {
+          std::cout << "sim 4" << "\n";
+          add_con(nodes[add_target2[0]],nodes[add_target2[1]]);
+          sim.simulate();
+          current_lat[4]=simmed_avg_latency(sim,5);
+          current_err[4] = simmed_total_error_rate(sim,5);
+          current_thru[4] = simmed_throughput(sim, 5, 15);
+          remove_connection();
+      }
+      else
+      {
+          current_lat[4]= 10000;
+          current_err[4] = 10000;
+          current_thru[4] = -10000;
+          heuristics[4]=-9999;
+      }
+
+        // simulation 5
+
+      if(add_target3.size() > 0)
+      {
+          std::cout << "sim 5" << "\n";
+          add_con(nodes[add_target2[0]],nodes[add_target2[1]]);
+          sim.simulate();
+          current_lat[5]=simmed_avg_latency(sim,5);
+          current_err[5] = simmed_total_error_rate(sim,5);
+          current_thru[5] = simmed_throughput(sim, 5, 15);
+          remove_connection();
+      }
+      else
+      {
+          current_lat[5]= 10000;
+          current_err[5] = 10000;
+          current_thru[5] = -10000;
+          heuristics[5]=-9999;
+      }
+      for(int i = 1; i < (int)heuristics.size();i++)
+      {
+          if(heuristics[i] != -9999)
+          {
+              double pref_total = prefs.latency + prefs.throughput + prefs.packetLoss;
+              double total = 0;
+              total += ((current_lat[0] - current_lat[i]) / current_lat[0]) * (prefs.latency/pref_total);
+              total += ((current_err[0] - current_err[i]) / current_err[0]) * (prefs.packetLoss/pref_total);
+              total += ((current_thru[i] - current_thru[0]) / current_thru[0]) * (prefs.throughput/pref_total);
+              heuristics[i] = total;
+          }
+
+      }
+/*
+      for(int i = 0; i < (int)heuristics.size();i++)
+      {
+          std::cout << current_lat[i] << "\n";
+          std::cout << current_err[i] << "\n";
+          std::cout << current_thru[i] << "\n\n";
+          std::cout << heuristics[i] << "\n\n";
+
+
+      }
+*/    int index = 1;
+      for(int i = 1; i < (int)heuristics.size();i++)
+      {
+
+          if(heuristics[i]> heuristics[index])
+          {
+              index = i;
+          }
+      }
+      std::cout << index << std::endl;
+      bool can_aff = false;
+      while(!can_aff)
+      {
+          double cost = 0;
+          switch(index)
+          {
+              case 0:
+                  // none of these upgrades were benificial, oof
+                  std::cout << "error error error" << std::endl;
+                  break;
+              case 1:
+              {
+                  int t;
+                  for(int i =0; i< (int)wires.size();i++)
+                  {
+                      if(connections[upgrade_target1].type.typeName == wires[i].typeName)
+                      {
+                          t = i+1;
+                      }
+                  }
+                  cost = upgrade_cost(upgrade_target1,wires.back());// fix this
+                  can_aff = can_afford(cost);
+                  if(can_aff)
+                  {
+                      upgrade_con(upgrade_target1);
+                      pay(cost);
+                  }
+                  break;
+              }
+
+              case 2:
+              {
+                  int t;
+                  for(int i =0; i< (int)wires.size();i++)
+                  {
+                      if(connections[upgrade_target2].type.typeName == wires[i].typeName)
+                      {
+                          t = i+1;
+                      }
+                  }
+                  cost = upgrade_cost(upgrade_target2,wires.back());//fix this
+                  can_aff = can_afford(cost);
+                  if(can_aff)
+                  {
+                      upgrade_con(upgrade_target2);
+                      pay(cost);
+                  }
+                  break;
+              }
+
+              case 3:
+              {
+                  cost = add_con(nodes[add_target1[0]],nodes[add_target1[1]]);
+                  can_aff = can_afford(cost);
+                  if(can_aff)
+                  {
+                      add_con(nodes[add_target1[0]],nodes[add_target1[1]]);
+                      pay(cost);
+                  }
+                  break;
+              }
+
+              case 4:
+              {
+                  cost = add_con(nodes[add_target2[0]],nodes[add_target2[1]]);
+                  can_aff = can_afford(cost);
+                  if(can_aff)
+                  {
+                      add_con(nodes[add_target2[0]],nodes[add_target2[1]]);
+                      pay(cost);
+                  }
+                  break;
+              }
+
+              case 5:
+              {
+                  cost = add_con(nodes[add_target3[0]],nodes[add_target3[1]]);
+                  can_aff = can_afford(cost);
+                  if(can_aff)
+                  {
+                      add_con(nodes[add_target3[0]],nodes[add_target3[1]]);
+                      pay(cost);
+                  }
+                  break;
+              }
+
+              default:
+              {
+                  can_aff = false;
+                  std::cerr << " ERROR: unexpected results in price checks \n";
+                  break;
+              }
+
+          }
+          if( can_aff)
+          {
+              current_lat[0] = current_lat[index];
+              std::cout << "Mutation "<< index << " selected and implemented\n";
+              std::cout << "Budget Remaining: "<< prefs.budget << " \n";
+              break;
+          }
+          heuristics[index] = -9999; // this desperately need a better solution
+          for(int i = 1; i < (int)heuristics.size();i++)
+          {
+
+              if(heuristics[i]> heuristics[index])
+              {
+                  index = i;
+              }
+          }
+          if(heuristics[index] == -9999)
+          {
+              std::cout << "No More Mutations can be afforded\n";
+              done = true;
+              break;
+          }
+
+      }
+
+     if(check_graph_full() && check_graph_completely_upgraded())
+     {
+         done = true;
+         std::cout << "The NetWork is completely upgraded\n";
+     }
+
+
 
 
 
 
     // TODO upgrade network
 
-
+/*
     if(check_graph_completely_upgraded() && check_graph_full()) break;
 
     std::cout << simmed_avg_latency(sim, 0) << std::endl;
@@ -629,6 +876,7 @@ int main(int argc, char **argv)
     }
     std::cout << "Arrived: " << count << std::endl;
     prefs.budget = 0;
+    */
   }
 
   // double dist = net_distance(nodes[0] ,nodes[1]);

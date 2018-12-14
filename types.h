@@ -91,6 +91,9 @@ public:
   double travelTime;
 
   Connection(WireType& type, Node& a, Node& b);
+  Connection(const Connection& old);
+  Connection(Connection&& old);
+  Connection& operator=(const Connection& other);
   std::string toXML();
 
   friend std::ostream& operator<<(std::ostream& out, const Connection& connection);

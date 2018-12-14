@@ -20,7 +20,7 @@ Simulator::Simulator(
   , totalReceiveRate(0)
   , prefs(prefs)
   , simTime(0)
-  , maxSimTime(1)
+  , maxSimTime(15)
 {
   // Sort nodes by receive rate for determineDestNode
   for(Node& node : nodes) {
@@ -28,16 +28,7 @@ Simulator::Simulator(
   }
 
   // Schedule initial packets
-  for(Node& node : nodes) {
-    double packetTime = node.getNextPacketTime();
-    if(packetTime < 0) {
-      packetTime *= -1;
-    }
-    scheduler.schedule((ScheduledEvent){
-      packetTime,
-      EventType::NODE_GEN_PKT,
-      NetPacket(simTime, &node)});
-  }
+
 }
 
 // Scheduling new events (likely) will be near the end of the
@@ -64,6 +55,18 @@ Scheduler::schedule(ScheduledEvent event)
 void
 Simulator::simulate()
 {
+  simTime = 0;
+  for(Node& node : nodes) {
+    double packetTime = node.getNextPacketTime();
+    if(packetTime < 0) {
+      packetTime *= -1;
+    }
+    scheduler.schedule((ScheduledEvent){
+            packetTime,
+            EventType::NODE_GEN_PKT,
+            NetPacket(simTime, &node)});
+    node.nextAvailableRouteTime = 0;
+  }
   while(simTime < maxSimTime) {
     ScheduledEvent event = scheduler.events.front();
     scheduler.events.pop_front();
@@ -72,7 +75,7 @@ Simulator::simulate()
 
     switch(event.type) {
       case EventType::NODE_GEN_PKT:
-        std::cout << "GEN_PKT: {" << packet.sourceNode->id << "}\n";
+        //std::cout << "GEN_PKT: {" << packet.sourceNode->id << "}\n";
         packet.destNode = determineDestNode(packet.sourceNode);
         packet.route = routePacket(*packet.destNode, *packet.sourceNode);
 
@@ -224,8 +227,8 @@ Simulator::simulate()
         packet.arrived = true;
         packet.latency = simTime - packet.sendTime;
         stats.packets.push_back(packet);
-        std::cout << "RECV_PKT: " << simTime << " {" << packet.destNode->id << ", latency: " << packet.latency;
-        std::cout << " , sendTime: " << packet.sendTime << "}\n";
+        //std::cout << "RECV_PKT: " << simTime << " {" << packet.destNode->id << ", latency: " << packet.latency;
+       // std::cout << " , sendTime: " << packet.sendTime << "}\n";
         break;
     }
   }

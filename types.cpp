@@ -148,6 +148,33 @@ Connection::Connection(WireType& type, Node& a, Node& b)
   travelTime = real_distance(a, b) / 150000000;
 }
 
+Connection::Connection(Connection&& old)
+  : id(old.id),
+    type(old.type),
+    a(old.a),
+    b(old.b),
+    travelTime(old.travelTime)
+{}
+
+Connection::Connection(const Connection& old)
+  : id(old.id),
+    type(old.type),
+    a(old.a),
+    b(old.b),
+    travelTime(old.travelTime)
+{}
+
+Connection&
+Connection::operator=(const Connection& other)
+{
+  id = other.id;
+  type = other.type;
+  a = other.a;
+  b = other.b;
+  travelTime = other.travelTime;
+  return  *this;
+}
+
 std::string
 Connection::toXML()
 {

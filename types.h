@@ -88,10 +88,14 @@ public:
   WireType& type;
   Node& a;
   Node& b;
+  double length;
   double travelTime;
+  int maxPackets;
+  int numPackets;
 
   Connection(WireType& type, Node& a, Node& b);
   std::string toXML();
+  bool isFull();
 
   friend std::ostream& operator<<(std::ostream& out, const Connection& connection);
 };

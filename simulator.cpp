@@ -19,7 +19,7 @@ Simulator::Simulator(
   , wires(wires)
   , totalReceiveRate(0)
   , prefs(prefs)
-  , maxSimTime(1)
+  , maxSimTime(20)
   , simTime(0)
 {
   // Sort nodes by receive rate for determineDestNode
@@ -36,6 +36,7 @@ Simulator::Simulator(
     scheduler.schedule((ScheduledEvent){
       packetTime,
       EventType::NODE_GEN_PKT,
+      false,
       NetPacket(simTime, &node)});
   }
 }
@@ -82,91 +83,84 @@ Simulator::simulate()
           std::cerr << "Simulator routed packet to itself" << std::endl;
         }
         else {
-          //connection.packets.push(&packet);
           packet.currentConnection = &connections[packet.route.front()];
           packet.route.pop_front();
-          if(&packet.currentConnection->a == packet.lastNode) {
-            packet.nextNode = &packet.currentConnection->b;
-          }
-          else {
-            packet.nextNode = &packet.currentConnection->a;
-          }
 
-          if(packet.route.size() == 0) {
-            double err = ((double)rand() / RAND_MAX);
-            double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
-            //std::cout << success << std::endl;
-            if(err < success )
-            {
-              scheduler.schedule((ScheduledEvent)
-                                         {packet.currentConnection->travelTime + simTime,
-                                          EventType::NODE_RECV_PKT,
-                                          packet});
+          if(!packet.currentConnection->isFull()) {
+            packet.currentConnection->numPackets++;
+
+            if(&packet.currentConnection->a == packet.lastNode) {
+              packet.nextNode = &packet.currentConnection->b;
             }
-            else
-            {
-              //std::cout << "check";
-              packet.arrived = false;
-              stats.packets.push_back(packet);
+            else {
+              packet.nextNode = &packet.currentConnection->a;
             }
 
+            if(packet.route.size() == 0) {
+              double err = ((double)rand() / RAND_MAX);
+              double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+              //std::cout << success << std::endl;
+              if(err < success ) {
+                scheduler.schedule((ScheduledEvent)
+                                           {packet.currentConnection->travelTime + simTime,
+                                            EventType::NODE_RECV_PKT,
+                                            false,
+                                            packet});
+              }
+              else {
+                //std::cout << "check";
+                packet.arrived = false;
+                stats.packets.push_back(packet);
+              }
+
+            }
+            else {
+              double err = ((double)rand() / RAND_MAX);
+              double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+              //std::cout << success << std::endl;
+              if(err < success ) {
+                scheduler.schedule((ScheduledEvent)
+                                           {packet.currentConnection->travelTime + simTime,
+                                            EventType::NODE_ROUTE_PKT,
+                                            false,
+                                            packet});
+              }
+              else
+              {
+                //std::cout << "check";
+                packet.currentConnection->numPackets--;
+                packet.arrived = false;
+                stats.packets.push_back(packet);
+              }
+            }
           }
           else {
-            double err = ((double)rand() / RAND_MAX);
-            double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
-            //std::cout << success << std::endl;
-            if(err < success ) {
-              scheduler.schedule((ScheduledEvent)
-                                         {packet.currentConnection->travelTime + simTime,
-                                          EventType::NODE_ROUTE_PKT,
-                                          packet});
-            }
-            else
-            {
-              //std::cout << "check";
-              packet.arrived = false;
-              stats.packets.push_back(packet);
-            }
+            packet.arrived = false;
+            stats.packets.push_back(packet);
           }
         }
 
         {
         double nextPacketTime = simTime + packet.lastNode->getNextPacketTime();
         if(nextPacketTime < 0) nextPacketTime *= -1;
-        double err = ((double)rand() / RAND_MAX);
-        double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
-        //std::cout << success << std::endl;
-        int attempts = 0;
-        while (err > success)
-        {
-          err = ((double)rand() / RAND_MAX);
-          packet.arrived = false;
-          stats.packets.push_back(packet);
-          attempts++;
-        }
-        if(err < success ) {
-            scheduler.schedule((ScheduledEvent)
-                                       {nextPacketTime + packet.lastNode->getNextPacketTime()*attempts,
-                                        EventType::NODE_GEN_PKT,
-                                        NetPacket(nextPacketTime, packet.lastNode)});
-        }
-        else {
-          //std::cout << "check";
-          packet.arrived = false;
-          stats.packets.push_back(packet);
-        }
+        scheduler.schedule((ScheduledEvent)
+                    {nextPacketTime + packet.lastNode->getNextPacketTime(),
+                    EventType::NODE_GEN_PKT,
+                    false,
+                    NetPacket(nextPacketTime, packet.lastNode)});
+
 
         }
         break;
       case EventType::NODE_ROUTE_PKT:
-
+        if(!event.isQueueing) packet.currentConnection->numPackets--;
         if(simTime < packet.nextNode->nextAvailableRouteTime) {
           // Reschedule the routing
           scheduler.schedule((ScheduledEvent)
             {packet.nextNode->nextAvailableRouteTime,
              EventType::NODE_ROUTE_PKT,
+             true,
              packet});
-
         }
         else {
           packet.nextNode->nextAvailableRouteTime = simTime + 1 / packet.nextNode->routeRate;
@@ -178,49 +172,61 @@ Simulator::simulate()
           else {
             packet.nextNode = &packet.currentConnection->a;
           }
+          std::cout << "CONN PKT DEC: " << packet.currentConnection->id << ", " << packet.currentConnection->numPackets << std::endl;
           packet.currentConnection = &connections[packet.route.front()];
           packet.route.pop_front();
 
           // Route
-          if(packet.route.size() == 0) {
-
-            double err = ((double)rand() / RAND_MAX);
-            double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
-            //std::cout << success << std::endl;
-            if(err < success ) {
-              scheduler.schedule((ScheduledEvent)
-                                         {packet.currentConnection->travelTime + 1 / packet.nextNode->routeRate + simTime,
-                                          EventType::NODE_RECV_PKT,
-                                          packet});
+          if(!packet.currentConnection->isFull()) {
+            packet.currentConnection->numPackets++;
+            if(packet.route.size() == 0) {
+              double err = ((double)rand() / RAND_MAX);
+              double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+              //std::cout << success << std::endl;
+              if(err < success ) {
+                scheduler.schedule((ScheduledEvent)
+                                           {packet.currentConnection->travelTime + 1 / packet.nextNode->routeRate + simTime,
+                                            EventType::NODE_RECV_PKT,
+                                            false,
+                                            packet});
+              }
+              else
+              {
+                //std::cout << "check";
+                packet.currentConnection->numPackets--;
+                packet.arrived = false;
+                stats.packets.push_back(packet);
+              }
             }
-            else
-            {
-              //std::cout << "check";
-              packet.arrived = false;
-              stats.packets.push_back(packet);
+            else {
+
+              double err = ((double)rand() / RAND_MAX);
+              double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
+              //std::cout << success << std::endl;
+              if(err < success ) {
+                scheduler.schedule((ScheduledEvent)
+                                           {packet.currentConnection->travelTime + 1 / packet.lastNode->routeRate + simTime,
+                                            EventType::NODE_ROUTE_PKT,
+                                            false,
+                                            packet});
+              }
+              else
+              {
+                //std::cout << "check";
+                packet.currentConnection->numPackets--;
+                packet.arrived = false;
+                stats.packets.push_back(packet);
+              }
             }
           }
           else {
-
-            double err = ((double)rand() / RAND_MAX);
-            double success = pow((1 - packet.currentConnection->type.errorRate) , real_distance(packet.currentConnection->a,packet.currentConnection->b));
-            //std::cout << success << std::endl;
-            if(err < success ) {
-              scheduler.schedule((ScheduledEvent)
-                                         {packet.currentConnection->travelTime + 1 / packet.lastNode->routeRate + simTime,
-                                          EventType::NODE_ROUTE_PKT,
-                                          packet});
-            }
-            else
-            {
-              //std::cout << "check";
-              packet.arrived = false;
-              stats.packets.push_back(packet);
-            }
+            packet.arrived = false;
+            stats.packets.push_back(packet);
           }
         }
         break;
       case EventType::NODE_RECV_PKT:
+        packet.currentConnection->numPackets--;
         packet.arrived = true;
         packet.latency = simTime - packet.sendTime;
         stats.packets.push_back(packet);

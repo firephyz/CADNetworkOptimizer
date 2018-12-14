@@ -16,6 +16,7 @@ class Simulator;
 typedef struct scheduled_event_t {
   double deltaTime;
   EventType type;
+  bool isQueueing;
   NetPacket packet;
 } ScheduledEvent;
 
@@ -50,10 +51,10 @@ class Simulator {
   struct pref_t & prefs;
   Scheduler scheduler;
 
-  double maxSimTime; // max sim time for a single run
   double totalSimTime;
 
 public:
+  double maxSimTime; // max sim time for a single run
   double simTime; // simulation time of the current run
   struct stats_t stats;
   Simulator(std::vector<Node>& nodes,

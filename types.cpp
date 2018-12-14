@@ -142,10 +142,20 @@ Connection::Connection(WireType& type, Node& a, Node& b)
   : type(type)
   , a(a)
   , b(b)
+  , length(real_distance(a, b))
+  , maxPackets(type.bandwidth / 150000000 * length + 1)
+  , numPackets(0)
 {
   id = nextID;
   nextID++;
   travelTime = real_distance(a, b) / 150000000;
+}
+
+bool
+Connection::isFull()
+{
+  std::cout << numPackets << ", " << maxPackets << std::endl;
+  return numPackets == maxPackets;
 }
 
 std::string

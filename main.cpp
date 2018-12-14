@@ -427,7 +427,13 @@ int main(int argc, char **argv)
 
     std::cout << simmed_avg_latency(sim) << std::endl;
     std::cout << simmed_total_error_rate(sim) << std::endl;
-    std::cout << simmed_throughput(sim, 0, 1) << std::endl;
+    std::cout << simmed_throughput(sim, 0, sim.maxSimTime) << std::endl;
+    std::cout << "Sent: " << sim.stats.packets.size() << ", ";
+    int count = 0;
+    for(auto& packet : sim.stats.packets) {
+      if(packet.arrived) ++count;
+    }
+    std::cout << "Arrived: " << count << std::endl;
     prefs.budget = 0;
   }
 

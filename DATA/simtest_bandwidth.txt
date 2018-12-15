@@ -1,0 +1,840 @@
+Bandwidth: 25
+Average Packet Latency: 0.00653466
+Average Percent Packet Loss: 0.937826
+Average Throughput: 186.345
+Average Packets Sent: 59944.7
+Average Packets Arrived: 3727
+
+Bandwidth: 50
+Average Packet Latency: 0.00653307
+Average Percent Packet Loss: 0.937508
+Average Throughput: 187.3
+Average Packets Sent: 59945.7
+Average Packets Arrived: 3746.1
+
+Bandwidth: 75
+Average Packet Latency: 0.00655386
+Average Percent Packet Loss: 0.938121
+Average Throughput: 185.465
+Average Packets Sent: 59944.7
+Average Packets Arrived: 3709.3
+
+Bandwidth: 100
+Average Packet Latency: 0.00652777
+Average Percent Packet Loss: 0.938106
+Average Throughput: 185.515
+Average Packets Sent: 59945.9
+Average Packets Arrived: 3710.3
+
+Bandwidth: 125
+Average Packet Latency: 0.00738057
+Average Percent Packet Loss: 0.914398
+Average Throughput: 256.565
+Average Packets Sent: 59943.6
+Average Packets Arrived: 5131.3
+
+Bandwidth: 150
+Average Packet Latency: 0.00737448
+Average Percent Packet Loss: 0.914903
+Average Throughput: 255.04
+Average Packets Sent: 59943.6
+Average Packets Arrived: 5101
+
+Bandwidth: 175
+Average Packet Latency: 0.00736834
+Average Percent Packet Loss: 0.914697
+Average Throughput: 255.66
+Average Packets Sent: 59942.8
+Average Packets Arrived: 5113.3
+
+Bandwidth: 200
+Average Packet Latency: 0.00739506
+Average Percent Packet Loss: 0.914658
+Average Throughput: 255.805
+Average Packets Sent: 59949.3
+Average Packets Arrived: 5116.2
+
+Bandwidth: 225
+Average Packet Latency: 0.00725733
+Average Percent Packet Loss: 0.850544
+Average Throughput: 447.9
+Average Packets Sent: 59938.2
+Average Packets Arrived: 8958.1
+
+Bandwidth: 250
+Average Packet Latency: 0.00727482
+Average Percent Packet Loss: 0.850762
+Average Throughput: 447.3
+Average Packets Sent: 59944.6
+Average Packets Arrived: 8946
+
+Bandwidth: 275
+Average Packet Latency: 0.00725183
+Average Percent Packet Loss: 0.849498
+Average Throughput: 451.09
+Average Packets Sent: 59945.9
+Average Packets Arrived: 9022
+
+Bandwidth: 300
+Average Packet Latency: 0.00726372
+Average Percent Packet Loss: 0.850162
+Average Throughput: 449.085
+Average Packets Sent: 59944
+Average Packets Arrived: 8981.9
+
+Bandwidth: 325
+Average Packet Latency: 0.00728223
+Average Percent Packet Loss: 0.849705
+Average Throughput: 450.465
+Average Packets Sent: 59943.9
+Average Packets Arrived: 9009.3
+
+Bandwidth: 350
+Average Packet Latency: 0.0076649
+Average Percent Packet Loss: 0.826172
+Average Throughput: 521.015
+Average Packets Sent: 59946
+Average Packets Arrived: 10420.3
+
+Bandwidth: 375
+Average Packet Latency: 0.0076445
+Average Percent Packet Loss: 0.825979
+Average Throughput: 521.55
+Average Packets Sent: 59941.5
+Average Packets Arrived: 10431.1
+
+Bandwidth: 400
+Average Packet Latency: 0.00765683
+Average Percent Packet Loss: 0.825843
+Average Throughput: 521.995
+Average Packets Sent: 59946.5
+Average Packets Arrived: 10440.1
+
+Bandwidth: 425
+Average Packet Latency: 0.00764401
+Average Percent Packet Loss: 0.8254
+Average Throughput: 523.275
+Average Packets Sent: 59940.4
+Average Packets Arrived: 10465.6
+
+Bandwidth: 450
+Average Packet Latency: 0.00767658
+Average Percent Packet Loss: 0.759319
+Average Throughput: 721.345
+Average Packets Sent: 59942.4
+Average Packets Arrived: 14427
+
+Bandwidth: 475
+Average Packet Latency: 0.00766412
+Average Percent Packet Loss: 0.758694
+Average Throughput: 723.22
+Average Packets Sent: 59942.5
+Average Packets Arrived: 14464.5
+
+Bandwidth: 500
+Average Packet Latency: 0.00766665
+Average Percent Packet Loss: 0.759269
+Average Throughput: 721.47
+Average Packets Sent: 59941.1
+Average Packets Arrived: 14429.7
+
+Bandwidth: 525
+Average Packet Latency: 0.00768009
+Average Percent Packet Loss: 0.758829
+Average Throughput: 722.845
+Average Packets Sent: 59944.6
+Average Packets Arrived: 14456.9
+
+Bandwidth: 550
+Average Packet Latency: 0.00794129
+Average Percent Packet Loss: 0.73405
+Average Throughput: 797.035
+Average Packets Sent: 59939.1
+Average Packets Arrived: 15940.8
+
+Bandwidth: 575
+Average Packet Latency: 0.00793737
+Average Percent Packet Loss: 0.733109
+Average Throughput: 799.875
+Average Packets Sent: 59940.7
+Average Packets Arrived: 15997.6
+
+Bandwidth: 600
+Average Packet Latency: 0.00791998
+Average Percent Packet Loss: 0.732957
+Average Throughput: 800.275
+Average Packets Sent: 59937.1
+Average Packets Arrived: 16005.8
+
+Bandwidth: 625
+Average Packet Latency: 0.00792919
+Average Percent Packet Loss: 0.733691
+Average Throughput: 798.14
+Average Packets Sent: 59941
+Average Packets Arrived: 15962.8
+
+Bandwidth: 650
+Average Packet Latency: 0.00776678
+Average Percent Packet Loss: 0.691216
+Average Throughput: 925.415
+Average Packets Sent: 59939.7
+Average Packets Arrived: 18508.4
+
+Bandwidth: 675
+Average Packet Latency: 0.00800593
+Average Percent Packet Loss: 0.664339
+Average Throughput: 1005.94
+Average Packets Sent: 59938.2
+Average Packets Arrived: 20118.9
+
+Bandwidth: 700
+Average Packet Latency: 0.00802388
+Average Percent Packet Loss: 0.665359
+Average Throughput: 1002.9
+Average Packets Sent: 59939.5
+Average Packets Arrived: 20058.2
+
+Bandwidth: 725
+Average Packet Latency: 0.00799725
+Average Percent Packet Loss: 0.66518
+Average Throughput: 1003.4
+Average Packets Sent: 59937.8
+Average Packets Arrived: 20068.4
+
+Bandwidth: 750
+Average Packet Latency: 0.0080039
+Average Percent Packet Loss: 0.664082
+Average Throughput: 1006.68
+Average Packets Sent: 59936.9
+Average Packets Arrived: 20133.9
+
+Bandwidth: 775
+Average Packet Latency: 0.00819151
+Average Percent Packet Loss: 0.638862
+Average Throughput: 1082.31
+Average Packets Sent: 59939.4
+Average Packets Arrived: 21646.4
+
+Bandwidth: 800
+Average Packet Latency: 0.0082081
+Average Percent Packet Loss: 0.638543
+Average Throughput: 1083.28
+Average Packets Sent: 59940.4
+Average Packets Arrived: 21665.9
+
+Bandwidth: 825
+Average Packet Latency: 0.00821584
+Average Percent Packet Loss: 0.639002
+Average Throughput: 1081.88
+Average Packets Sent: 59938.6
+Average Packets Arrived: 21637.7
+
+Bandwidth: 850
+Average Packet Latency: 0.00820133
+Average Percent Packet Loss: 0.63929
+Average Throughput: 1080.95
+Average Packets Sent: 59934.9
+Average Packets Arrived: 21619.1
+
+Bandwidth: 875
+Average Packet Latency: 0.00809495
+Average Percent Packet Loss: 0.594029
+Average Throughput: 1216.57
+Average Packets Sent: 59933.8
+Average Packets Arrived: 24331.4
+
+Bandwidth: 900
+Average Packet Latency: 0.00828427
+Average Percent Packet Loss: 0.568104
+Average Throughput: 1294.36
+Average Packets Sent: 59938.5
+Average Packets Arrived: 25887.2
+
+Bandwidth: 925
+Average Packet Latency: 0.00826781
+Average Percent Packet Loss: 0.566918
+Average Throughput: 1297.83
+Average Packets Sent: 59935.5
+Average Packets Arrived: 25957
+
+Bandwidth: 950
+Average Packet Latency: 0.00825882
+Average Percent Packet Loss: 0.568057
+Average Throughput: 1294.42
+Average Packets Sent: 59935.5
+Average Packets Arrived: 25888.7
+
+Bandwidth: 975
+Average Packet Latency: 0.00827617
+Average Percent Packet Loss: 0.567633
+Average Throughput: 1295.76
+Average Packets Sent: 59938
+Average Packets Arrived: 25915.2
+
+Bandwidth: 1000
+Average Packet Latency: 0.00842559
+Average Percent Packet Loss: 0.54119
+Average Throughput: 1374.9
+Average Packets Sent: 59933.7
+Average Packets Arrived: 27498.2
+
+Bandwidth: 1025
+Average Packet Latency: 0.0084443
+Average Percent Packet Loss: 0.541209
+Average Throughput: 1374.86
+Average Packets Sent: 59934.2
+Average Packets Arrived: 27497.3
+
+Bandwidth: 1050
+Average Packet Latency: 0.0084439
+Average Percent Packet Loss: 0.54284
+Average Throughput: 1369.94
+Average Packets Sent: 59933.3
+Average Packets Arrived: 27399.1
+
+Bandwidth: 1075
+Average Packet Latency: 0.00833906
+Average Percent Packet Loss: 0.491863
+Average Throughput: 1522.74
+Average Packets Sent: 59934.8
+Average Packets Arrived: 30455.1
+
+Bandwidth: 1100
+Average Packet Latency: 0.00848782
+Average Percent Packet Loss: 0.465089
+Average Throughput: 1602.88
+Average Packets Sent: 59931.1
+Average Packets Arrived: 32057.8
+
+Bandwidth: 1125
+Average Packet Latency: 0.00851737
+Average Percent Packet Loss: 0.466706
+Average Throughput: 1598.14
+Average Packets Sent: 59935.4
+Average Packets Arrived: 31963.2
+
+Bandwidth: 1150
+Average Packet Latency: 0.00850074
+Average Percent Packet Loss: 0.466105
+Average Throughput: 1599.86
+Average Packets Sent: 59932.4
+Average Packets Arrived: 31997.6
+
+Bandwidth: 1175
+Average Packet Latency: 0.00849186
+Average Percent Packet Loss: 0.465623
+Average Throughput: 1601.31
+Average Packets Sent: 59932.2
+Average Packets Arrived: 32026.4
+
+Bandwidth: 1200
+Average Packet Latency: 0.00850591
+Average Percent Packet Loss: 0.466524
+Average Throughput: 1598.59
+Average Packets Sent: 59931.7
+Average Packets Arrived: 31972.1
+
+Bandwidth: 1225
+Average Packet Latency: 0.00863775
+Average Percent Packet Loss: 0.440766
+Average Throughput: 1675.75
+Average Packets Sent: 59930.7
+Average Packets Arrived: 33515.3
+
+Bandwidth: 1250
+Average Packet Latency: 0.00864423
+Average Percent Packet Loss: 0.440343
+Average Throughput: 1676.94
+Average Packets Sent: 59928.5
+Average Packets Arrived: 33539.4
+
+Bandwidth: 1275
+Average Packet Latency: 0.00863638
+Average Percent Packet Loss: 0.439932
+Average Throughput: 1678.3
+Average Packets Sent: 59932.9
+Average Packets Arrived: 33566.5
+
+Bandwidth: 1300
+Average Packet Latency: 0.00857589
+Average Percent Packet Loss: 0.392683
+Average Throughput: 1819.72
+Average Packets Sent: 59927
+Average Packets Arrived: 36394.7
+
+Bandwidth: 1325
+Average Packet Latency: 0.00870633
+Average Percent Packet Loss: 0.366754
+Average Throughput: 1897.58
+Average Packets Sent: 59932
+Average Packets Arrived: 37951.7
+
+Bandwidth: 1350
+Average Packet Latency: 0.00871286
+Average Percent Packet Loss: 0.366881
+Average Throughput: 1897.09
+Average Packets Sent: 59928.9
+Average Packets Arrived: 37942.1
+
+Bandwidth: 1375
+Average Packet Latency: 0.00871605
+Average Percent Packet Loss: 0.367306
+Average Throughput: 1895.9
+Average Packets Sent: 59931.5
+Average Packets Arrived: 37918.3
+
+Bandwidth: 1400
+Average Packet Latency: 0.00870953
+Average Percent Packet Loss: 0.36718
+Average Throughput: 1896.25
+Average Packets Sent: 59930.6
+Average Packets Arrived: 37925.3
+
+Bandwidth: 1425
+Average Packet Latency: 0.00883143
+Average Percent Packet Loss: 0.342593
+Average Throughput: 1969.94
+Average Packets Sent: 59930.8
+Average Packets Arrived: 39398.9
+
+Bandwidth: 1450
+Average Packet Latency: 0.00883402
+Average Percent Packet Loss: 0.342409
+Average Throughput: 1970.4
+Average Packets Sent: 59928.4
+Average Packets Arrived: 39408.4
+
+Bandwidth: 1475
+Average Packet Latency: 0.00883045
+Average Percent Packet Loss: 0.341765
+Average Throughput: 1972.31
+Average Packets Sent: 59927.8
+Average Packets Arrived: 39446.6
+
+Bandwidth: 1500
+Average Packet Latency: 0.00878508
+Average Percent Packet Loss: 0.295963
+Average Throughput: 2109.67
+Average Packets Sent: 59931.2
+Average Packets Arrived: 42193.8
+
+Bandwidth: 1525
+Average Packet Latency: 0.00879871
+Average Percent Packet Loss: 0.29673
+Average Throughput: 2107.39
+Average Packets Sent: 59931.5
+Average Packets Arrived: 42148
+
+Bandwidth: 1550
+Average Packet Latency: 0.00889723
+Average Percent Packet Loss: 0.272527
+Average Throughput: 2179.91
+Average Packets Sent: 59931.3
+Average Packets Arrived: 43598.4
+
+Bandwidth: 1575
+Average Packet Latency: 0.00889997
+Average Percent Packet Loss: 0.272069
+Average Throughput: 2181.13
+Average Packets Sent: 59927
+Average Packets Arrived: 43622.7
+
+Bandwidth: 1600
+Average Packet Latency: 0.00889095
+Average Percent Packet Loss: 0.271812
+Average Throughput: 2182.02
+Average Packets Sent: 59930.5
+Average Packets Arrived: 43640.7
+
+Bandwidth: 1625
+Average Packet Latency: 0.00889565
+Average Percent Packet Loss: 0.271669
+Average Throughput: 2182.4
+Average Packets Sent: 59929.6
+Average Packets Arrived: 43648.6
+
+Bandwidth: 1650
+Average Packet Latency: 0.00898779
+Average Percent Packet Loss: 0.248318
+Average Throughput: 2252.34
+Average Packets Sent: 59928.1
+Average Packets Arrived: 45046.9
+
+Bandwidth: 1675
+Average Packet Latency: 0.0089851
+Average Percent Packet Loss: 0.248117
+Average Throughput: 2252.98
+Average Packets Sent: 59929.4
+Average Packets Arrived: 45059.9
+
+Bandwidth: 1700
+Average Packet Latency: 0.00898412
+Average Percent Packet Loss: 0.248235
+Average Throughput: 2252.57
+Average Packets Sent: 59928
+Average Packets Arrived: 45051.8
+
+Bandwidth: 1725
+Average Packet Latency: 0.0089784
+Average Percent Packet Loss: 0.206999
+Average Throughput: 2376.09
+Average Packets Sent: 59927.4
+Average Packets Arrived: 47522.5
+
+Bandwidth: 1750
+Average Packet Latency: 0.00898101
+Average Percent Packet Loss: 0.207433
+Average Throughput: 2374.8
+Average Packets Sent: 59927.4
+Average Packets Arrived: 47496.5
+
+Bandwidth: 1775
+Average Packet Latency: 0.00906222
+Average Percent Packet Loss: 0.183912
+Average Throughput: 2445.25
+Average Packets Sent: 59926.9
+Average Packets Arrived: 48905.6
+
+Bandwidth: 1800
+Average Packet Latency: 0.00906414
+Average Percent Packet Loss: 0.184022
+Average Throughput: 2444.96
+Average Packets Sent: 59927.7
+Average Packets Arrived: 48899.7
+
+Bandwidth: 1825
+Average Packet Latency: 0.00905149
+Average Percent Packet Loss: 0.18317
+Average Throughput: 2447.44
+Average Packets Sent: 59925.6
+Average Packets Arrived: 48949
+
+Bandwidth: 1850
+Average Packet Latency: 0.00905125
+Average Percent Packet Loss: 0.183122
+Average Throughput: 2447.59
+Average Packets Sent: 59925.7
+Average Packets Arrived: 48952
+
+Bandwidth: 1875
+Average Packet Latency: 0.00913691
+Average Percent Packet Loss: 0.163192
+Average Throughput: 2507.18
+Average Packets Sent: 59922.8
+Average Packets Arrived: 50143.9
+
+Bandwidth: 1900
+Average Packet Latency: 0.00913118
+Average Percent Packet Loss: 0.163627
+Average Throughput: 2505.98
+Average Packets Sent: 59925.4
+Average Packets Arrived: 50120
+
+Bandwidth: 1925
+Average Packet Latency: 0.00911955
+Average Percent Packet Loss: 0.126738
+Average Throughput: 2616.51
+Average Packets Sent: 59925.4
+Average Packets Arrived: 52330.6
+
+Bandwidth: 1950
+Average Packet Latency: 0.00912605
+Average Percent Packet Loss: 0.126809
+Average Throughput: 2616.03
+Average Packets Sent: 59919.2
+Average Packets Arrived: 52320.9
+
+Bandwidth: 1975
+Average Packet Latency: 0.00918807
+Average Percent Packet Loss: 0.10783
+Average Throughput: 2673.08
+Average Packets Sent: 59923.3
+Average Packets Arrived: 53461.8
+
+Bandwidth: 2000
+Average Packet Latency: 0.00918315
+Average Percent Packet Loss: 0.107438
+Average Throughput: 2674.26
+Average Packets Sent: 59923.6
+Average Packets Arrived: 53485.5
+
+Bandwidth: 2025
+Average Packet Latency: 0.00918609
+Average Percent Packet Loss: 0.107678
+Average Throughput: 2673.47
+Average Packets Sent: 59922.2
+Average Packets Arrived: 53469.9
+
+Bandwidth: 2050
+Average Packet Latency: 0.0091768
+Average Percent Packet Loss: 0.107284
+Average Throughput: 2674.57
+Average Packets Sent: 59920.2
+Average Packets Arrived: 53491.7
+
+Bandwidth: 2075
+Average Packet Latency: 0.00917634
+Average Percent Packet Loss: 0.107233
+Average Throughput: 2674.94
+Average Packets Sent: 59924.9
+Average Packets Arrived: 53499
+
+Bandwidth: 2100
+Average Packet Latency: 0.00922947
+Average Percent Packet Loss: 0.0920343
+Average Throughput: 2720.38
+Average Packets Sent: 59923.3
+Average Packets Arrived: 54408.3
+
+Bandwidth: 2125
+Average Packet Latency: 0.0092343
+Average Percent Packet Loss: 0.0917003
+Average Throughput: 2721.46
+Average Packets Sent: 59924.6
+Average Packets Arrived: 54429.5
+
+Bandwidth: 2150
+Average Packet Latency: 0.00921735
+Average Percent Packet Loss: 0.0633562
+Average Throughput: 2806.31
+Average Packets Sent: 59923.1
+Average Packets Arrived: 56126.6
+
+Bandwidth: 2175
+Average Packet Latency: 0.00922549
+Average Percent Packet Loss: 0.0632045
+Average Throughput: 2806.97
+Average Packets Sent: 59927.7
+Average Packets Arrived: 56140
+
+Bandwidth: 2200
+Average Packet Latency: 0.00926038
+Average Percent Packet Loss: 0.0498247
+Average Throughput: 2846.91
+Average Packets Sent: 59924.1
+Average Packets Arrived: 56938.4
+
+Bandwidth: 2225
+Average Packet Latency: 0.0092617
+Average Percent Packet Loss: 0.0498982
+Average Throughput: 2846.49
+Average Packets Sent: 59920
+Average Packets Arrived: 56930.1
+
+Bandwidth: 2250
+Average Packet Latency: 0.00925616
+Average Percent Packet Loss: 0.0492744
+Average Throughput: 2848.34
+Average Packets Sent: 59919.5
+Average Packets Arrived: 56967
+
+Bandwidth: 2275
+Average Packet Latency: 0.00925573
+Average Percent Packet Loss: 0.0494876
+Average Throughput: 2847.81
+Average Packets Sent: 59922.1
+Average Packets Arrived: 56956.7
+
+Bandwidth: 2300
+Average Packet Latency: 0.00927612
+Average Percent Packet Loss: 0.0404362
+Average Throughput: 2874.89
+Average Packets Sent: 59921.5
+Average Packets Arrived: 57498.5
+
+Bandwidth: 2325
+Average Packet Latency: 0.00928212
+Average Percent Packet Loss: 0.0409587
+Average Throughput: 2873.35
+Average Packets Sent: 59921.5
+Average Packets Arrived: 57467.2
+
+Bandwidth: 2350
+Average Packet Latency: 0.00927535
+Average Percent Packet Loss: 0.0214529
+Average Throughput: 2931.8
+Average Packets Sent: 59921.9
+Average Packets Arrived: 58636.4
+
+Bandwidth: 2375
+Average Packet Latency: 0.00927669
+Average Percent Packet Loss: 0.0219111
+Average Throughput: 2930.52
+Average Packets Sent: 59924.1
+Average Packets Arrived: 58611.1
+
+Bandwidth: 2400
+Average Packet Latency: 0.00927201
+Average Percent Packet Loss: 0.0216387
+Average Throughput: 2931.18
+Average Packets Sent: 59920.5
+Average Packets Arrived: 58623.9
+
+Bandwidth: 2425
+Average Packet Latency: 0.00929137
+Average Percent Packet Loss: 0.0160629
+Average Throughput: 2947.88
+Average Packets Sent: 59920.6
+Average Packets Arrived: 58958.1
+
+Bandwidth: 2450
+Average Packet Latency: 0.00929137
+Average Percent Packet Loss: 0.0161253
+Average Throughput: 2947.6
+Average Packets Sent: 59918.4
+Average Packets Arrived: 58952.2
+
+Bandwidth: 2475
+Average Packet Latency: 0.00929163
+Average Percent Packet Loss: 0.015898
+Average Throughput: 2948.33
+Average Packets Sent: 59919.6
+Average Packets Arrived: 58967
+
+Bandwidth: 2500
+Average Packet Latency: 0.00928895
+Average Percent Packet Loss: 0.0158072
+Average Throughput: 2948.72
+Average Packets Sent: 59921.9
+Average Packets Arrived: 58974.7
+
+Bandwidth: 2525
+Average Packet Latency: 0.00929609
+Average Percent Packet Loss: 0.0131218
+Average Throughput: 2956.81
+Average Packets Sent: 59922.9
+Average Packets Arrived: 59136.6
+
+Bandwidth: 2550
+Average Packet Latency: 0.00928992
+Average Percent Packet Loss: 0.0131812
+Average Throughput: 2956.43
+Average Packets Sent: 59918.6
+Average Packets Arrived: 59128.8
+
+Bandwidth: 2575
+Average Packet Latency: 0.00929648
+Average Percent Packet Loss: 0.00438891
+Average Throughput: 2983.01
+Average Packets Sent: 59923.8
+Average Packets Arrived: 59660.8
+
+Bandwidth: 2600
+Average Packet Latency: 0.00929422
+Average Percent Packet Loss: 0.00439252
+Average Throughput: 2982.82
+Average Packets Sent: 59920
+Average Packets Arrived: 59656.8
+
+Bandwidth: 2625
+Average Packet Latency: 0.0092874
+Average Percent Packet Loss: 0.00414206
+Average Throughput: 2983.66
+Average Packets Sent: 59922
+Average Packets Arrived: 59673.8
+
+Bandwidth: 2650
+Average Packet Latency: 0.00930008
+Average Percent Packet Loss: 0.00317772
+Average Throughput: 2986.32
+Average Packets Sent: 59917.2
+Average Packets Arrived: 59726.8
+
+Bandwidth: 2675
+Average Packet Latency: 0.00929542
+Average Percent Packet Loss: 0.00317099
+Average Throughput: 2986.38
+Average Packets Sent: 59918
+Average Packets Arrived: 59728
+
+Bandwidth: 2700
+Average Packet Latency: 0.00929607
+Average Percent Packet Loss: 0.00321413
+Average Throughput: 2986.47
+Average Packets Sent: 59922.7
+Average Packets Arrived: 59730.1
+
+Bandwidth: 2725
+Average Packet Latency: 0.00929126
+Average Percent Packet Loss: 0.00314419
+Average Throughput: 2986.55
+Average Packets Sent: 59919.9
+Average Packets Arrived: 59731.5
+
+Bandwidth: 2750
+Average Packet Latency: 0.00929701
+Average Percent Packet Loss: 0.00307723
+Average Throughput: 2986.94
+Average Packets Sent: 59923.7
+Average Packets Arrived: 59739.3
+
+Bandwidth: 2775
+Average Packet Latency: 0.00929958
+Average Percent Packet Loss: 0.000327108
+Average Throughput: 2994.98
+Average Packets Sent: 59919.6
+Average Packets Arrived: 59900
+
+Bandwidth: 2800
+Average Packet Latency: 0.00930243
+Average Percent Packet Loss: 0.000388844
+Average Throughput: 2994.83
+Average Packets Sent: 59920.2
+Average Packets Arrived: 59896.9
+
+Bandwidth: 2825
+Average Packet Latency: 0.00930083
+Average Percent Packet Loss: 0.000382131
+Average Throughput: 2995.18
+Average Packets Sent: 59926.7
+Average Packets Arrived: 59903.8
+
+Bandwidth: 2850
+Average Packet Latency: 0.00929829
+Average Percent Packet Loss: 0.000337118
+Average Throughput: 2994.94
+Average Packets Sent: 59919.6
+Average Packets Arrived: 59899.4
+
+Bandwidth: 2875
+Average Packet Latency: 0.00929844
+Average Percent Packet Loss: 0.000327112
+Average Throughput: 2994.91
+Average Packets Sent: 59917.9
+Average Packets Arrived: 59898.3
+
+Bandwidth: 2900
+Average Packet Latency: 0.00928814
+Average Percent Packet Loss: 0.000337106
+Average Throughput: 2995.05
+Average Packets Sent: 59921.4
+Average Packets Arrived: 59901.2
+
+Bandwidth: 2925
+Average Packet Latency: 0.00929455
+Average Percent Packet Loss: 0.000333767
+Average Throughput: 2995.11
+Average Packets Sent: 59922.3
+Average Packets Arrived: 59902.3
+
+Bandwidth: 2950
+Average Packet Latency: 0.0092917
+Average Percent Packet Loss: 0.000373836
+Average Throughput: 2994.81
+Average Packets Sent: 59919.2
+Average Packets Arrived: 59896.8
+
+Bandwidth: 2975
+Average Packet Latency: 0.0092941
+Average Percent Packet Loss: 0.000332097
+Average Throughput: 2995.1
+Average Packets Sent: 59922.4
+Average Packets Arrived: 59902.5
+
+Bandwidth: 3000
+Average Packet Latency: 0.00929636
+Average Percent Packet Loss: 3.33745e-06
+Average Throughput: 2996.18
+Average Packets Sent: 59924.4
+Average Packets Arrived: 59924.2
+

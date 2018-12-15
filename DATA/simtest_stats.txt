@@ -1,0 +1,99 @@
+********************************************
+* Bandwidth too low for full communication *
+* Bandwidth: 1000                          *
+* Send Rates: 1000                         *
+* Receive Rates: 5000                      *
+* Route Rates: 5000                        *
+********************************************
+
+Average Packet Latency: 0.00844996
+Average Percent Packet Loss: 0.54232
+Average Throughput: 1371.5
+Average Packets Sent: 59932.9
+Average Packets Arrived: 27430.1
+Average Packets Lost on Line: 0
+Average Packets Lost on Dispatch: 25281.4
+Average Packets Lost on Routing: 7221.4
+
+Node 'node1' sent 19977.4
+Node 'node2' sent 19978.3
+Node 'node3' sent 19977.2
+
+Node 'node1' received 9597.4
+Node 'node2' received 13060.5
+Node 'node3' received 4772.2
+
+Node 'node1' lost sending 9079
+Node 'node2' lost sending 11424.9
+Node 'node3' lost sending 4777.5
+
+Node 'node1' lost routing 0
+Node 'node2' lost routing 7221.4
+Node 'node3' lost routing 0
+
+***********************************************
+* Bandwidth Sufficient for full communication *
+* Bandwidth: 3000                             *
+* Send Rates: 1000                            *
+* Receive Rates: 5000                         *
+* Route Rates: 5000                           *
+***********************************************
+
+Average Packet Latency: 0.00929176
+Average Percent Packet Loss: 6.67543e-06
+Average Throughput: 2996
+Average Packets Sent: 59921
+Average Packets Arrived: 59920.6
+Average Packets Lost on Line: 0
+Average Packets Lost on Dispatch: 0.1
+Average Packets Lost on Routing: 0.3
+
+Node 'node1' sent 19970.1
+Node 'node2' sent 19974.9
+Node 'node3' sent 19976
+
+Node 'node1' received 19967.7
+Node 'node2' received 19947.6
+Node 'node3' received 20005.3
+
+Node 'node1' lost sending 0
+Node 'node2' lost sending 0.1
+Node 'node3' lost sending 0
+
+Node 'node1' lost routing 0
+Node 'node2' lost routing 0.3
+Node 'node3' lost routing 0
+
+***********************************************
+* Bandwidth Sufficient for full communication *
+* Bandwidth: 3000                             *
+* Send Rates: 100                             *
+* Receive Rates: 500                          *
+* Route Rates (Outside 2 Nodes): 500          *
+* Route Rate (Inside Node): 50                *
+***********************************************
+
+Average Packet Latency: 1.0249
+Average Percent Packet Loss: 0
+Average Throughput: 248.625
+Average Packets Sent: 4972.9
+Average Packets Arrived: 4972.9
+Average Packets Lost on Line: 0
+Average Packets Lost on Dispatch: 0
+Average Packets Lost on Routing: 0
+
+Node 'node1' sent 1486.2
+Node 'node2' sent 1997.1
+Node 'node3' sent 1489.6
+
+Node 'node1' received 1503.6
+Node 'node2' received 1976.8
+Node 'node3' received 1492.5
+
+Node 'node1' lost sending 0
+Node 'node2' lost sending 0
+Node 'node3' lost sending 0
+
+Node 'node1' lost routing 0
+Node 'node2' lost routing 0
+Node 'node3' lost routing 0

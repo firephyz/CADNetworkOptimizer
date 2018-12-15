@@ -1,0 +1,41 @@
+<NetworkDefinition>
+	<ListOfNodes>
+		<Node name='node1' x='0' y='0' sendRate='35' receiveRate='25' routeRate='100' queueSize='0'/>
+		<Node name='node2' x='5000' y='5000' sendRate='72' receiveRate='63' routeRate='150' queueSize='0'/>
+		<Node name='node3' x='1000' y='1000' sendRate='68' receiveRate='53' routeRate='75' queueSize='0'/>
+		<Node name='node4' x='13000' y='2000' sendRate='45' receiveRate='27' routeRate='200' queueSize='0'/>
+		<Node name='node5' x='4000' y='6000' sendRate='12' receiveRate='74' routeRate='60' queueSize='0'/>
+		<Node name='node6' x='3000' y='1000' sendRate='32' receiveRate='63' routeRate='180' queueSize='0'/>
+		<Node name='node7' x='1500' y='7000' sendRate='49' receiveRate='46' routeRate='180' queueSize='0'/>
+		<Node name='node8' x='16000' y='20000' sendRate='37' receiveRate='49' routeRate='90' queueSize='0'/>
+		<Node name='node9' x='4000' y='10000' sendRate='28' receiveRate='51' routeRate='500' queueSize='0'/>
+	</ListOfNodes>
+	<WireTypess>
+		<Wire type='type1' cost='5' bandwidth='50000' errorRate='5e-09'/>
+		<Wire type='type1' cost='5' bandwidth='50000' errorRate='5e-09'/>
+	</WireTypes>
+	<ListOfConnections>
+		<Connection wireType='type1' node1='node1' node='node2'/>
+		<Connection wireType='type1' node1='node3' node='node4'/>
+		<Connection wireType='type1' node1='node4' node='node5'/>
+		<Connection wireType='type1' node1='node6' node='node7'/>
+		<Connection wireType='type1' node1='node7' node='node8'/>
+		<Connection wireType='type1' node1='node8' node='node9'/>
+		<Connection wireType='type1' node1='node9' node='node7'/>
+		<Connection wireType='type1' node1='node7' node='node1'/>
+		<Connection wireType='type1' node1='node1' node='node4'/>
+		<Connection wireType='type1' node1='node4' node='node7'/>
+		<Connection wireType='type1' node1='node2' node='node3'/>
+		<Connection wireType='type1' node1='node2' node='node5'/>
+		<Connection wireType='type1' node1='node2' node='node8'/>
+		<Connection wireType='type1' node1='node3' node='node6'/>
+		<Connection wireType='type1' node1='node3' node='node9'/>
+		<Connection wireType='type1' node1='node5' node='node9'/>
+		<Connection wireType='type1' node1='node6' node='node5'/>
+		<Connection wireType='type1' node1='node1' node='node3'/>
+		<Connection wireType='type1' node1='node1' node='node5'/>
+		<Connection wireType='type1' node1='node1' node='node6'/>
+	</ListOfConnections>
+	<Preferences/>
+	<Statistics latency='0.00543649' packetLoss='0.0411515' throughput='361.397' cost='393790' />
+</NetworkDefinition>

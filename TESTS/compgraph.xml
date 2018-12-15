@@ -1,0 +1,42 @@
+<NetworkDefinition>
+  <ListOfNodes>
+    <!-- rates are packets per second -->
+    <Node name='node1' x='0.0' y='0.0' sendRate='35.0' receiveRate='25.0' routeRate='100.0' queueSize='0'/>
+    <Node name='node2' x='5.0' y='5.0' sendRate='72.0' receiveRate='63.0' routeRate='150.0' queueSize='0'/>
+    <Node name='node3' x='1.0' y='1.0' sendRate='68.0' receiveRate='53.0' routeRate='75.0' queueSize='0'/>
+    <Node name='node4' x='13.0' y='2.0' sendRate='45.0' receiveRate='27.0' routeRate='200.0' queueSize='0'/>
+    <Node name='node5' x='4.0' y='6.0' sendRate='12.0' receiveRate='74.0' routeRate='60.0' queueSize='0'/>
+    <Node name='node6' x='3.0' y='1.0' sendRate='32.0' receiveRate='63.0' routeRate='180.0' queueSize='0'/>
+    <Node name='node7' x='1.5' y='7.0' sendRate='49.0' receiveRate='46.0' routeRate='180.0' queueSize='0'/>
+    <Node name='node8' x='16.0' y='20.0' sendRate='37.0' receiveRate='49.0' routeRate='90.0' queueSize='0'/>
+    <Node name='node9' x='4.0' y='10.0' sendRate='28.0' receiveRate='51.0' routeRate='500.0' queueSize='0'/>
+  </ListOfNodes>
+  <WireTypes>
+    <!-- cost is per meter. bandwidth is in packets per second. errorRate is percent
+    chance a given packet transmitted will be lost -->
+    <Wire type='type0' cost='1.0' bandwidth='10000.0' errorRate='0.00001'/>
+    <Wire type='type1' cost='5.0' bandwidth='50000.0' errorRate='0.000005'/>
+  </WireTypes>
+  <ListOfConnections>
+    <Connection wireType='type0' node1='node1' node2='node2'/>
+    <Connection wireType='type0' node1='node3' node2='node4'/>
+    <Connection wireType='type0' node1='node4' node2='node5'/>
+    <Connection wireType='type0' node1='node6' node2='node7'/>
+    <Connection wireType='type0' node1='node7' node2='node8'/>
+    <Connection wireType='type0' node1='node8' node2='node9'/>
+    <Connection wireType='type0' node1='node9' node2='node7'/>
+  </ListOfConnections>
+
+  <!-- Note for remaining sections: Throughput is derived concept from latency, packetLoss,
+  and bandwidth. Thus if you prioritize throughput, you're implicately prioritizing those 3 metrics.
+  We will clarify this and possibly change the final preferences in later revisions. -->
+
+  <!-- latency, packetLoss and throughput are weights and relative to eachother.
+  Will be normalized by the tool. Budget is not a weight but rather a fixed max boundary-->
+  <Preferences latency='1' packetLoss='1' throughput='1' budget='400000'/>
+
+  <!-- Following section will be present if file is output from the CAD tool -->
+  <!-- latency is in milliseconds, packetLoss is a percentage and throughput is
+  packets per second. -->
+  <Statistics latency='0.0' packetLoss='0.0' throughput='1.0' cost='50'/>
+</NetworkDefinition>

@@ -1,0 +1,17 @@
+<NetworkDefinition>
+	<ListOfNodes>
+		<Node name='node1' x='1.02e+06' y='350000' sendRate='1000' receiveRate='5000' routeRate='5000' queueSize='0'/>
+		<Node name='node2' x='-150000' y='1.062e+06' sendRate='1000' receiveRate='5000' routeRate='5000' queueSize='0'/>
+		<Node name='node3' x='200000' y='450000' sendRate='1000' receiveRate='5000' routeRate='5000' queueSize='0'/>
+	</ListOfNodes>
+	<WireTypess>
+		<Wire type='type1' cost='5' bandwidth='1000' errorRate='1e-12'/>
+		<Wire type='type1' cost='5' bandwidth='1000' errorRate='1e-12'/>
+	</WireTypes>
+	<ListOfConnections>
+		<Connection wireType='type1' node1='node1' node='node2'/>
+		<Connection wireType='type1' node1='node2' node='node3'/>
+	</ListOfConnections>
+	<Preferences/>
+	<Statistics latency='0.0116487' packetLoss='0.364189' throughput='1904.45' cost='0' />
+</NetworkDefinition>

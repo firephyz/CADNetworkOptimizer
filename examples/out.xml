@@ -26,8 +26,32 @@
 		<Connection wireType='type1' node1='node1' node='node4'/>
 		<Connection wireType='type1' node1='node4' node='node7'/>
 		<Connection wireType='type1' node1='node2' node='node3'/>
+		<Connection wireType='type1' node1='node2' node='node5'/>
+		<Connection wireType='type1' node1='node2' node='node8'/>
+		<Connection wireType='type1' node1='node3' node='node6'/>
+		<Connection wireType='type1' node1='node3' node='node9'/>
+		<Connection wireType='type1' node1='node5' node='node9'/>
+		<Connection wireType='type1' node1='node6' node='node5'/>
 		<Connection wireType='type1' node1='node1' node='node3'/>
+		<Connection wireType='type1' node1='node1' node='node5'/>
+		<Connection wireType='type1' node1='node1' node='node6'/>
+		<Connection wireType='type1' node1='node1' node='node8'/>
+		<Connection wireType='type1' node1='node1' node='node9'/>
+		<Connection wireType='type1' node1='node2' node='node4'/>
+		<Connection wireType='type1' node1='node2' node='node6'/>
+		<Connection wireType='type1' node1='node2' node='node7'/>
+		<Connection wireType='type1' node1='node2' node='node9'/>
+		<Connection wireType='type1' node1='node3' node='node5'/>
+		<Connection wireType='type1' node1='node3' node='node7'/>
+		<Connection wireType='type1' node1='node3' node='node8'/>
+		<Connection wireType='type1' node1='node4' node='node6'/>
+		<Connection wireType='type1' node1='node4' node='node8'/>
+		<Connection wireType='type1' node1='node4' node='node9'/>
+		<Connection wireType='type1' node1='node5' node='node7'/>
+		<Connection wireType='type1' node1='node5' node='node8'/>
+		<Connection wireType='type1' node1='node6' node='node8'/>
+		<Connection wireType='type1' node1='node6' node='node9'/>
 	</ListOfConnections>
 	<Preferences/>
-	<Statistics latency='0.00848749' packetLoss='0.344225' throughput='246.483' cost='32851.8' />
+	<Statistics latency='0.000365025' packetLoss='0.0010597' throughput='376.941' cost='1.44054e+06' />
 </NetworkDefinition>

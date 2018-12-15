@@ -576,6 +576,13 @@ int main(int argc, char **argv)
     int mutation_count=1;
 
   while(!done ) {
+      if(mutation_count > 1)
+      {
+          sim.simulate();
+          current_lat[0] =  simmed_avg_latency(sim,5);
+          current_err[0] = simmed_total_error_rate(sim,5);
+          current_thru[0] =  simmed_throughput(sim, 5, 15);
+      }
       //sim.simulate();
       std::cout << "Mutation simulation " << mutation_count << "\n";
       mutation_count++;
@@ -681,7 +688,7 @@ int main(int argc, char **argv)
 
         // simulation 5
 
-      if(add_target3.size() > 0)
+      if(add_target3.size() > 0 && !check_for_direct_connection(nodes[add_target3[0]],nodes[add_target3[1]]))
       {
           std::cout << "sim 5" << "\n";
           add_con(nodes[add_target2[0]],nodes[add_target2[1]]);
@@ -730,7 +737,7 @@ int main(int argc, char **argv)
               index = i;
           }
       }
-      std::cout << index << std::endl;
+      //std::cout << index << std::endl;
       bool can_aff = false;
       while(!can_aff)
       {
@@ -783,7 +790,11 @@ int main(int argc, char **argv)
 
               case 3:
               {
-                  cost = add_con(nodes[add_target1[0]],nodes[add_target1[1]]);
+                  if(check_for_direct_connection(nodes[add_target1[0]],nodes[add_target1[1]]))
+                  {
+                      break;
+                  }
+                  cost = connection_cost(nodes[add_target1[0]],nodes[add_target1[1]],wires[0]);
                   can_aff = can_afford(cost);
                   if(can_aff)
                   {
@@ -795,7 +806,11 @@ int main(int argc, char **argv)
 
               case 4:
               {
-                  cost = add_con(nodes[add_target2[0]],nodes[add_target2[1]]);
+                  if(check_for_direct_connection(nodes[add_target1[0]],nodes[add_target1[1]]))
+                  {
+                      break;
+                  }
+                  cost = connection_cost(nodes[add_target2[0]],nodes[add_target2[1]],wires[0]);
                   can_aff = can_afford(cost);
                   if(can_aff)
                   {
@@ -807,7 +822,11 @@ int main(int argc, char **argv)
 
               case 5:
               {
-                  cost = add_con(nodes[add_target3[0]],nodes[add_target3[1]]);
+                  if(check_for_direct_connection(nodes[add_target1[0]],nodes[add_target1[1]]))
+                  {
+                      break;
+                  }
+                  cost = connection_cost(nodes[add_target3[0]],nodes[add_target3[1]],wires[0]);
                   can_aff = can_afford(cost);
                   if(can_aff)
                   {
@@ -827,7 +846,7 @@ int main(int argc, char **argv)
           }
           if( can_aff)
           {
-              current_lat[0] = current_lat[index];
+              //current_lat[0] = current_lat[index];
               std::cout << "Mutation "<< index << " selected and implemented\n";
               std::cout << "Budget Remaining: "<< prefs.budget << " \n";
               break;

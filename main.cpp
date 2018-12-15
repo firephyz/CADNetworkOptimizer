@@ -21,8 +21,8 @@ struct pref_t prefs;
 
 std::unordered_map<std::string, Node *> hashed_nodes;
 
-double simmed_avg_latency(Simulator& sim, int time);
-double simmed_total_error_rate(Simulator& sim, int time);
+double simmed_avg_latency(Simulator& sim, double time);
+double simmed_total_error_rate(Simulator& sim, double time);
 double simmed_throughput(Simulator& sim, double startTime, double endTime);
 
 void printUsage()
@@ -356,7 +356,7 @@ bool check_graph_completely_upgraded()
   }
   return true;
 }
-double simmed_avg_latency( Simulator& sim, int time)// averaged latency
+double simmed_avg_latency( Simulator& sim, double time)// averaged latency
 {
   int count = 0;
   double lat = 0;
@@ -371,7 +371,7 @@ double simmed_avg_latency( Simulator& sim, int time)// averaged latency
   return lat / count;
 }
 
-double simmed_total_error_rate(Simulator& sim, int time) // rate of errors for the entire network
+double simmed_total_error_rate(Simulator& sim, double time) // rate of errors for the entire network
 {
   int count = 0;
   double err_count = 0;
@@ -573,97 +573,16 @@ int main(int argc, char **argv)
     current_thru.push_back( 0);
 
   while(prefs.budget > 0 || (check_graph_full() && check_graph_completely_upgraded())) {
-    //for(double bandwidth = 25; bandwidth <= 3000; bandwidth += 25) {
-      // std::cout << "Bandwidth: " << bandwidth << std::endl;
-      // wires[0].bandwidth = bandwidth;
-      // for(Connection& con : connections) {
-      //   con.maxPackets = con.type.bandwidth / 150000000 * con.length + 1;
-      // }
+    // Run multiple times and average over the number of runs
+    sim.numRuns = 10;
+    for(int runCount = 0; runCount < sim.numRuns; ++runCount) {
+      sim.simulate();
+    }
 
-      int maxRuns = 10;
-      double avg_latency = 0;
-      double avg_total_error = 0;
-      double avg_throughput = 0;
-      double avg_sent = 0;
-      double avg_arrived = 0;
-      double avg_lost_line = 0;
-      double avg_lost_dispatch = 0;
-      double avg_lost_routing = 0;
-      double num_nodes_sent[nodes.size()];
-      double num_nodes_received[nodes.size()];
-      double num_nodes_lost_sending[nodes.size()];
-      double num_nodes_lost_routing[nodes.size()];
-      for(uint i = 0; i < nodes.size(); ++i) {
-        num_nodes_sent[i] = 0;
-        num_nodes_received[i] = 0;
-        num_nodes_lost_sending[i] = 0;
-        num_nodes_lost_routing[i] = 0;
-      }
+    sim.printStats();
 
-      for(int runCount = 0; runCount < maxRuns; ++runCount) {
-        sim.simulate();
-
-        avg_latency += simmed_avg_latency(sim, 0) / maxRuns;
-        avg_total_error += simmed_total_error_rate(sim, 0) / maxRuns;
-        avg_throughput += simmed_throughput(sim, 0, sim.maxSimTime) / maxRuns;
-        avg_lost_line += simmed_lost_by_status(sim, PacketStatus::LOST_ON_LINE) / maxRuns;
-        avg_lost_dispatch += simmed_lost_by_status(sim, PacketStatus::LOST_ON_DISPATCH) / maxRuns;
-        avg_lost_routing += simmed_lost_by_status(sim, PacketStatus::LOST_ON_ROUTING) / maxRuns;
-        avg_sent += sim.stats.packets.size() / (double)maxRuns;
-        for(NetPacket& packet : sim.stats.packets) {
-          ++num_nodes_sent[packet.sourceNode->id];
-          if(packet.arrived) {
-            ++num_nodes_received[packet.destNode->id];
-          }
-          else if(packet.status == PacketStatus::LOST_ON_DISPATCH) {
-            ++num_nodes_lost_sending[packet.sourceNode->id];
-          }
-          else if(packet.status == PacketStatus::LOST_ON_ROUTING) {
-            ++num_nodes_lost_routing[packet.lastNode->id];
-          }
-        }
-        double count = 0;
-        for(auto& packet : sim.stats.packets) {
-          if(packet.arrived) ++count;
-        }
-        avg_arrived += count / maxRuns;
-      }
-
-      std::cout << "Average Packet Latency: " << avg_latency << std::endl;
-      std::cout << "Average Percent Packet Loss: " << avg_total_error << std::endl;
-      std::cout << "Average Throughput: " << avg_throughput << std::endl;
-      std::cout << "Average Packets Sent: " << avg_sent << std::endl;
-      std::cout << "Average Packets Arrived: " << avg_arrived << std::endl;
-      std::cout << "Average Packets Lost on Line: " << avg_lost_line << std::endl;
-      std::cout << "Average Packets Lost on Dispatch: " << avg_lost_dispatch << std::endl;
-      std::cout << "Average Packets Lost on Routing: " << avg_lost_routing << std::endl;
-
-      std::cout << std::endl;
-      for(Node& node : nodes) {
-        std::cout << "Node \'" << node.name << "\'" << " sent " << num_nodes_sent[node.id] / maxRuns << std::endl;
-      }
-
-      std::cout << std::endl;
-      for(Node& node : nodes) {
-        std::cout << "Node \'" << node.name << "\'" << " received " << num_nodes_received[node.id] / maxRuns << std::endl;
-      }
-
-      std::cout << std::endl;
-      for(Node& node : nodes) {
-        std::cout << "Node \'" << node.name << "\'" << " lost sending " << num_nodes_lost_sending[node.id] / maxRuns << std::endl;
-      }
-
-      std::cout << std::endl;
-      for(Node& node : nodes) {
-        std::cout << "Node \'" << node.name << "\'" << " lost routing " << num_nodes_lost_routing[node.id] / maxRuns << std::endl;
-      }
-      std::cout << std::endl;
-    //}
     prefs.budget = 0;
   }
-
-  // double dist = net_distance(nodes[0] ,nodes[1]);
-  // std::cout << dist << std::endl;
 
   outputResults(argv[2], sim);
   Graphviz("Output_graph.dot");

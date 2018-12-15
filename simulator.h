@@ -29,6 +29,18 @@ typedef struct cons_t{
 typedef struct stats_t{
     std::vector<NetPacket> packets;
     std::vector<Cons> cons;
+    double avg_latency;
+    double avg_total_error;
+    double avg_throughput;
+    double avg_lost_line;
+    double avg_lost_dispatch;
+    double avg_lost_routing;
+    double avg_sent;
+    double * num_nodes_sent;
+    double * num_nodes_received;
+    double * num_nodes_lost_sending;
+    double * num_nodes_lost_routing;
+    double avg_arrived;
 } Stats;
 
 
@@ -57,6 +69,8 @@ public:
   double maxSimTime; // max sim time for a single run
   double simTime; // simulation time of the current run
   struct stats_t stats;
+  int numRuns;
+
   Simulator(std::vector<Node>& nodes,
             std::vector<Connection>& connections,
             std::vector<WireType>& wires,
@@ -64,6 +78,8 @@ public:
 
 
   void simulate();
+  void gatherStats();
+  void printStats();
   // Randomly find node based on node receive rates
   Node * determineDestNode(Node * sourceNode);
 };

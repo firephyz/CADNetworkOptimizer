@@ -21,10 +21,31 @@ Simulator::Simulator(
   , prefs(prefs)
   , maxSimTime(20)
   , simTime(0)
+  , numRuns(0)
 {
   // Sort nodes by receive rate for determineDestNode
   for(Node& node : nodes) {
     totalReceiveRate += node.receiveRate;
+  }
+
+  // Initialize stats
+  stats.avg_latency = 0;
+  stats.avg_total_error = 0;
+  stats.avg_throughput = 0;
+  stats.avg_sent = 0;
+  stats.avg_arrived = 0;
+  stats.avg_lost_line = 0;
+  stats.avg_lost_dispatch = 0;
+  stats.avg_lost_routing = 0;
+  stats.num_nodes_sent = new double[nodes.size()];
+  stats.num_nodes_received = new double[nodes.size()];
+  stats.num_nodes_lost_sending = new double[nodes.size()];
+  stats.num_nodes_lost_routing = new double[nodes.size()];
+  for(uint i = 0; i < nodes.size(); ++i) {
+    stats.num_nodes_sent[i] = 0;
+    stats.num_nodes_received[i] = 0;
+    stats.num_nodes_lost_sending[i] = 0;
+    stats.num_nodes_lost_routing[i] = 0;
   }
 }
 
@@ -52,12 +73,15 @@ Scheduler::schedule(ScheduledEvent event)
 void
 Simulator::simulate()
 {
+  // Reset simulator
   scheduler.events.clear();
   for(Connection& con : connections) {
     con.numPackets = 0;
   }
   simTime = 0;
   stats.packets.clear();
+
+  // Schedule initial packets
   for(Node& node : nodes) {
     double packetTime = node.getNextPacketTime();
     if(packetTime < 0) {
@@ -70,6 +94,8 @@ Simulator::simulate()
             NetPacket(simTime, &node)});
     node.nextAvailableRouteTime = 0;
   }
+
+  // Begin simulation
   while(simTime < maxSimTime) {
     ScheduledEvent event = scheduler.events.front();
     scheduler.events.pop_front();
@@ -247,6 +273,77 @@ Simulator::simulate()
         break;
     }
   }
+
+  gatherStats();
+}
+
+// Don't want to migrate these functions from main to avoid breaking Nickys code.
+extern double simmed_avg_latency(Simulator&, double);
+extern double simmed_total_error_rate(Simulator&, double);
+extern double simmed_throughput(Simulator&, double, double);
+extern double simmed_lost_by_status(Simulator&, PacketStatus status);
+
+void
+Simulator::gatherStats()
+{
+  stats.avg_latency += simmed_avg_latency(*this, 0) / numRuns;
+  stats.avg_total_error += simmed_total_error_rate(*this, 0) / numRuns;
+  stats.avg_throughput += simmed_throughput(*this, 0, maxSimTime) / numRuns;
+  stats.avg_lost_line += simmed_lost_by_status(*this, PacketStatus::LOST_ON_LINE) / numRuns;
+  stats.avg_lost_dispatch += simmed_lost_by_status(*this, PacketStatus::LOST_ON_DISPATCH) / numRuns;
+  stats.avg_lost_routing += simmed_lost_by_status(*this, PacketStatus::LOST_ON_ROUTING) / numRuns;
+  stats.avg_sent += stats.packets.size() / (double)numRuns;
+  for(NetPacket& packet : stats.packets) {
+    ++stats.num_nodes_sent[packet.sourceNode->id];
+    if(packet.arrived) {
+      ++stats.num_nodes_received[packet.destNode->id];
+    }
+    else if(packet.status == PacketStatus::LOST_ON_DISPATCH) {
+      ++stats.num_nodes_lost_sending[packet.sourceNode->id];
+    }
+    else if(packet.status == PacketStatus::LOST_ON_ROUTING) {
+      ++stats.num_nodes_lost_routing[packet.lastNode->id];
+    }
+  }
+  double count = 0;
+  for(auto& packet : stats.packets) {
+    if(packet.arrived) ++count;
+  }
+  stats.avg_arrived += count / numRuns;
+}
+
+void
+Simulator::printStats()
+{
+  std::cout << "Average Packet Latency: " << stats.avg_latency << std::endl;
+  std::cout << "Average Percent Packet Loss: " << stats.avg_total_error << std::endl;
+  std::cout << "Average Throughput: " << stats.avg_throughput << std::endl;
+  std::cout << "Average Packets Sent: " << stats.avg_sent << std::endl;
+  std::cout << "Average Packets Arrived: " << stats.avg_arrived << std::endl;
+  std::cout << "Average Packets Lost on Line: " << stats.avg_lost_line << std::endl;
+  std::cout << "Average Packets Lost on Dispatch: " << stats.avg_lost_dispatch << std::endl;
+  std::cout << "Average Packets Lost on Routing: " << stats.avg_lost_routing << std::endl;
+
+  std::cout << std::endl;
+  for(Node& node : nodes) {
+    std::cout << "Node \'" << node.name << "\'" << " sent " << stats.num_nodes_sent[node.id] / numRuns << std::endl;
+  }
+
+  std::cout << std::endl;
+  for(Node& node : nodes) {
+    std::cout << "Node \'" << node.name << "\'" << " received " << stats.num_nodes_received[node.id] / numRuns << std::endl;
+  }
+
+  std::cout << std::endl;
+  for(Node& node : nodes) {
+    std::cout << "Node \'" << node.name << "\'" << " lost sending " << stats.num_nodes_lost_sending[node.id] / numRuns << std::endl;
+  }
+
+  std::cout << std::endl;
+  for(Node& node : nodes) {
+    std::cout << "Node \'" << node.name << "\'" << " lost routing " << stats.num_nodes_lost_routing[node.id] / numRuns << std::endl;
+  }
+  std::cout << std::endl;
 }
 
 Node *

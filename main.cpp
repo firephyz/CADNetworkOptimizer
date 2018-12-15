@@ -401,6 +401,19 @@ double simmed_throughput(Simulator& sim, double startTime, double endTime) //suc
   }
   return count / (endTime - startTime);
 }
+
+double simmed_lost_by_status(Simulator& sim, PacketStatus status)
+{
+  int count = 0;
+  for(NetPacket& packet : sim.stats.packets) {
+    if(packet.status == status) {
+      ++count;
+    }
+  }
+
+  return count;
+}
+
 bool upgrade_con(int con)
 {
     WireType type = connections[con].type;
@@ -560,12 +573,12 @@ int main(int argc, char **argv)
     current_thru.push_back( 0);
 
   while(prefs.budget > 0 || (check_graph_full() && check_graph_completely_upgraded())) {
-    for(double bandwidth = 25; bandwidth <= 3000; bandwidth += 25) {
-      std::cout << "Bandwidth: " << bandwidth << std::endl;
-      wires[0].bandwidth = bandwidth;
-      for(Connection& con : connections) {
-        con.maxPackets = con.type.bandwidth / 150000000 * con.length + 1;
-      }
+    //for(double bandwidth = 25; bandwidth <= 3000; bandwidth += 25) {
+      // std::cout << "Bandwidth: " << bandwidth << std::endl;
+      // wires[0].bandwidth = bandwidth;
+      // for(Connection& con : connections) {
+      //   con.maxPackets = con.type.bandwidth / 150000000 * con.length + 1;
+      // }
 
       int maxRuns = 10;
       double avg_latency = 0;
@@ -573,6 +586,19 @@ int main(int argc, char **argv)
       double avg_throughput = 0;
       double avg_sent = 0;
       double avg_arrived = 0;
+      double avg_lost_line = 0;
+      double avg_lost_dispatch = 0;
+      double avg_lost_routing = 0;
+      double num_nodes_sent[nodes.size()];
+      double num_nodes_received[nodes.size()];
+      double num_nodes_lost_sending[nodes.size()];
+      double num_nodes_lost_routing[nodes.size()];
+      for(uint i = 0; i < nodes.size(); ++i) {
+        num_nodes_sent[i] = 0;
+        num_nodes_received[i] = 0;
+        num_nodes_lost_sending[i] = 0;
+        num_nodes_lost_routing[i] = 0;
+      }
 
       for(int runCount = 0; runCount < maxRuns; ++runCount) {
         sim.simulate();
@@ -580,7 +606,22 @@ int main(int argc, char **argv)
         avg_latency += simmed_avg_latency(sim, 0) / maxRuns;
         avg_total_error += simmed_total_error_rate(sim, 0) / maxRuns;
         avg_throughput += simmed_throughput(sim, 0, sim.maxSimTime) / maxRuns;
+        avg_lost_line += simmed_lost_by_status(sim, PacketStatus::LOST_ON_LINE) / maxRuns;
+        avg_lost_dispatch += simmed_lost_by_status(sim, PacketStatus::LOST_ON_DISPATCH) / maxRuns;
+        avg_lost_routing += simmed_lost_by_status(sim, PacketStatus::LOST_ON_ROUTING) / maxRuns;
         avg_sent += sim.stats.packets.size() / (double)maxRuns;
+        for(NetPacket& packet : sim.stats.packets) {
+          ++num_nodes_sent[packet.sourceNode->id];
+          if(packet.arrived) {
+            ++num_nodes_received[packet.destNode->id];
+          }
+          else if(packet.status == PacketStatus::LOST_ON_DISPATCH) {
+            ++num_nodes_lost_sending[packet.sourceNode->id];
+          }
+          else if(packet.status == PacketStatus::LOST_ON_ROUTING) {
+            ++num_nodes_lost_routing[packet.lastNode->id];
+          }
+        }
         double count = 0;
         for(auto& packet : sim.stats.packets) {
           if(packet.arrived) ++count;
@@ -593,8 +634,31 @@ int main(int argc, char **argv)
       std::cout << "Average Throughput: " << avg_throughput << std::endl;
       std::cout << "Average Packets Sent: " << avg_sent << std::endl;
       std::cout << "Average Packets Arrived: " << avg_arrived << std::endl;
+      std::cout << "Average Packets Lost on Line: " << avg_lost_line << std::endl;
+      std::cout << "Average Packets Lost on Dispatch: " << avg_lost_dispatch << std::endl;
+      std::cout << "Average Packets Lost on Routing: " << avg_lost_routing << std::endl;
+
       std::cout << std::endl;
-    }
+      for(Node& node : nodes) {
+        std::cout << "Node \'" << node.name << "\'" << " sent " << num_nodes_sent[node.id] / maxRuns << std::endl;
+      }
+
+      std::cout << std::endl;
+      for(Node& node : nodes) {
+        std::cout << "Node \'" << node.name << "\'" << " received " << num_nodes_received[node.id] / maxRuns << std::endl;
+      }
+
+      std::cout << std::endl;
+      for(Node& node : nodes) {
+        std::cout << "Node \'" << node.name << "\'" << " lost sending " << num_nodes_lost_sending[node.id] / maxRuns << std::endl;
+      }
+
+      std::cout << std::endl;
+      for(Node& node : nodes) {
+        std::cout << "Node \'" << node.name << "\'" << " lost routing " << num_nodes_lost_routing[node.id] / maxRuns << std::endl;
+      }
+      std::cout << std::endl;
+    //}
     prefs.budget = 0;
   }
 

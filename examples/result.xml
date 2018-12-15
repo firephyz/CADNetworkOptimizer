@@ -1,11 +1,11 @@
 <NetworkDefinition>
 	<ListOfNodes>
-		<Node name='node1' x='1.02e+06' y='350000' sendRate='1000' receiveRate='5000' routeRate='5000' queueSize='0'/>
-		<Node name='node2' x='-150000' y='1.062e+06' sendRate='1000' receiveRate='5000' routeRate='5000' queueSize='0'/>
-		<Node name='node3' x='200000' y='450000' sendRate='1000' receiveRate='5000' routeRate='5000' queueSize='0'/>
+		<Node name='node1' x='-2e+06' y='0' sendRate='1000' receiveRate='10000' routeRate='1' queueSize='0'/>
+		<Node name='node2' x='0' y='0' sendRate='1000' receiveRate='1000' routeRate='2000' queueSize='0'/>
+		<Node name='node3' x='4e+06' y='0' sendRate='1' receiveRate='800' routeRate='1' queueSize='0'/>
 	</ListOfNodes>
 	<WireTypess>
-		<Wire type='type0' cost='1' bandwidth='3000' errorRate='1e-12'/>
+		<Wire type='type0' cost='1' bandwidth='4000' errorRate='1e-12'/>
 		<Wire type='type1' cost='5' bandwidth='1000' errorRate='1e-12'/>
 	</WireTypes>
 	<ListOfConnections>
@@ -13,5 +13,5 @@
 		<Connection wireType='type0' node1='node2' node='node3'/>
 	</ListOfConnections>
 	<Preferences/>
-	<Statistics latency='0.00930592' packetLoss='0' throughput='2995.94' cost='100' />
+	<Statistics latency='0.0776065' packetLoss='0.19864' throughput='1596.02' cost='100' />
 </NetworkDefinition>

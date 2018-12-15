@@ -34,6 +34,14 @@ WireType& getWireTypeByName(const char * name);
 class Connection;
 class Node;
 
+enum class PacketStatus {
+  IN_TRANSIT,
+  ARRIVED,
+  LOST_ON_LINE,
+  LOST_ON_DISPATCH,
+  LOST_ON_ROUTING
+};
+
 typedef struct netpacket_t {
   double sendTime;
   Node * sourceNode;
@@ -44,6 +52,7 @@ typedef struct netpacket_t {
   double latency;
   Connection * currentConnection;
   std::list<int> route; // Indexes into the connections vector
+  PacketStatus status;
 
   netpacket_t(double sendTime, Node * source); // For packets not yet routed.
 } NetPacket;

@@ -116,6 +116,7 @@ Simulator::simulate()
                 //std::cout << "check";
                 packet.currentConnection->numPackets--;
                 packet.arrived = false;
+                packet.status = PacketStatus::LOST_ON_LINE;
                 stats.packets.push_back(packet);
               }
 
@@ -136,12 +137,14 @@ Simulator::simulate()
                 //std::cout << "check";
                 packet.currentConnection->numPackets--;
                 packet.arrived = false;
+                packet.status = PacketStatus::LOST_ON_LINE;
                 stats.packets.push_back(packet);
               }
             }
           }
           else {
             packet.arrived = false;
+            packet.status = PacketStatus::LOST_ON_DISPATCH;
             stats.packets.push_back(packet);
           }
         }
@@ -200,6 +203,7 @@ Simulator::simulate()
                 //std::cout << "check";
                 packet.currentConnection->numPackets--;
                 packet.arrived = false;
+                packet.status = PacketStatus::LOST_ON_LINE;
                 stats.packets.push_back(packet);
               }
             }
@@ -220,12 +224,14 @@ Simulator::simulate()
                 //std::cout << "check";
                 packet.currentConnection->numPackets--;
                 packet.arrived = false;
+                packet.status = PacketStatus::LOST_ON_LINE;
                 stats.packets.push_back(packet);
               }
             }
           }
           else {
             packet.arrived = false;
+            packet.status = PacketStatus::LOST_ON_ROUTING;
             stats.packets.push_back(packet);
           }
         }
@@ -234,6 +240,7 @@ Simulator::simulate()
         packet.currentConnection->numPackets--;
         packet.arrived = true;
         packet.latency = simTime - packet.sendTime;
+        packet.status = PacketStatus::ARRIVED;
         stats.packets.push_back(packet);
         //std::cout << "RECV_PKT: " << simTime << " {" << packet.destNode->id << ", latency: " << packet.latency;
        // std::cout << " , sendTime: " << packet.sendTime << "}\n";

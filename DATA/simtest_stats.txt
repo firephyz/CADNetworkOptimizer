@@ -65,7 +65,7 @@ Node 'node2' lost routing 0.3
 Node 'node3' lost routing 0
 
 ***********************************************
-* Bandwidth Sufficient for full communication *
+* Routing node Bottle neck                    *
 * Bandwidth: 3000                             *
 * Send Rates: 100                             *
 * Receive Rates: 500                          *

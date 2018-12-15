@@ -13,5 +13,5 @@
 		<Connection wireType='type1' node1='node2' node='node3'/>
 	</ListOfConnections>
 	<Preferences/>
-	<Statistics latency='0.0116381' packetLoss='0.362404' throughput='1909.17' cost='0' />
+	<Statistics latency='0.0116589' packetLoss='0.366331' throughput='1900.95' cost='0' />
 </NetworkDefinition>

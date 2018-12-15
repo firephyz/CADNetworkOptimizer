@@ -296,11 +296,11 @@ void Graphviz(std::string name)
     {
       if(connections[con].a.id == node.id && connections[con].b.flag == false)
       {
-        myfile <<"    " << connections[con].a.name << " -> " << connections[con].b.name << " [label=" << "\""<< connections[con].type.typeName <<  "\"];\n";
+        myfile <<"    " << connections[con].a.name << " -> " << connections[con].b.name << " [dir = \"both\" label=" << "\""<< connections[con].type.typeName <<  "\"];\n";
       }
       else if(connections[con].b.id == node.id && connections[con].a.flag == false)
       {
-        myfile << "    " << connections[con].b.name << " -> " << connections[con].a.name << " [label=" << "\""<< connections[con].type.typeName <<  "\"];\n";
+        myfile << "    " << connections[con].b.name << " -> " << connections[con].a.name << " [dir = \"both\" label=" << "\""<< connections[con].type.typeName <<  "\"];\n";
       }
     }
   }
@@ -750,14 +750,7 @@ int main(int argc, char **argv)
                   break;
               case 1:
               {
-                  int t;
-                  for(int i =0; i< (int)wires.size();i++)
-                  {
-                      if(connections[upgrade_target1].type.typeName == wires[i].typeName)
-                      {
-                          t = i+1;
-                      }
-                  }
+
                   cost = upgrade_cost(upgrade_target1,wires.back());// fix this
                   can_aff = can_afford(cost);
                   if(can_aff)
@@ -770,14 +763,7 @@ int main(int argc, char **argv)
 
               case 2:
               {
-                  int t;
-                  for(int i =0; i< (int)wires.size();i++)
-                  {
-                      if(connections[upgrade_target2].type.typeName == wires[i].typeName)
-                      {
-                          t = i+1;
-                      }
-                  }
+
                   cost = upgrade_cost(upgrade_target2,wires.back());//fix this
                   can_aff = can_afford(cost);
                   if(can_aff)

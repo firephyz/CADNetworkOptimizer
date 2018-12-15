@@ -1,0 +1,360 @@
+=======TEST 1========
+Beginning initial simulation 
+Mutation simulation 1
+sim 1
+sim 2
+sim 3
+sim 5
+No More Mutations can be afforded
+=======TEST 2========
+Beginning initial simulation 
+Mutation simulation 1
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 338864 
+Mutation simulation 2
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 331793 
+Mutation simulation 3
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 238787 
+Mutation simulation 4
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 228787 
+Mutation simulation 5
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 181353 
+Mutation simulation 6
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 161353 
+Mutation simulation 7
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 135858 
+Mutation simulation 8
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 128787 
+Mutation simulation 9
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 2 selected and implemented
+Budget Remaining: 93431.8 
+Mutation simulation 10
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 57376.3 
+Mutation simulation 11
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 41564.9 
+Mutation simulation 12
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 2 selected and implemented
+Budget Remaining: 6209.58 
+Mutation simulation 13
+sim 1
+sim 2
+sim 3
+sim 5
+No More Mutations can be afforded
+=======TEST 3========
+Beginning initial simulation 
+Mutation simulation 1
+sim 1
+sim 2
+sim 3
+sim 5
+No More Mutations can be afforded
+=======TEST 4========
+Beginning initial simulation 
+Mutation simulation 1
+sim 1
+sim 2
+sim 3
+sim 5
+No More Mutations can be afforded
+=======TEST 5========
+Beginning initial simulation 
+Mutation simulation 1
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 9.9587e+08 
+The NetWork is completely upgraded
+=======TEST 6========
+Beginning initial simulation 
+Mutation simulation 1
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99939e+08 
+Mutation simulation 2
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99932e+08 
+Mutation simulation 3
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99839e+08 
+Mutation simulation 4
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99829e+08 
+Mutation simulation 5
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99781e+08 
+Mutation simulation 6
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99761e+08 
+Mutation simulation 7
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99736e+08 
+Mutation simulation 8
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 2 selected and implemented
+Budget Remaining: 3.99701e+08 
+Mutation simulation 9
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99693e+08 
+Mutation simulation 10
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99657e+08 
+Mutation simulation 11
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99642e+08 
+Mutation simulation 12
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99514e+08 
+Mutation simulation 13
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.9946e+08 
+Mutation simulation 14
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 5 selected and implemented
+Budget Remaining: 3.99417e+08 
+Mutation simulation 15
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99395e+08 
+Mutation simulation 16
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99374e+08 
+Mutation simulation 17
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 1 selected and implemented
+Budget Remaining: 3.99339e+08 
+Mutation simulation 18
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 1 selected and implemented
+Budget Remaining: 3.99304e+08 
+Mutation simulation 19
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99278e+08 
+Mutation simulation 20
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99249e+08 
+Mutation simulation 21
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99219e+08 
+Mutation simulation 22
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99098e+08 
+Mutation simulation 23
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.99048e+08 
+Mutation simulation 24
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 1 selected and implemented
+Budget Remaining: 3.99012e+08 
+Mutation simulation 25
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.98921e+08 
+Mutation simulation 26
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.98861e+08 
+Mutation simulation 27
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 2 selected and implemented
+Budget Remaining: 3.98826e+08 
+Mutation simulation 28
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 1 selected and implemented
+Budget Remaining: 3.9879e+08 
+Mutation simulation 29
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 2 selected and implemented
+Budget Remaining: 3.98755e+08 
+Mutation simulation 30
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.98741e+08 
+Mutation simulation 31
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.98649e+08 
+Mutation simulation 32
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.98534e+08 
+Mutation simulation 33
+sim 1
+sim 2
+sim 3
+sim 5
+Mutation 3 selected and implemented
+Budget Remaining: 3.98489e+08 
+The NetWork is completely upgraded

@@ -560,74 +560,41 @@ int main(int argc, char **argv)
     current_thru.push_back( 0);
 
   while(prefs.budget > 0 || (check_graph_full() && check_graph_completely_upgraded())) {
-      sim.simulate();
-      // int upgrade_target1 = find_uprade_target1(sim);
-      // int upgrade_target2 = find_uprade_target2(sim);
-      // std::vector<int> add_target1 = potential_con2(sim);
-      // std::vector<int> add_target2 = potential_con1(sim);
-
-/*      // simulation 1
-      bool check = upgrade_con(upgrade_target1);
-      if(check)
-      {
-          sim.simulate();
-          current_lat[1]=simmed_avg_latency(sim,5);
-          current_err[1] = simmed_total_error_rate(sim,5);
-          current_thru[1] = simmed_throughput(sim, 5, 15);
-          downgrade_con(upgrade_target1);
-      }
-      else
-      {
-          current_lat[1]= -1;
-          current_err[1] = 1;
-          current_thru[1] = -1;
+    for(double bandwidth = 25; bandwidth <= 3000; bandwidth += 25) {
+      std::cout << "Bandwidth: " << bandwidth << std::endl;
+      wires[0].bandwidth = bandwidth;
+      for(Connection& con : connections) {
+        con.maxPackets = con.type.bandwidth / 150000000 * con.length + 1;
       }
 
-      //simulation 2
-      check = upgrade_con(upgrade_target2);
-      if(check)
-      {
-          sim.simulate();
-          current_lat[2]=simmed_avg_latency(sim,5);
-          current_err[2] = simmed_total_error_rate(sim,5);
-          current_thru[2] = simmed_throughput(sim, 5, 15);
-          downgrade_con(upgrade_target2);
+      int maxRuns = 10;
+      double avg_latency = 0;
+      double avg_total_error = 0;
+      double avg_throughput = 0;
+      double avg_sent = 0;
+      double avg_arrived = 0;
+
+      for(int runCount = 0; runCount < maxRuns; ++runCount) {
+        sim.simulate();
+
+        avg_latency += simmed_avg_latency(sim, 0) / maxRuns;
+        avg_total_error += simmed_total_error_rate(sim, 0) / maxRuns;
+        avg_throughput += simmed_throughput(sim, 0, sim.maxSimTime) / maxRuns;
+        avg_sent += sim.stats.packets.size() / (double)maxRuns;
+        double count = 0;
+        for(auto& packet : sim.stats.packets) {
+          if(packet.arrived) ++count;
+        }
+        avg_arrived += count / maxRuns;
       }
-      else
-      {
-          current_lat[2]= -1;
-          current_err[2] = 1;
-          current_thru[2] = -1;
-      }
 
-      //simulation 3
-
-      add_con(nodes[add_target1[0]],nodes[add_target1[1]]);
-      sim.simulate();
-      current_lat[3]=simmed_avg_latency(sim,5);
-      current_err[3] = simmed_total_error_rate(sim,5);
-      current_thru[3] = simmed_throughput(sim, 5, 15);
-      remove_connection();
-
-*/
-
-
-
-
-    // TODO upgrade network
-
-
-    if(check_graph_completely_upgraded() && check_graph_full()) break;
-
-    std::cout << simmed_avg_latency(sim, 0) << std::endl;
-    std::cout << simmed_total_error_rate(sim, 0) << std::endl;
-    std::cout << simmed_throughput(sim, 0, sim.maxSimTime) << std::endl;
-    std::cout << "Sent: " << sim.stats.packets.size() << ", ";
-    int count = 0;
-    for(auto& packet : sim.stats.packets) {
-      if(packet.arrived) ++count;
+      std::cout << "Average Packet Latency: " << avg_latency << std::endl;
+      std::cout << "Average Percent Packet Loss: " << avg_total_error << std::endl;
+      std::cout << "Average Throughput: " << avg_throughput << std::endl;
+      std::cout << "Average Packets Sent: " << avg_sent << std::endl;
+      std::cout << "Average Packets Arrived: " << avg_arrived << std::endl;
+      std::cout << std::endl;
     }
-    std::cout << "Arrived: " << count << std::endl;
     prefs.budget = 0;
   }
 

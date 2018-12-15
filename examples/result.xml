@@ -5,7 +5,7 @@
 		<Node name='node3' x='200000' y='450000' sendRate='1000' receiveRate='5000' routeRate='5000' queueSize='0'/>
 	</ListOfNodes>
 	<WireTypess>
-		<Wire type='type0' cost='1' bandwidth='2000' errorRate='1e-12'/>
+		<Wire type='type0' cost='1' bandwidth='3000' errorRate='1e-12'/>
 		<Wire type='type1' cost='5' bandwidth='1000' errorRate='1e-12'/>
 	</WireTypes>
 	<ListOfConnections>
@@ -13,5 +13,5 @@
 		<Connection wireType='type0' node1='node2' node='node3'/>
 	</ListOfConnections>
 	<Preferences/>
-	<Statistics latency='0.00919037' packetLoss='0.109148' throughput='2670.7' cost='100' />
+	<Statistics latency='0.00930592' packetLoss='0' throughput='2995.94' cost='100' />
 </NetworkDefinition>

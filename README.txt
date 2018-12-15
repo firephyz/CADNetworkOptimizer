@@ -1,5 +1,7 @@
 NICKY AND KYLES SUPER AWESOME NETWORK OPTIMIZER (NAKSANO)
 
+Authors: Nicky Nocerino and Kyle Burge
+
 NAKSANO is a network optimiztion tool that takes in a XML description of a network, an budget of upgrades, and the users preferences for prioritizing latency, error rate, and throughput, in order to output a XML description of the optimally upgraded grpah for the defined budget. I acomplishes this by utilizing a simulator to determine the average latency, error rate, and throughput of the network, then determines bust possible upgrades and creates mutations of the network, simulating each one, and adding the most benificial (defined by the users preferences) mutation to the network. It then repeats this process until either budget is used up, or the network is completely filled(all nodes are adirectly conneted to all other nodes) and fully upgraded(every wire is the optimal type, regardless of price).
 
 USE:
